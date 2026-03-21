@@ -24,32 +24,42 @@ public class HTMLTemplate implements Cloneable {
     }
 
     public void format(HashMap<String, String> formatMap) {
-        while (content.contains("{{")) {
-            int formatStartIndex = content.indexOf("{{");
-            int formatEndIndex = content.indexOf("}}", formatStartIndex);
-            String pattern = content.substring(formatStartIndex, formatEndIndex+2);
-            String injectionKey = pattern.replace("{", "")
-                                         .replace("}", "")
-                                         .replace(" ", "");
-            String injectionValue = formatMap.get(injectionKey);
-            content = content.replace(pattern, injectionValue);
+        StringBuilder contentBuilder = new StringBuilder(content);
+        int cursor = 0;
+        while (cursor < contentBuilder.length()) {
+            int start = contentBuilder.indexOf("{{", cursor);
+            if (start == -1) break;
+            int end = contentBuilder.indexOf("}}", start);
+            if (end == -1) break;
+            String key = contentBuilder.substring(start + 2, end).replace(" ", "");
+            String value = formatMap.get(key);
+            if (value == null) {
+                cursor = end + 2;
+                continue;
+            }
+            contentBuilder.replace(start, end + 2, value);
+            cursor = start + value.length();
         }
+        content = contentBuilder.toString();
     }
 
     public void format(String key, String value) {
-        int formatStartIndex = 0;
-        int formatEndIndex = 0;
-        while (formatStartIndex > -1) {
-            formatStartIndex = content.indexOf("{{", formatEndIndex);
-            formatEndIndex = content.indexOf("}}", formatStartIndex);
-            if (formatStartIndex < 0) break;
-            String pattern = content.substring(formatStartIndex, formatEndIndex+2);
-            String injectionKey = pattern.replace("{", "")
-                                         .replace("}", "")
-                                         .replace(" ", "");
-            if (!injectionKey.equals(key)) continue;
-            content = content.replace(pattern, value);
+        StringBuilder contentBuilder = new StringBuilder(content);
+        int cursor = 0;
+        while (cursor < contentBuilder.length()) {
+            int start = contentBuilder.indexOf("{{", cursor);
+            if (start == -1) break;
+            int end = contentBuilder.indexOf("}}", start);
+            if (end == -1) break;
+            String extractedKey = contentBuilder.substring(start + 2, end).trim();
+            if (!extractedKey.equals(key)) {
+                cursor = end + 2;
+                continue;
+            }
+            contentBuilder.replace(start, end + 2, value);
+            cursor = start + value.length();
         }
+        content = contentBuilder.toString();
     }
 
     public HTMLTemplate formatted(HashMap<String, String> formatMap) {

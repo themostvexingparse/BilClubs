@@ -12,19 +12,14 @@ public class DBManager {
     private boolean initialized = false;
 
     private EntityManagerFactory userManagerFactory = null;
-    private EntityManager userManager;
-
     private EntityManagerFactory fileManagerFactory = null;
-    private EntityManager fileManager;
 
     public void initialize(String directory) {
         if (initialized) return;
         String userPersistence = String.format("objectdb:%s/users.odb", directory);
         String filePersistence = String.format("objectdb:%s/static.odb", directory);
         userManagerFactory = Persistence.createEntityManagerFactory(userPersistence);
-        userManager = userManagerFactory.createEntityManager();
         fileManagerFactory = Persistence.createEntityManagerFactory(filePersistence);
-        fileManager = fileManagerFactory.createEntityManager();
         initialized = true;
     }
 
@@ -61,16 +56,15 @@ public class DBManager {
             queryBuilder.append(key);
             queryBuilder.append(" ");
         }
-
         String queryString = queryBuilder.toString().trim();
+        EntityManager userManager = userManagerFactory.createEntityManager();
         TypedQuery<User> query = userManager.createQuery(queryString,User.class);
-
         for (String key : filterMap.keySet()) {
             if (!keyMap.containsKey(key)) continue;
             query.setParameter(key, filterMap.get(key));
         }
-
         List<User> results = query.getResultList();
+        userManager.close();
         return results;
     }
 
@@ -89,18 +83,22 @@ public class DBManager {
         Filter emailFilter = new Filter();
         emailFilter.addFilter("email", user.getEmail());
         if (queryUser(emailFilter) != null) return false; // prevent creation of a new account with the same email
+        EntityManager userManager = userManagerFactory.createEntityManager();
         userManager.getTransaction().begin();
         userManager.persist(user);
         userManager.getTransaction().commit();
+        userManager.close();
         if (ServerConfig.PRINT_DEBUG) System.out.printf("Added user: %s\n", user.toString());
         return true;
     }
 
     public boolean addUserUnsafe(User user) {
         if(!initialized) return false;
+        EntityManager userManager = userManagerFactory.createEntityManager();
         userManager.getTransaction().begin();
         userManager.persist(user);
         userManager.getTransaction().commit();
+        userManager.close();
         if (ServerConfig.PRINT_DEBUG) System.out.printf("Added user: %s\n", user.toString());
         return true;
     }
@@ -108,11 +106,13 @@ public class DBManager {
     public boolean updateUser(User user) {
         if(!initialized) return false;
         if(user.getId() == null) return false;
+        EntityManager userManager = userManagerFactory.createEntityManager();
         userManager.getTransaction().begin();
         User queriedUser = userManager.find(User.class, user.getId());
         if (queriedUser == null) return false; // prevent creation of a new account with the same email
         userManager.merge(user);
         userManager.getTransaction().commit();
+        userManager.close();
         // userManager.refresh(queriedUser);
         if (ServerConfig.PRINT_DEBUG) System.out.printf("Updated user: %s\n", user.toString());
         return true;
@@ -123,9 +123,11 @@ public class DBManager {
 
     public boolean addFile(Media media) {
         if(!initialized) return false;
+        EntityManager fileManager = fileManagerFactory.createEntityManager();
         fileManager.getTransaction().begin();
         fileManager.persist(media);
         fileManager.getTransaction().commit();
+        fileManager.close();
         if (ServerConfig.PRINT_DEBUG) System.out.printf("Added file: %s\n", media.toString());
         return true;
     }
@@ -159,14 +161,14 @@ public class DBManager {
         }
 
         String queryString = queryBuilder.toString().trim();
+        EntityManager fileManager = fileManagerFactory.createEntityManager();
         TypedQuery<Media> query = fileManager.createQuery(queryString,Media.class);
-
         for (String key : filterMap.keySet()) {
             if (!keyMap.containsKey(key)) continue;
             query.setParameter(key, filterMap.get(key));
         }
-
         List<Media> results = query.getResultList();
+        fileManager.close();
         return results;
     }
 

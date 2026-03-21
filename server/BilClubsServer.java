@@ -51,6 +51,9 @@ public class BilClubsServer {
         httpServer.createContext("/api", api);
         httpServer.createContext("/", staticFile);
         httpServer.start();
+
+        // TODO: we need a rate limiter
+
         System.out.println("Server Started");
 
     }

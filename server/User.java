@@ -135,6 +135,10 @@ public class User {
         privileges = Privileges.BANNED_USER;
     }
 
+    public boolean isBanned() {
+        return (privileges == Privileges.BANNED_USER);
+    }
+
     public void banFromClub(Integer id) {
         followedClubs.remove(id);
         administeredClubs.put(id, Privileges.BANNED_USER);
@@ -149,6 +153,7 @@ public class User {
     }
 
     public boolean validateToken(String providedToken) {
+        // FIXME: there is a timing vulnerability to fix here, we should use constant time comparison
         if (token == null ||providedToken == null) return false;
         Long storedTTL = Long.parseLong(token.substring(1 + token.lastIndexOf(':')));
         if (System.currentTimeMillis() > storedTTL) return false;

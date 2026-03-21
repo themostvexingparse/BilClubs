@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Base64;
 import java.util.Base64.Decoder;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -14,6 +15,7 @@ import com.sun.net.httpserver.HttpExchange;
 
 public class APIHandler {
 
+
     private static final HTMLTemplate welcomeTemplate = new HTMLTemplate("templates/welcome.html");
 
     private static final ExecutorService concurrentExecutor = Executors.newCachedThreadPool();
@@ -21,9 +23,10 @@ public class APIHandler {
     private static final Credentials credentials = new Credentials(System.getenv());
 
     private static DBManager manager = new DBManager();
+
     private static MailSession session = new MailSession(credentials);
 
-    private static Decoder base64Decoder = Base64.getDecoder();
+    private static final Decoder base64Decoder = Base64.getDecoder();
 
     private static final List<String> allowedExtensions = List.of("png", "jpg", "jpeg", "pdf", "gif");
 
@@ -85,6 +88,11 @@ public class APIHandler {
                 String password = requestBody.optString("password", null);
                 String firstName = requestBody.optString("firstName", null);
                 String lastName = requestBody.optString("lastName", null);
+
+                // TODO: Sanitize user inputs, especially for first name
+                // and last name because there is an XSS vulnerability
+
+                // TODO: Add length validation for user inputs
                 
                 if (email == null || password == null || firstName == null || lastName == null) {
                     return buildResponse(400, null, "Missing required fields: email, password, firstName, or lastName");
@@ -138,6 +146,13 @@ public class APIHandler {
                 if (userByEmail == null) {
                     return buildResponse(404, null, "Account does not exist.");
                 }
+
+
+                // no real vulnerability but we should prevent banned users from logging in 
+                // this can also save us from checking flags on every single action
+                if (userByEmail.isBanned()) {
+                    return buildResponse(403, null, "Account is banned.");
+                }
                 
                 if (LoginVerifier.verify(email, password)) {
                     userByEmail.generateToken();
@@ -175,42 +190,50 @@ public class APIHandler {
 
                 JSONObject data = new JSONObject();
                 JSONObject fileMap = new JSONObject();
+                JSONObject fileStatus = new JSONObject();
 
                 JSONArray files = requestBody.getJSONArray("files");
 
                 for (int index = 0; index < files.length(); index++) {
-                    JSONObject file = files.getJSONObject(index);
+                    JSONObject file;
+                    String fileName;
                     try {
-                        String fileName = file.getString("fileName");
+                        file = files.getJSONObject(index);
+                        fileName = file.getString("fileName");
+                    } catch (Exception e) {
+                        continue;
+                    }
+                    try {
                         String fileDataBase64 = file.getString("fileData");
                         byte[] fileData = base64Decoder.decode(fileDataBase64);
-                        String fileExtension = file.getString("fileType");
+                        String fileExtension = file.getString("fileType").trim().toLowerCase();
                         if (!allowedExtensions.contains(fileExtension)) continue;
-                        Long hash = ((long) fileDataBase64.hashCode()) * 961 + ((long) fileName.hashCode()) * 31 + ((long) sessionToken.hashCode());
-                        // we can use the session token to reduce collisions
-                        // why are we avoiding collisions anyway???
-                        String newFileName = hash.toString() + "." + fileExtension;
+                        String newFileName = UUID.randomUUID().toString() + "." + fileExtension;
                         File newFile = new File("./static/" + newFileName);
-                        FileOutputStream outputStream = new FileOutputStream(newFile);
-                        outputStream.write(fileData);
-                        outputStream.close();
-                        Media media = new Media();
-                        media.setUserId(userId);
-                        media.setRealFileName(fileName);
-                        media.setStoredFileName(newFileName);
-                        manager.addFile(media);
-
-                        fileMap.put(fileName, newFileName);
+                        try (FileOutputStream outputStream = new FileOutputStream(newFile)) {
+                            outputStream.write(fileData);
+                            outputStream.close();
+                            Media media = new Media();
+                            media.setUserId(userId);
+                            media.setRealFileName(fileName);
+                            media.setStoredFileName(newFileName);
+                            manager.addFile(media);
+                            fileMap.put(fileName, newFileName);
+                            fileStatus.put(fileName, true);
+                        } catch (Exception e) {
+                            // there was a vulnerability where the output stream would fail to
+                            // write for too many times resulting in too many open files
+                            newFile.delete();
+                            fileStatus.put(fileName, false);
+                        }
                     } catch (Exception e) {
-                        /*
-                            of course my code is perfect and the only possible source
-                            of an exception is a malformed request  :))
-                        */ 
+                        fileStatus.put(fileName, false);
                         continue;
                     }
                 }
 
                 data.put("fileMap", fileMap);
+                data.put("fileStatus", fileMap);
 
                 return buildResponse(200, data, null); 
             }
@@ -219,7 +242,7 @@ public class APIHandler {
 
         } catch (Exception e) {
             if (ServerConfig.PRINT_STACK_TRACES) e.printStackTrace();
-            return buildResponse(500, null, "Internal server error: " + e.getMessage());
+            return buildResponse(500, null, "Internal server error.");
         }
     }
 }

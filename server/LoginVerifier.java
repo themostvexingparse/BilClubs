@@ -29,6 +29,8 @@ public class LoginVerifier {
         URL url = new URL(ENDPOINT);
 
         HttpURLConnection conn = (HttpURLConnection)(url.openConnection());
+        conn.setConnectTimeout(5000);
+        conn.setReadTimeout(5000);
         
         conn.setRequestMethod("GET");
         conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
@@ -56,6 +58,9 @@ public class LoginVerifier {
         String token = responseString.substring(tokenStartIndex+21, tokenEndIndex);
 
         HttpURLConnection conn2 = (HttpURLConnection)(url.openConnection());
+
+        conn2.setConnectTimeout(5000);
+        conn2.setReadTimeout(5000);
 
         conn2.setRequestMethod("POST");
         
@@ -91,6 +96,7 @@ public class LoginVerifier {
         if (responseCode >= 400) {
             return false;
         } else if (responseCode < 300 && responseCode >= 200) {
+            // FIXME: Apparently this is not enough for verification, we need to check if a session token cookie exists
             return true;
         } else {
             return false;

@@ -8,3 +8,6 @@ public class Sanitizer {
         return string;
     }
 }
+
+// TODO: Make use of sanitizer actively
+// TODO: Implement HTML sanitizer for XSS vulnerabilities
