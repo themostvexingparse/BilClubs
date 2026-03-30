@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.HashMap;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -12,7 +14,7 @@ public class Club {
     private String clubName;
     private String clubDescription;
     private ArrayList<User> memberUsers;
-    private ArrayList<Integer> memberPrivileges;
+    private HashMap<Integer, Integer> memberPrivileges;
     
 
     // a no argument constructor is required by JPA
@@ -23,26 +25,22 @@ public class Club {
         clubName = argClubName.trim();
         clubDescription = argClubDesc.trim();
         memberUsers = new ArrayList<>();
-        memberPrivileges = new ArrayList<>();
+        memberPrivileges = new HashMap<>();
     }
 
     public void addMember(User user){
         if (memberUsers.contains(user)) return;
         memberUsers.add(user);
-        memberPrivileges.add(Privileges.NORMAL_USER);
+        setMemberPrivilege(user, Privileges.NORMAL_USER);
     }
 
     public void removeMember(User user){
-        int userIndex = memberUsers.indexOf(user);
-        if (userIndex == -1) return;
-        memberUsers.remove(userIndex);
-        memberPrivileges.remove(userIndex);
+        memberUsers.remove(user);
+        memberPrivileges.remove(user.getId());
     }
 
     public void setMemberPrivilege(User user, Integer privilege){
-        int userIndex = memberUsers.indexOf(user);
-        if (userIndex == -1) return;
-        memberPrivileges.set(userIndex, privilege);
+        memberPrivileges.put(user.getId(), privilege);
     }
 
     // Getters and Setters

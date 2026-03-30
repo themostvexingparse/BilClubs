@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.HashMap;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -25,7 +27,7 @@ public class User {
     private ArrayList<String> interests;
     private ArrayList<User> followedUsers;
     private ArrayList<Club> registeredClubs;
-    private ArrayList<Integer> registeredPrivileges;
+    private HashMap<Integer, Integer> clubPrivileges;
     private int privileges = Privileges.NORMAL_USER;
 
     // a no argument constructor is required by JPA
@@ -83,25 +85,18 @@ public class User {
 
     public void joinClub(Club club) {
         registeredClubs.add(club);
-        registeredPrivileges.add(Privileges.NORMAL_USER);
+        setClubPrivilege(club, Privileges.NORMAL_USER);
     }
 
     public void setClubPrivilege(Club club, int privilege) {
         // note that the privilege flag here is a composite flag created by using bitwise OR
         // unless the user is getting banned, then the flag is just 0
-        int clubIndex = registeredClubs.indexOf(club);
-        if (clubIndex == -1){
-            registeredClubs.add(club);
-            registeredPrivileges.add(privilege);
-        } else registeredPrivileges.set(clubIndex, privilege);
+        clubPrivileges.put(club.getId(), privilege);
     }
 
     public void leaveClub(Club club) {
-        int clubIndex = registeredClubs.indexOf(club);
-        if (clubIndex != -1){
-            registeredClubs.remove(club);
-            registeredPrivileges.remove(clubIndex);
-        }
+        registeredClubs.remove(club);
+        clubPrivileges.remove(club.getId());
     }
 
     public boolean isAdmin() {
@@ -110,9 +105,7 @@ public class User {
 
     public boolean hasClubPrivilege(Club club, int privilegeType) {
         // note that the privilegeType flag here is NOT a composite flag
-        int clubIndex = registeredClubs.indexOf(club);
-        if (clubIndex == -1) return false;
-        int currentPrivilege = registeredPrivileges.get(clubIndex);
+        int currentPrivilege = clubPrivileges.get(club.getId());
         if (currentPrivilege <= Privileges.NORMAL_USER) return false;
         return ((currentPrivilege & privilegeType) != 0);
     }
@@ -148,10 +141,7 @@ public class User {
     }
 
     public boolean isBannedFromClub(Club club){
-        int clubIndex = registeredClubs.indexOf(club);
-        if (clubIndex == -1) return false;
-        int privilege = registeredPrivileges.get(clubIndex);
-        return privilege == Privileges.BANNED_USER;
+        return clubPrivileges.get(club.getId()) == Privileges.BANNED_USER;
     }
 
     public String getToken() {
