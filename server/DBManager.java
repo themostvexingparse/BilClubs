@@ -12,13 +12,16 @@ public class DBManager {
     private boolean initialized = false;
 
     private EntityManagerFactory userManagerFactory = null;
+    private EntityManagerFactory clubManagerFactory = null;
     private EntityManagerFactory fileManagerFactory = null;
 
     public void initialize(String directory) {
         if (initialized) return;
         String userPersistence = String.format("objectdb:%s/users.odb", directory);
+        String clubPersistence = String.format("objectdb:%s/clubs.odb", directory);
         String filePersistence = String.format("objectdb:%s/static.odb", directory);
         userManagerFactory = Persistence.createEntityManagerFactory(userPersistence);
+        clubManagerFactory = Persistence.createEntityManagerFactory(clubPersistence);
         fileManagerFactory = Persistence.createEntityManagerFactory(filePersistence);
         initialized = true;
     }
@@ -104,8 +107,7 @@ public class DBManager {
     }
 
     public boolean updateUser(User user) {
-        if(!initialized) return false;
-        if(user.getId() == null) return false;
+        if(user == null || user.getId() == null || !initialized) return false;
         EntityManager userManager = userManagerFactory.createEntityManager();
         userManager.getTransaction().begin();
         User queriedUser = userManager.find(User.class, user.getId());
@@ -118,6 +120,59 @@ public class DBManager {
         return true;
     }
 
+    public boolean addClub(Club club){
+        if (club == null || club.getId() == null || !initialized) return false;
+        EntityManager clubManager = clubManagerFactory.createEntityManager();
+        clubManager.getTransaction().begin();
+        clubManager.persist(club);
+        clubManager.getTransaction().commit();
+        clubManager.close();
+        if (ServerConfig.PRINT_DEBUG) System.out.printf("Added club: %s\n", club.toString());
+        return true;
+    }
+
+    public boolean updateClub(Club club){
+        if (club == null || club.getId() == null || !initialized) return false;
+        EntityManager clubManager = clubManagerFactory.createEntityManager();
+        clubManager.getTransaction().begin();
+        Club queriedClub = clubManager.find(Club.class, club.getId());
+        if (queriedClub == null) return false; // To prevent creation of a duplicate club. Maybe. I am just adapting Ozan's code to a new class to be honest...
+        clubManager.merge(club);
+        clubManager.getTransaction().commit();
+        clubManager.close();
+        if (ServerConfig.PRINT_DEBUG) System.out.printf("Updated club: %s\n", club.toString());
+        return true;
+    }
+
+    // Interactions between Users and Clubs
+    // TODO: Literally everything about Events
+
+    public boolean addUserToClub(User newMember, Club club, User manager){
+        if (newMember.isBannedFromClub(club) || !manager.hasClubPrivilege(club, Privileges.MANAGER)) return false;
+        club.addMember(newMember);
+        newMember.joinClub(club);
+        updateUser(newMember);
+        updateClub(club);
+        return true;
+    }
+
+    public boolean removeUserFromClub(User member, Club club){
+        if (member.isBannedFromClub(club)) return false; // User privileges are erased when they leave a club, therefore banned users should be prevented from leaving
+        club.removeMember(member);
+        member.leaveClub(club);
+        updateUser(member);
+        updateClub(club);
+        return true;
+    }
+
+    public boolean setUserClubPrivilege(User member, Club club, int privilege, User manager){
+        if (!manager.hasClubPrivilege(club, Privileges.MANAGER)) return false;
+        member.setClubPrivilege(club, privilege);
+        club.setMemberPrivilege(member, privilege);
+        updateUser(member);
+        updateClub(club);
+        return true;
+    }
 
     // Files
 

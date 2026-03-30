@@ -1,7 +1,4 @@
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
+import java.util.ArrayList;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -25,10 +22,10 @@ public class User {
 
     private float[] embeddings;
 
-    private List<String> interests;
-    private Set<Integer> followedUsers;
-    private Set<Integer> followedClubs;
-    private Map<Integer, Integer> administeredClubs;
+    private ArrayList<String> interests;
+    private ArrayList<User> followedUsers;
+    private ArrayList<Club> registeredClubs;
+    private ArrayList<Integer> registeredPrivileges;
     private int privileges = Privileges.NORMAL_USER;
 
     // a no argument constructor is required by JPA
@@ -76,38 +73,46 @@ public class User {
         this.email = email.trim();
     }
 
-    public void followUser(Integer id) {
-        followedUsers.add(id);
+    public void followUser(User user) {
+        followedUsers.add(user);
     }
 
-    public void unfollowUser(Integer id) {
-        followedUsers.remove(id);
+    public void unfollowUser(User user) {
+        followedUsers.remove(user);
     }
 
-    public void followClub(Integer id) {
-        followedClubs.add(id);
+    public void joinClub(Club club) {
+        registeredClubs.add(club);
+        registeredPrivileges.add(Privileges.NORMAL_USER);
     }
 
-    public void unfollowClub(Integer id) {
-        followedClubs.remove(id);
-    }
-
-    public void setClubPrivilege(Integer id, int privilege) {
+    public void setClubPrivilege(Club club, int privilege) {
         // note that the privilege flag here is a composite flag created by using bitwise OR
-        administeredClubs.put(id, privilege);
+        // unless the user is getting banned, then the flag is just 0
+        int clubIndex = registeredClubs.indexOf(club);
+        if (clubIndex == -1){
+            registeredClubs.add(club);
+            registeredPrivileges.add(privilege);
+        } else registeredPrivileges.set(clubIndex, privilege);
     }
 
-    public void removeClubPrivilege(Integer id) {
-        administeredClubs.remove(id);
+    public void leaveClub(Club club) {
+        int clubIndex = registeredClubs.indexOf(club);
+        if (clubIndex != -1){
+            registeredClubs.remove(club);
+            registeredPrivileges.remove(clubIndex);
+        }
     }
 
     public boolean isAdmin() {
         return (privileges & Privileges.ADMIN) != 0;
     }
 
-    public boolean hasClubPrivilege(Integer id, int privilegeType) {
+    public boolean hasClubPrivilege(Club club, int privilegeType) {
         // note that the privilegeType flag here is NOT a composite flag
-        int currentPrivilege = administeredClubs.get(id);
+        int clubIndex = registeredClubs.indexOf(club);
+        if (clubIndex == -1) return false;
+        int currentPrivilege = registeredPrivileges.get(clubIndex);
         if (currentPrivilege <= Privileges.NORMAL_USER) return false;
         return ((currentPrivilege & privilegeType) != 0);
     }
@@ -120,7 +125,7 @@ public class User {
         interests.remove(interest);
     }
 
-    public void setInterests(List<String> interests) {
+    public void setInterests(ArrayList<String> interests) {
         this.interests = interests;
     }
 
@@ -128,9 +133,8 @@ public class User {
         for (int i = 0; i < embeddings.length; i++) {
             embeddings[i] = 0;
         }
-        followedClubs.clear();
         followedUsers.clear();
-        administeredClubs.clear();
+        registeredClubs.clear();
         token = null;
         privileges = Privileges.BANNED_USER;
     }
@@ -139,9 +143,15 @@ public class User {
         return (privileges == Privileges.BANNED_USER);
     }
 
-    public void banFromClub(Integer id) {
-        followedClubs.remove(id);
-        administeredClubs.put(id, Privileges.BANNED_USER);
+    public void banFromClub(Club club) {
+        setClubPrivilege(club, Privileges.BANNED_USER);
+    }
+
+    public boolean isBannedFromClub(Club club){
+        int clubIndex = registeredClubs.indexOf(club);
+        if (clubIndex == -1) return false;
+        int privilege = registeredPrivileges.get(clubIndex);
+        return privilege == Privileges.BANNED_USER;
     }
 
     public String getToken() {
