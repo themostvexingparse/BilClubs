@@ -22,13 +22,15 @@ public class APIHandler {
 
     private static final Credentials credentials = new Credentials(System.getenv());
 
-    private static DBManager manager = new DBManager();
+    public static DBManager manager = new DBManager();
 
     private static MailSession session = new MailSession(credentials);
 
     private static final Decoder base64Decoder = Base64.getDecoder();
 
     private static final List<String> allowedExtensions = List.of("png", "jpg", "jpeg", "pdf", "gif");
+
+    private static final List<String> tokenActions = List.of("createClub", "upload", "generateUserEmbeddings", "setInterests");
 
     public static void initializeDB() {
         manager.initialize("db");
@@ -81,6 +83,7 @@ public class APIHandler {
         }
 
         String action = pathParts[1];
+        action.intern(); // to make sure that .contains does not fail unexpectedly
 
         try {
             if (action.equals("signup")) {
@@ -88,6 +91,7 @@ public class APIHandler {
                 String password = requestBody.optString("password", null);
                 String firstName = requestBody.optString("firstName", null);
                 String lastName = requestBody.optString("lastName", null);
+                String major = requestBody.optString("major", null);
 
                 // TODO: Sanitize user inputs, especially for first name
                 // and last name because there is an XSS vulnerability
@@ -110,6 +114,7 @@ public class APIHandler {
                     newUser.setEmail(email);
                     newUser.setFirstName(firstName);
                     newUser.setLastName(lastName);
+                    newUser.setMajor(major);
                     
                     if (manager.addUserUnsafe(newUser)) {
                         HTMLTemplate welcomeMessage = welcomeTemplate.formatted("name", newUser.getFullName());
@@ -117,8 +122,8 @@ public class APIHandler {
                         message.setSubject("Welcome to Bil'Clubs");
                         message.fromTemplate(welcomeMessage);
                         message.addRecipient(newUser.getEmail());
-                        MailTask task = session.getTask(message);
-                        concurrentExecutor.submit(task);
+                        MailTask mailTask = session.getTask(message);
+                        if (mailTask != null) concurrentExecutor.submit(mailTask);
                         JSONObject data = new JSONObject();
                         data.put("email", email);
                         data.put("fullName", firstName + " " + lastName);
@@ -131,7 +136,7 @@ public class APIHandler {
                 }
             }
 
-            if (action.equals("login")) {
+            else if (action.equals("login")) {
                 String email = requestBody.optString("email", null);
                 String password = requestBody.optString("password", null);
                 
@@ -166,8 +171,7 @@ public class APIHandler {
                 }
             }
 
-
-            if (action.equals("upload")) {
+            else if (tokenActions.contains(action)) { // all these actions will require an id and a session token
                 if (!requestBody.has("userId") || !requestBody.has("sessionToken")) {
                     return buildResponse(401, null, "Missing credentials: userId or sessionToken not provided.");
                 }
@@ -188,54 +192,93 @@ public class APIHandler {
                     return buildResponse(403, null, "Invalid credentials.");
                 }
 
-                JSONObject data = new JSONObject();
-                JSONObject fileMap = new JSONObject();
-                JSONObject fileStatus = new JSONObject();
+                /*
+                    Actions that require a session token are processed here
+                */
 
-                JSONArray files = requestBody.getJSONArray("files");
 
-                for (int index = 0; index < files.length(); index++) {
-                    JSONObject file;
-                    String fileName;
-                    try {
-                        file = files.getJSONObject(index);
-                        fileName = file.getString("fileName");
-                    } catch (Exception e) {
-                        continue;
+                if (action.equals("setInterests")) {
+                    JSONArray interests = requestBody.optJSONArray("interests", new JSONArray());
+
+                    for (Object interest : interests) {
+                        user.addInterest(interest.toString());
                     }
-                    try {
-                        String fileDataBase64 = file.getString("fileData");
-                        byte[] fileData = base64Decoder.decode(fileDataBase64);
-                        String fileExtension = file.getString("fileType").trim().toLowerCase();
-                        if (!allowedExtensions.contains(fileExtension)) continue;
-                        String newFileName = UUID.randomUUID().toString() + "." + fileExtension;
-                        File newFile = new File("./static/" + newFileName);
-                        try (FileOutputStream outputStream = new FileOutputStream(newFile)) {
-                            outputStream.write(fileData);
-                            outputStream.close();
-                            Media media = new Media();
-                            media.setUserId(userId);
-                            media.setRealFileName(fileName);
-                            media.setStoredFileName(newFileName);
-                            manager.addFile(media);
-                            fileMap.put(fileName, newFileName);
-                            fileStatus.put(fileName, true);
-                        } catch (Exception e) {
-                            // there was a vulnerability where the output stream would fail to
-                            // write for too many times resulting in too many open files
-                            newFile.delete();
-                            fileStatus.put(fileName, false);
-                        }
-                    } catch (Exception e) {
-                        fileStatus.put(fileName, false);
-                        continue;
-                    }
+
+                    manager.updateUser(user);
                 }
 
-                data.put("fileMap", fileMap);
-                data.put("fileStatus", fileMap);
+                if (action.equals("generateUserEmbeddings")) {
+                    EmbeddingsTask embeddingsTask = new EmbeddingsTask(user);
+                    concurrentExecutor.submit(embeddingsTask);
+                }
 
-                return buildResponse(200, data, null); 
+                if (action.equals("upload")) {
+                    JSONObject data = new JSONObject();
+                    JSONObject fileMap = new JSONObject();
+                    JSONObject fileStatus = new JSONObject();
+
+                    JSONArray files = requestBody.getJSONArray("files");
+
+                    for (int index = 0; index < files.length(); index++) {
+                        JSONObject file;
+                        String fileName;
+                        try {
+                            file = files.getJSONObject(index);
+                            fileName = file.getString("fileName");
+                        } catch (Exception e) {
+                            continue;
+                        }
+                        try {
+                            String fileDataBase64 = file.getString("fileData");
+                            byte[] fileData = base64Decoder.decode(fileDataBase64);
+                            String fileExtension = file.getString("fileType").trim().toLowerCase();
+                            if (!allowedExtensions.contains(fileExtension)) continue;
+                            String newFileName = UUID.randomUUID().toString() + "." + fileExtension;
+                            File newFile = new File("./static/" + newFileName);
+                            try (FileOutputStream outputStream = new FileOutputStream(newFile)) {
+                                outputStream.write(fileData);
+                                outputStream.close();
+                                Media media = new Media();
+                                media.setUserId(userId);
+                                media.setRealFileName(fileName);
+                                media.setStoredFileName(newFileName);
+                                manager.addFile(media);
+                                fileMap.put(fileName, newFileName);
+                                fileStatus.put(fileName, true);
+                            } catch (Exception e) {
+                                // there was a vulnerability where the output stream would fail to
+                                // write for too many times resulting in too many open files
+                                newFile.delete();
+                                fileStatus.put(fileName, false);
+                            }
+                        } catch (Exception e) {
+                            fileStatus.put(fileName, false);
+                            continue;
+                        }
+                    }
+
+                    data.put("fileMap", fileMap);
+                    data.put("fileStatus", fileMap);
+
+                    return buildResponse(200, data, null); 
+                }
+
+                if (action.equals("createClub")) {
+                    if (user.hasGeneralPrivilege(Privileges.MANAGER) || user.hasGeneralPrivilege(Privileges.ADMIN)) {
+                        String clubName = requestBody.optString("clubName", null);
+                        String clubDescription = requestBody.optString("clubDescription", null);
+                        if (clubName == null || clubDescription == null) {
+                            return buildResponse(400, null, "Malformed JSON request body.");
+                        }
+                        Club newClub = new Club(clubName, clubDescription);
+                        newClub.setMemberPrivilege(user, Privileges.ADMIN);
+                        user.setClubPrivilege(newClub, Privileges.ADMIN);
+                        manager.addClub(newClub);
+                        manager.updateUser(user);
+                    } else {
+                        return buildResponse(401, null, "Not authorized to create a new club.");
+                    }
+                }
             }
 
             return buildResponse(404, null, "Endpoint action not found");

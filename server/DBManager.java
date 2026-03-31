@@ -144,6 +144,54 @@ public class DBManager {
         return true;
     }
 
+    public List<Club> queryClubs(Filter filter) {
+        if (ServerConfig.PRINT_DEBUG) System.out.printf("Queried clubs for filter: %s\n", filter.toString());
+        if(!initialized) return null;
+        Map<String, String> keyMap = new HashMap<String, String>() {{
+            put("id", "c.getId()");
+            put("name", "c.getFullName()");
+        }};
+        StringBuilder queryBuilder = new StringBuilder();
+        queryBuilder.append("SELECT c FROM Club c ");
+        boolean hasFilter = false;
+        Map<String, Object> filterMap = filter.getMap();
+        
+        for (String key : filterMap.keySet()) {
+            String format = keyMap.get(key);
+            if (format == null) continue;
+            if(!hasFilter) {
+                queryBuilder.append("WHERE ");
+                hasFilter = true;
+            } else {
+                queryBuilder.append("AND ");
+            }
+            queryBuilder.append(format);
+            queryBuilder.append(" = :");
+            queryBuilder.append(key);
+            queryBuilder.append(" ");
+        }
+        String queryString = queryBuilder.toString().trim();
+        EntityManager clubManager = clubManagerFactory.createEntityManager();
+        TypedQuery<Club> query = clubManager.createQuery(queryString,Club.class);
+        for (String key : filterMap.keySet()) {
+            if (!keyMap.containsKey(key)) continue;
+            query.setParameter(key, filterMap.get(key));
+        }
+        List<Club> results = query.getResultList();
+        clubManager.close();
+        return results;
+    }
+
+    public Club queryClub(Filter filter) {
+        if(!initialized) return null;
+        List<Club> clubs = queryClubs(filter);
+        if (clubs.size() != 1) {
+            if (ServerConfig.PRINT_DEBUG) System.out.printf("Info: %s returned %s results.\n", filter, clubs.size());
+            return null;
+        }
+        return clubs.get(0);
+    }
+
     // Interactions between Users and Clubs
     // TODO: Literally everything about Events
 
