@@ -1,6 +1,6 @@
 @echo off
 echo [*] Cleaning environment...
-call kill_server.bat
+call kill-server.bat
 if exist "server\db\*" del /q "server\db\*" >nul 2>&1
 
 echo [*] Compiling server...
@@ -23,7 +23,7 @@ java -cp ".;..\server\lib\*" TestSuite
 popd
 
 echo [*] Tests complete. Cleaning up...
-call kill_server.bat
+call kill-server.bat
 if exist "server\db\*" del /q "server\db\*" >nul 2>&1
 call clean.bat
 echo [*] Done.

@@ -1,5 +1,6 @@
 @echo off
 call clean.bat
+call kill-server.bat
 pushd server
 javac -cp ".;lib/*" *.java -encoding UTF-8 
 cls
