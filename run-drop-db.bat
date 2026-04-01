@@ -1,5 +1,6 @@
 @echo off
 call clean.bat
+call kill-server.bat
 if exist "server\db" rmdir /s /q "server\db"
 pushd server
 javac -cp ".;lib/*" *.java -encoding UTF-8 
