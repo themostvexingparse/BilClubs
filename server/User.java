@@ -30,6 +30,7 @@ public class User implements Embeddable {
     private ArrayList<String> interests = null;
     private ArrayList<User> followedUsers = null;
     private HashMap<Integer, Integer> clubPrivileges = null;
+    private ArrayList<Event> registeredEvents = null;
     private int privileges = Privileges.NORMAL_USER;
 
     // a no argument constructor is required by JPA
@@ -47,6 +48,7 @@ public class User implements Embeddable {
     private void initializeCollections() {
         if (followedUsers == null) followedUsers = new ArrayList<>();
         if (clubPrivileges == null) clubPrivileges = new HashMap<>();
+        if (registeredEvents == null) registeredEvents = new ArrayList<>();
         if (interests == null) interests = new ArrayList<>();
     }
 
@@ -193,6 +195,25 @@ public class User implements Embeddable {
         initializeCollections();
         if (!clubPrivileges.containsKey(club.getId())) return false;
         return clubPrivileges.get(club.getId()) == Privileges.BANNED_USER;
+    }
+
+    public boolean isRegisteredToEvent(Event event){
+        return registeredEvents.contains(event);
+    }
+
+    public boolean canRegisterToEvent(Event event){
+        if (!event.isOpen()) return false;
+        for (Event registeredEvent: registeredEvents) if (event.conflictsWith(registeredEvent)) return false;
+        return true;
+    }
+
+    public void registerToEvent(Event event){
+        if (isRegisteredToEvent(event) || !canRegisterToEvent(event)) return;
+        registeredEvents.add(event);
+    }
+
+    public void leaveEvent(Event event){
+        registeredEvents.remove(event);
     }
 
     public String getToken() {

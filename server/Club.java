@@ -15,6 +15,7 @@ public class Club {
     private String clubDescription;
     private ArrayList<User> memberUsers = null;
     private HashMap<Integer, Integer> memberPrivileges = null;
+    private ArrayList<Event> events = null;
     
 
     // a no argument constructor is required by JPA
@@ -25,6 +26,7 @@ public class Club {
     public void initializeCollections() {
         if (memberUsers == null) memberUsers = new ArrayList<>();
         if (memberPrivileges == null) memberPrivileges = new HashMap<>();
+        if (events == null) events = new ArrayList<>();
     }
 
     public Club(String argClubName, String argClubDesc){
@@ -49,6 +51,11 @@ public class Club {
     public void setMemberPrivilege(User user, Integer privilege){
         initializeCollections();
         memberPrivileges.put(user.getId(), privilege);
+    }
+
+    public void addEvent(Event event){
+        if (events.contains(event)) return;
+        events.add(event);
     }
 
     // Getters and Setters

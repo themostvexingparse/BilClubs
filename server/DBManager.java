@@ -1,3 +1,4 @@
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,15 +14,18 @@ public class DBManager {
 
     private EntityManagerFactory userManagerFactory = null;
     private EntityManagerFactory clubManagerFactory = null;
+    private EntityManagerFactory eventManagerFactory = null;
     private EntityManagerFactory fileManagerFactory = null;
 
     public void initialize(String directory) {
         if (initialized) return;
         String userPersistence = String.format("objectdb:%s/users.odb", directory);
         String clubPersistence = String.format("objectdb:%s/clubs.odb", directory);
+        String eventPersistence = String.format("objectdb:%s/events.odb", directory);
         String filePersistence = String.format("objectdb:%s/static.odb", directory);
         userManagerFactory = Persistence.createEntityManagerFactory(userPersistence);
         clubManagerFactory = Persistence.createEntityManagerFactory(clubPersistence);
+        eventManagerFactory = Persistence.createEntityManagerFactory(eventPersistence);
         fileManagerFactory = Persistence.createEntityManagerFactory(filePersistence);
         initialized = true;
     }
@@ -144,6 +148,30 @@ public class DBManager {
         return true;
     }
 
+    public boolean addEvent(Event event){
+        if (event == null || !initialized) return false;
+        EntityManager eventManager = clubManagerFactory.createEntityManager();
+        eventManager.getTransaction().begin();
+        eventManager.persist(event);
+        eventManager.getTransaction().commit();
+        eventManager.close();
+        if (ServerConfig.PRINT_DEBUG) System.out.printf("Added event: %s\n", event.toString());
+        return true;
+    }
+
+    public boolean updateEvent(Event event){
+        if (event == null || event.getId() == null || !initialized) return false;
+        EntityManager eventManager = eventManagerFactory.createEntityManager();
+        eventManager.getTransaction().begin();
+        Club queriedClub = eventManager.find(Club.class, event.getId());
+        if (queriedClub == null) return false;
+        eventManager.merge(event);
+        eventManager.getTransaction().commit();
+        eventManager.close();
+        if (ServerConfig.PRINT_DEBUG) System.out.printf("Updated event: %s\n", event.toString());
+        return true;
+    }
+
     public List<Club> queryClubs(Filter filter) {
         if (ServerConfig.PRINT_DEBUG) System.out.printf("Queried clubs for filter: %s\n", filter.toString());
         if(!initialized) return null;
@@ -192,8 +220,59 @@ public class DBManager {
         return clubs.get(0);
     }
 
+    public List<Event> queryEvents(Filter filter) {
+        if (ServerConfig.PRINT_DEBUG) System.out.printf("Queried events for filter: %s\n", filter.toString());
+        if(!initialized) return null;
+        Map<String, String> keyMap = new HashMap<String, String>() {{
+            put("id", "e.getId()");
+            put("name", "e.getEventName()");
+        }};
+        StringBuilder queryBuilder = new StringBuilder();
+        queryBuilder.append("SELECT e FROM Event e ");
+        boolean hasFilter = false;
+        Map<String, Object> filterMap = filter.getMap();
+        
+        for (String key : filterMap.keySet()) {
+            String format = keyMap.get(key);
+            if (format == null) continue;
+            if(!hasFilter) {
+                queryBuilder.append("WHERE ");
+                hasFilter = true;
+            } else {
+                queryBuilder.append("AND ");
+            }
+            queryBuilder.append(format);
+            queryBuilder.append(" = :");
+            queryBuilder.append(key);
+            queryBuilder.append(" ");
+        }
+        String queryString = queryBuilder.toString().trim();
+        EntityManager eventManager = eventManagerFactory.createEntityManager();
+        TypedQuery<Event> query = eventManager.createQuery(queryString,Event.class);
+        for (String key : filterMap.keySet()) {
+            if (!keyMap.containsKey(key)) continue;
+            query.setParameter(key, filterMap.get(key));
+        }
+        List<Event> results = query.getResultList();
+        eventManager.close();
+        return results;
+    }
+
+    public Event queryEvent(Filter filter) {
+        if(!initialized) return null;
+        List<Event> events = queryEvents(filter);
+        if (events.size() != 1) {
+            if (ServerConfig.PRINT_DEBUG) System.out.printf("Info: %s returned %s results.\n", filter, events.size());
+            return null;
+        }
+        return events.get(0);
+    }
+
     // Interactions between Users and Clubs
-    // TODO: Literally everything about Events
+    // TODO: Updating user/club/event info
+    // TODO: Images for users/clubs/events
+    // TODO: Erase events?
+    // TODO: A tester class that runs tests on interactions between the three classes?
 
     public boolean addUserToClub(User newMember, Club club, User manager){
         if (newMember.isBannedFromClub(club) || !manager.hasClubPrivilege(club, Privileges.MANAGER)) return false;
@@ -219,6 +298,33 @@ public class DBManager {
         club.setMemberPrivilege(member, privilege);
         updateUser(member);
         updateClub(club);
+        return true;
+    }
+
+    public boolean createEventForClub(User manager, String eventName, Club eventClub, String eventDescription, String eventPlace, LocalDateTime eventStart, LocalDateTime eventEnd, int eventQuota){
+        if (!manager.hasClubPrivilege(eventClub, Privileges.MANAGER)) return false;
+        Event newEvent = new Event(eventName, eventClub, eventDescription, eventPlace, eventStart, eventEnd, eventQuota);
+        eventClub.addEvent(newEvent);
+        addEvent(newEvent);
+        updateClub(eventClub);
+        return true;
+    }
+
+    public boolean addUserToEvent(User user, Event event){
+        if (!user.canRegisterToEvent(event)) return false;
+        user.registerToEvent(event);
+        event.registerUser(user);
+        updateUser(user);
+        updateEvent(event);
+        return true;
+    }
+
+    public boolean removeUserFromEvent(User user, Event event){
+        if (!user.isRegisteredToEvent(event)) return false;
+        user.leaveEvent(event);
+        event.removeUser(user);
+        updateUser(user);
+        updateEvent(event);
         return true;
     }
 
