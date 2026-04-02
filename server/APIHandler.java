@@ -52,7 +52,8 @@ public class APIHandler {
     private static AuthResult authenticate(JSONObject requestBody) {
         AuthResult authResult = new AuthResult();
         if (!requestBody.has("userId") || !requestBody.has("sessionToken")) {
-            authResult.errorResponse = buildResponse(401, null, "Missing credentials: userId or sessionToken not provided.");
+            authResult.errorResponse = buildResponse(401, null,
+                    "Missing credentials: userId or sessionToken not provided.");
             return authResult;
         }
 
@@ -91,11 +92,24 @@ public class APIHandler {
             case "listClubs":
             case "upload": {
                 AuthResult authResult = authenticate(requestBody);
-                if (authResult.errorResponse != null) return authResult.errorResponse;
+                if (authResult.errorResponse != null)
+                    return authResult.errorResponse;
                 return handleAuthedUserAction(action, authResult.user, requestBody);
             }
             default:
                 return buildResponse(400, null, "Unsupported user action.");
+        }
+    }
+
+    private static JSONObject handleUploadAction(String action, JSONObject requestBody) {
+        AuthResult authResult = authenticate(requestBody);
+        if (authResult.errorResponse != null)
+            return authResult.errorResponse;
+        switch (action) {
+            case "upload":
+                return uploadFiles(authResult.user, requestBody);
+            default:
+                return buildResponse(400, null, "Unsupported upload action.");
         }
     }
 
@@ -113,8 +127,6 @@ public class APIHandler {
                 return generateEmbeddings(user, requestBody);
             case "listClubs":
                 return listUserClubs(user, requestBody);
-            case "upload":
-                return uploadFiles(user, requestBody);
             default:
                 return buildResponse(400, null, "Unsupported user action.");
         }
@@ -122,7 +134,8 @@ public class APIHandler {
 
     private static JSONObject handleClubAction(String action, JSONObject requestBody) {
         AuthResult authResult = authenticate(requestBody);
-        if (authResult.errorResponse != null) return authResult.errorResponse;
+        if (authResult.errorResponse != null)
+            return authResult.errorResponse;
 
         switch (action) {
             case "create":
@@ -163,7 +176,8 @@ public class APIHandler {
         newUser.setEmail(email);
         newUser.setFirstName(firstName);
         newUser.setLastName(lastName);
-        if (major != null) newUser.setMajor(major);
+        if (major != null)
+            newUser.setMajor(major);
 
         if (!manager.addUserUnsafe(newUser)) {
             return buildResponse(500, null, "Unknown database error.");
@@ -175,7 +189,8 @@ public class APIHandler {
         message.fromTemplate(welcomeMessage);
         message.addRecipient(newUser.getEmail());
         MailTask mailTask = session.getTask(message);
-        if (mailTask != null) concurrentExecutor.submit(mailTask);
+        if (mailTask != null)
+            concurrentExecutor.submit(mailTask);
 
         JSONObject data = new JSONObject();
         data.put("email", email);
@@ -242,17 +257,20 @@ public class APIHandler {
     private static JSONObject updateProfile(User user, JSONObject requestBody) {
         if (requestBody.has("firstName")) {
             String firstName = requestBody.optString("firstName", "").trim();
-            if (firstName.isEmpty()) return buildResponse(400, null, "firstName cannot be empty.");
+            if (firstName.isEmpty())
+                return buildResponse(400, null, "firstName cannot be empty.");
             user.setFirstName(firstName);
         }
         if (requestBody.has("lastName")) {
             String lastName = requestBody.optString("lastName", "").trim();
-            if (lastName.isEmpty()) return buildResponse(400, null, "lastName cannot be empty.");
+            if (lastName.isEmpty())
+                return buildResponse(400, null, "lastName cannot be empty.");
             user.setLastName(lastName);
         }
         if (requestBody.has("major")) {
             String major = requestBody.optString("major", "").trim();
-            if (major.isEmpty()) return buildResponse(400, null, "major cannot be empty.");
+            if (major.isEmpty())
+                return buildResponse(400, null, "major cannot be empty.");
             user.setMajor(major);
         }
         if (requestBody.has("interests")) {
@@ -291,7 +309,8 @@ public class APIHandler {
             Filter clubFilter = new Filter();
             clubFilter.addFilter("id", clubId);
             Club club = manager.queryClub(clubFilter);
-            if (club == null) continue;
+            if (club == null)
+                continue;
 
             JSONObject clubJson = new JSONObject();
             clubJson.put("id", club.getId());
@@ -361,7 +380,8 @@ public class APIHandler {
                 String fileDataBase64 = file.getString("fileData");
                 byte[] fileData = base64Decoder.decode(fileDataBase64);
                 String fileExtension = file.getString("fileType").trim().toLowerCase();
-                if (!allowedExtensions.contains(fileExtension)) continue;
+                if (!allowedExtensions.contains(fileExtension))
+                    continue;
                 String newFileName = UUID.randomUUID().toString() + "." + fileExtension;
                 File newFile = new File("./static/" + newFileName);
                 try (FileOutputStream outputStream = new FileOutputStream(newFile)) {
@@ -387,7 +407,7 @@ public class APIHandler {
         data.put("fileMap", fileMap);
         data.put("fileStatus", fileStatus);
 
-        return buildResponse(200, data, null); 
+        return buildResponse(200, data, null);
     }
 
     public static JSONObject handle(HttpExchange httpExchange) {
@@ -402,12 +422,14 @@ public class APIHandler {
         try {
             requestBody = new JSONObject(StreamReader.readStream(httpExchange.getRequestBody()));
         } catch (IOException e) {
-            return buildResponse(413, null, "Request body is too large. Maximum allowed size is " + ServerConfig.MAX_REQUEST_BYTES + " bytes.");
+            return buildResponse(413, null,
+                    "Request body is too large. Maximum allowed size is " + ServerConfig.MAX_REQUEST_BYTES + " bytes.");
         } catch (Exception e) {
             return buildResponse(400, null, "Malformed JSON request body.");
         }
 
-        if (ServerConfig.PRINT_DEBUG) System.out.printf("%s : %s\n", remoteAddress, path);
+        if (ServerConfig.PRINT_DEBUG)
+            System.out.printf("%s : %s\n", remoteAddress, path);
 
         if (!path.startsWith("/api/")) {
             return buildResponse(501, null, "Not implemented.");
@@ -430,6 +452,10 @@ public class APIHandler {
                 return handleUserAction(action, requestBody);
             }
 
+            if (endpoint.equals("upload")) {
+                return handleUploadAction(action, requestBody);
+            }
+
             if (endpoint.equals("club")) {
                 return handleClubAction(action, requestBody);
             }
@@ -437,7 +463,8 @@ public class APIHandler {
             return buildResponse(404, null, "Endpoint not found. Supported endpoints are /api/user and /api/club.");
 
         } catch (Exception e) {
-            if (ServerConfig.PRINT_STACK_TRACES) e.printStackTrace();
+            if (ServerConfig.PRINT_STACK_TRACES)
+                e.printStackTrace();
             return buildResponse(500, null, "Internal server error.");
         }
     }

@@ -13,5 +13,5 @@ A platform for discovering, joining and managing student clubs and events at Bil
 
 ## Documentation
 
-- [API Reference](server/API.md): detailed documentation for all API endpoints, request/response structures and implementation details
+- [API Reference](API.md): detailed documentation for all API endpoints, request/response structures and implementation details
 - [Wiki](../../wiki): architecture decisions, contribution notes and overall development logs

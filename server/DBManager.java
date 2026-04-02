@@ -18,7 +18,8 @@ public class DBManager {
     private EntityManagerFactory fileManagerFactory = null;
 
     public void initialize(String directory) {
-        if (initialized) return;
+        if (initialized)
+            return;
         String userPersistence = String.format("objectdb:%s/users.odb", directory);
         String clubPersistence = String.format("objectdb:%s/clubs.odb", directory);
         String eventPersistence = String.format("objectdb:%s/events.odb", directory);
@@ -36,23 +37,28 @@ public class DBManager {
     }
 
     public List<User> queryUsers(Filter filter) {
-        if (ServerConfig.PRINT_DEBUG) System.out.printf("Queried users for filter: %s\n", filter.toString());
-        if(!initialized) return null;
-        Map<String, String> keyMap = new HashMap<String, String>() {{
-            put("id", "u.getId()");
-            put("token", "u.getToken()");
-            put("name", "u.getFullName()");
-            put("email", "u.getEmail()");
-        }};
+        if (ServerConfig.PRINT_DEBUG)
+            System.out.printf("Queried users for filter: %s\n", filter.toString());
+        if (!initialized)
+            return null;
+        Map<String, String> keyMap = new HashMap<String, String>() {
+            {
+                put("id", "u.getId()");
+                put("token", "u.getToken()");
+                put("name", "u.getFullName()");
+                put("email", "u.getEmail()");
+            }
+        };
         StringBuilder queryBuilder = new StringBuilder();
         queryBuilder.append("SELECT u FROM User u ");
         boolean hasFilter = false;
         Map<String, Object> filterMap = filter.getMap();
-        
+
         for (String key : filterMap.keySet()) {
             String format = keyMap.get(key);
-            if (format == null) continue;
-            if(!hasFilter) {
+            if (format == null)
+                continue;
+            if (!hasFilter) {
                 queryBuilder.append("WHERE ");
                 hasFilter = true;
             } else {
@@ -65,9 +71,10 @@ public class DBManager {
         }
         String queryString = queryBuilder.toString().trim();
         EntityManager userManager = userManagerFactory.createEntityManager();
-        TypedQuery<User> query = userManager.createQuery(queryString,User.class);
+        TypedQuery<User> query = userManager.createQuery(queryString, User.class);
         for (String key : filterMap.keySet()) {
-            if (!keyMap.containsKey(key)) continue;
+            if (!keyMap.containsKey(key))
+                continue;
             query.setParameter(key, filterMap.get(key));
         }
         List<User> results = query.getResultList();
@@ -76,118 +83,146 @@ public class DBManager {
     }
 
     public User queryUser(Filter filter) {
-        if(!initialized) return null;
+        if (!initialized)
+            return null;
         List<User> users = queryUsers(filter);
         if (users.size() != 1) {
-            if (ServerConfig.PRINT_DEBUG) System.out.printf("Info: %s returned %s results.\n", filter, users.size());
+            if (ServerConfig.PRINT_DEBUG)
+                System.out.printf("Info: %s returned %s results.\n", filter, users.size());
             return null;
         }
         return users.get(0);
     }
 
     public boolean addUser(User user) {
-        if(!initialized) return false;
+        if (!initialized)
+            return false;
         Filter emailFilter = new Filter();
         emailFilter.addFilter("email", user.getEmail());
-        if (queryUser(emailFilter) != null) return false; // prevent creation of a new account with the same email
+        if (queryUser(emailFilter) != null)
+            return false; // prevent creation of a new account with the same email
         EntityManager userManager = userManagerFactory.createEntityManager();
         userManager.getTransaction().begin();
         userManager.persist(user);
         userManager.getTransaction().commit();
         userManager.close();
-        if (ServerConfig.PRINT_DEBUG) System.out.printf("Added user: %s\n", user.toString());
+        if (ServerConfig.PRINT_DEBUG)
+            System.out.printf("Added user: %s\n", user.toString());
         return true;
     }
 
     public boolean addUserUnsafe(User user) {
-        if(!initialized) return false;
+        if (!initialized)
+            return false;
         EntityManager userManager = userManagerFactory.createEntityManager();
         userManager.getTransaction().begin();
         userManager.persist(user);
         userManager.getTransaction().commit();
         userManager.close();
-        if (ServerConfig.PRINT_DEBUG) System.out.printf("Added user: %s\n", user.toString());
+        if (ServerConfig.PRINT_DEBUG)
+            System.out.printf("Added user: %s\n", user.toString());
         return true;
     }
 
     public boolean updateUser(User user) {
-        if(user == null || user.getId() == null || !initialized) return false;
+        if (user == null || user.getId() == null || !initialized)
+            return false;
         EntityManager userManager = userManagerFactory.createEntityManager();
         userManager.getTransaction().begin();
         User queriedUser = userManager.find(User.class, user.getId());
-        if (queriedUser == null) return false; // prevent creation of a new account with the same email
+        if (queriedUser == null) {
+            userManager.close();
+            return false;
+        } // prevent creation of a new account with the same email
         userManager.merge(user);
         userManager.getTransaction().commit();
         userManager.close();
         // userManager.refresh(queriedUser);
-        if (ServerConfig.PRINT_DEBUG) System.out.printf("Updated user: %s\n", user.toString());
+        if (ServerConfig.PRINT_DEBUG)
+            System.out.printf("Updated user: %s\n", user.toString());
         return true;
     }
 
-    public boolean addClub(Club club){
-        if (club == null || !initialized) return false;
+    public boolean addClub(Club club) {
+        if (club == null || !initialized)
+            return false;
         EntityManager clubManager = clubManagerFactory.createEntityManager();
         clubManager.getTransaction().begin();
         clubManager.persist(club);
         clubManager.getTransaction().commit();
         clubManager.close();
-        if (ServerConfig.PRINT_DEBUG) System.out.printf("Added club: %s\n", club.toString());
+        if (ServerConfig.PRINT_DEBUG)
+            System.out.printf("Added club: %s\n", club.toString());
         return true;
     }
 
-    public boolean updateClub(Club club){
-        if (club == null || club.getId() == null || !initialized) return false;
+    public boolean updateClub(Club club) {
+        if (club == null || club.getId() == null || !initialized)
+            return false;
         EntityManager clubManager = clubManagerFactory.createEntityManager();
         clubManager.getTransaction().begin();
         Club queriedClub = clubManager.find(Club.class, club.getId());
-        if (queriedClub == null) return false; // To prevent creation of a duplicate club. Maybe. I am just adapting Ozan's code to a new class to be honest...
+        if (queriedClub == null)
+            return false; // To prevent creation of a duplicate club. Maybe. I am just adapting Ozan's
+                          // code to a new class to be honest...
         clubManager.merge(club);
         clubManager.getTransaction().commit();
         clubManager.close();
-        if (ServerConfig.PRINT_DEBUG) System.out.printf("Updated club: %s\n", club.toString());
+        if (ServerConfig.PRINT_DEBUG)
+            System.out.printf("Updated club: %s\n", club.toString());
         return true;
     }
 
-    public boolean addEvent(Event event){
-        if (event == null || !initialized) return false;
+    public boolean addEvent(Event event) {
+        if (event == null || !initialized)
+            return false;
         EntityManager eventManager = clubManagerFactory.createEntityManager();
         eventManager.getTransaction().begin();
         eventManager.persist(event);
         eventManager.getTransaction().commit();
         eventManager.close();
-        if (ServerConfig.PRINT_DEBUG) System.out.printf("Added event: %s\n", event.toString());
+        if (ServerConfig.PRINT_DEBUG)
+            System.out.printf("Added event: %s\n", event.toString());
         return true;
     }
 
-    public boolean updateEvent(Event event){
-        if (event == null || event.getId() == null || !initialized) return false;
+    public boolean updateEvent(Event event) {
+        if (event == null || event.getId() == null || !initialized)
+            return false;
         EntityManager eventManager = eventManagerFactory.createEntityManager();
         eventManager.getTransaction().begin();
         Club queriedClub = eventManager.find(Club.class, event.getId());
-        if (queriedClub == null) return false;
+        if (queriedClub == null)
+            return false;
         eventManager.merge(event);
         eventManager.getTransaction().commit();
         eventManager.close();
-        if (ServerConfig.PRINT_DEBUG) System.out.printf("Updated event: %s\n", event.toString());
+        if (ServerConfig.PRINT_DEBUG)
+            System.out.printf("Updated event: %s\n", event.toString());
         return true;
     }
 
     public List<Club> queryClubs(Filter filter) {
-        if (ServerConfig.PRINT_DEBUG) System.out.printf("Queried clubs for filter: %s\n", filter.toString());
-        if(!initialized) return null;
-        Map<String, String> keyMap = new HashMap<String, String>() {{
-            put("id", "c.getId()");
-            put("name", "c.getClubName()");
-        }};
+        if (ServerConfig.PRINT_DEBUG)
+            System.out.printf("Queried clubs for filter: %s\n", filter.toString());
+        if (!initialized)
+            return null;
+        Map<String, String> keyMap = new HashMap<String, String>() {
+            {
+                put("id", "c.getId()");
+                put("name", "c.getClubName()");
+            }
+        };
         StringBuilder queryBuilder = new StringBuilder();
         queryBuilder.append("SELECT c FROM Club c ");
         boolean hasFilter = false;
         Map<String, Object> filterMap = filter.getMap();
-        
+
         for (String key : filterMap.keySet()) {
             String format = keyMap.get(key);
-            if (format == null) continue;
-            if(!hasFilter) {
+            if (format == null)
+                continue;
+            if (!hasFilter) {
                 queryBuilder.append("WHERE ");
                 hasFilter = true;
             } else {
@@ -200,9 +235,10 @@ public class DBManager {
         }
         String queryString = queryBuilder.toString().trim();
         EntityManager clubManager = clubManagerFactory.createEntityManager();
-        TypedQuery<Club> query = clubManager.createQuery(queryString,Club.class);
+        TypedQuery<Club> query = clubManager.createQuery(queryString, Club.class);
         for (String key : filterMap.keySet()) {
-            if (!keyMap.containsKey(key)) continue;
+            if (!keyMap.containsKey(key))
+                continue;
             query.setParameter(key, filterMap.get(key));
         }
         List<Club> results = query.getResultList();
@@ -211,31 +247,38 @@ public class DBManager {
     }
 
     public Club queryClub(Filter filter) {
-        if(!initialized) return null;
+        if (!initialized)
+            return null;
         List<Club> clubs = queryClubs(filter);
         if (clubs.size() != 1) {
-            if (ServerConfig.PRINT_DEBUG) System.out.printf("Info: %s returned %s results.\n", filter, clubs.size());
+            if (ServerConfig.PRINT_DEBUG)
+                System.out.printf("Info: %s returned %s results.\n", filter, clubs.size());
             return null;
         }
         return clubs.get(0);
     }
 
     public List<Event> queryEvents(Filter filter) {
-        if (ServerConfig.PRINT_DEBUG) System.out.printf("Queried events for filter: %s\n", filter.toString());
-        if(!initialized) return null;
-        Map<String, String> keyMap = new HashMap<String, String>() {{
-            put("id", "e.getId()");
-            put("name", "e.getEventName()");
-        }};
+        if (ServerConfig.PRINT_DEBUG)
+            System.out.printf("Queried events for filter: %s\n", filter.toString());
+        if (!initialized)
+            return null;
+        Map<String, String> keyMap = new HashMap<String, String>() {
+            {
+                put("id", "e.getId()");
+                put("name", "e.getEventName()");
+            }
+        };
         StringBuilder queryBuilder = new StringBuilder();
         queryBuilder.append("SELECT e FROM Event e ");
         boolean hasFilter = false;
         Map<String, Object> filterMap = filter.getMap();
-        
+
         for (String key : filterMap.keySet()) {
             String format = keyMap.get(key);
-            if (format == null) continue;
-            if(!hasFilter) {
+            if (format == null)
+                continue;
+            if (!hasFilter) {
                 queryBuilder.append("WHERE ");
                 hasFilter = true;
             } else {
@@ -248,9 +291,10 @@ public class DBManager {
         }
         String queryString = queryBuilder.toString().trim();
         EntityManager eventManager = eventManagerFactory.createEntityManager();
-        TypedQuery<Event> query = eventManager.createQuery(queryString,Event.class);
+        TypedQuery<Event> query = eventManager.createQuery(queryString, Event.class);
         for (String key : filterMap.keySet()) {
-            if (!keyMap.containsKey(key)) continue;
+            if (!keyMap.containsKey(key))
+                continue;
             query.setParameter(key, filterMap.get(key));
         }
         List<Event> results = query.getResultList();
@@ -259,10 +303,12 @@ public class DBManager {
     }
 
     public Event queryEvent(Filter filter) {
-        if(!initialized) return null;
+        if (!initialized)
+            return null;
         List<Event> events = queryEvents(filter);
         if (events.size() != 1) {
-            if (ServerConfig.PRINT_DEBUG) System.out.printf("Info: %s returned %s results.\n", filter, events.size());
+            if (ServerConfig.PRINT_DEBUG)
+                System.out.printf("Info: %s returned %s results.\n", filter, events.size());
             return null;
         }
         return events.get(0);
@@ -272,10 +318,12 @@ public class DBManager {
     // TODO: Updating user/club/event info
     // TODO: Images for users/clubs/events
     // TODO: Erase events?
-    // TODO: A tester class that runs tests on interactions between the three classes?
+    // TODO: A tester class that runs tests on interactions between the three
+    // classes?
 
-    public boolean addUserToClub(User newMember, Club club, User manager){
-        if (newMember.isBannedFromClub(club) || !manager.hasClubPrivilege(club, Privileges.MANAGER)) return false;
+    public boolean addUserToClub(User newMember, Club club, User manager) {
+        if (newMember.isBannedFromClub(club) || !manager.hasClubPrivilege(club, Privileges.MANAGER))
+            return false;
         club.addMember(newMember);
         newMember.joinClub(club);
         updateUser(newMember);
@@ -283,8 +331,10 @@ public class DBManager {
         return true;
     }
 
-    public boolean removeUserFromClub(User member, Club club){
-        if (member.isBannedFromClub(club)) return false; // User privileges are erased when they leave a club, therefore banned users should be prevented from leaving
+    public boolean removeUserFromClub(User member, Club club) {
+        if (member.isBannedFromClub(club))
+            return false; // User privileges are erased when they leave a club, therefore banned users
+                          // should be prevented from leaving
         club.removeMember(member);
         member.leaveClub(club);
         updateUser(member);
@@ -292,8 +342,9 @@ public class DBManager {
         return true;
     }
 
-    public boolean setUserClubPrivilege(User member, Club club, int privilege, User manager){
-        if (!manager.hasClubPrivilege(club, Privileges.MANAGER)) return false;
+    public boolean setUserClubPrivilege(User member, Club club, int privilege, User manager) {
+        if (!manager.hasClubPrivilege(club, Privileges.MANAGER))
+            return false;
         member.setClubPrivilege(club, privilege);
         club.setMemberPrivilege(member, privilege);
         updateUser(member);
@@ -301,17 +352,21 @@ public class DBManager {
         return true;
     }
 
-    public boolean createEventForClub(User manager, String eventName, Club eventClub, String eventDescription, String eventPlace, LocalDateTime eventStart, LocalDateTime eventEnd, int eventQuota){
-        if (!manager.hasClubPrivilege(eventClub, Privileges.MANAGER)) return false;
-        Event newEvent = new Event(eventName, eventClub, eventDescription, eventPlace, eventStart, eventEnd, eventQuota);
+    public boolean createEventForClub(User manager, String eventName, Club eventClub, String eventDescription,
+            String eventPlace, LocalDateTime eventStart, LocalDateTime eventEnd, int eventQuota) {
+        if (!manager.hasClubPrivilege(eventClub, Privileges.MANAGER))
+            return false;
+        Event newEvent = new Event(eventName, eventClub, eventDescription, eventPlace, eventStart, eventEnd,
+                eventQuota);
         eventClub.addEvent(newEvent);
         addEvent(newEvent);
         updateClub(eventClub);
         return true;
     }
 
-    public boolean addUserToEvent(User user, Event event){
-        if (!user.canRegisterToEvent(event)) return false;
+    public boolean addUserToEvent(User user, Event event) {
+        if (!user.canRegisterToEvent(event))
+            return false;
         user.registerToEvent(event);
         event.registerUser(user);
         updateUser(user);
@@ -319,8 +374,9 @@ public class DBManager {
         return true;
     }
 
-    public boolean removeUserFromEvent(User user, Event event){
-        if (!user.isRegisteredToEvent(event)) return false;
+    public boolean removeUserFromEvent(User user, Event event) {
+        if (!user.isRegisteredToEvent(event))
+            return false;
         user.leaveEvent(event);
         event.removeUser(user);
         updateUser(user);
@@ -331,33 +387,40 @@ public class DBManager {
     // Files
 
     public boolean addFile(Media media) {
-        if(!initialized) return false;
+        if (!initialized)
+            return false;
         EntityManager fileManager = fileManagerFactory.createEntityManager();
         fileManager.getTransaction().begin();
         fileManager.persist(media);
         fileManager.getTransaction().commit();
         fileManager.close();
-        if (ServerConfig.PRINT_DEBUG) System.out.printf("Added file: %s\n", media.toString());
+        if (ServerConfig.PRINT_DEBUG)
+            System.out.printf("Added file: %s\n", media.toString());
         return true;
     }
 
     public List<Media> queryFiles(Filter filter) {
-        if (ServerConfig.PRINT_DEBUG) System.out.printf("Queried files for filter: %s\n", filter.toString());
-        if(!initialized) return null;
-        Map<String, String> keyMap = new HashMap<String, String>() {{
-            put("id", "u.getId()");
-            put("realName", "u.getRealFileName()");
-            put("storedName", "u.getStoredFileName()");
-        }};
+        if (ServerConfig.PRINT_DEBUG)
+            System.out.printf("Queried files for filter: %s\n", filter.toString());
+        if (!initialized)
+            return null;
+        Map<String, String> keyMap = new HashMap<String, String>() {
+            {
+                put("id", "u.getId()");
+                put("realName", "u.getRealFileName()");
+                put("storedName", "u.getStoredFileName()");
+            }
+        };
         StringBuilder queryBuilder = new StringBuilder();
         queryBuilder.append("SELECT u FROM Media u ");
         boolean hasFilter = false;
         Map<String, Object> filterMap = filter.getMap();
-        
+
         for (String key : filterMap.keySet()) {
             String format = keyMap.get(key);
-            if (format == null) continue;
-            if(!hasFilter) {
+            if (format == null)
+                continue;
+            if (!hasFilter) {
                 queryBuilder.append("WHERE ");
                 hasFilter = true;
             } else {
@@ -371,9 +434,10 @@ public class DBManager {
 
         String queryString = queryBuilder.toString().trim();
         EntityManager fileManager = fileManagerFactory.createEntityManager();
-        TypedQuery<Media> query = fileManager.createQuery(queryString,Media.class);
+        TypedQuery<Media> query = fileManager.createQuery(queryString, Media.class);
         for (String key : filterMap.keySet()) {
-            if (!keyMap.containsKey(key)) continue;
+            if (!keyMap.containsKey(key))
+                continue;
             query.setParameter(key, filterMap.get(key));
         }
         List<Media> results = query.getResultList();
@@ -382,10 +446,12 @@ public class DBManager {
     }
 
     public Media queryFile(Filter filter) {
-        if(!initialized) return null;
+        if (!initialized)
+            return null;
         List<Media> files = queryFiles(filter);
         if (files.size() != 1) {
-            if (ServerConfig.PRINT_DEBUG) System.out.printf("Info: %s returned %s results.\n", filter, files.size());
+            if (ServerConfig.PRINT_DEBUG)
+                System.out.printf("Info: %s returned %s results.\n", filter, files.size());
             return null;
         }
         return files.get(0);
