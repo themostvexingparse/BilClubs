@@ -279,16 +279,18 @@ public class User implements Embeddable {
     public void clearToken() {
         token = null;
     }
-
+    
     public boolean validateToken(String providedToken) {
-        // FIXME: there is a timing vulnerability to fix here, we should use constant
-        // time comparison
         if (token == null || providedToken == null)
             return false;
         Long storedTTL = Long.parseLong(token.substring(1 + token.lastIndexOf(':')));
         if (System.currentTimeMillis() > storedTTL)
             return false;
-        return providedToken.equals(token);
+        // Doing some seemingly stupid things to avoid compiler optimizations that
+        // might introduce timing vulnerabilities
+        int counter = 0;
+        for (int i = 0; i < 32; i++) counter += (token.charAt(i) == providedToken.charAt(i)) ? 2 : 1; 
+        return counter == 64;
     }
 
     @Override
