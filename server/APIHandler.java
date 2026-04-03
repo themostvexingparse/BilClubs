@@ -119,6 +119,12 @@ public class APIHandler {
                 return logout(user, requestBody);
             case "getProfile":
                 return getProfile(user, requestBody);
+            case "getForeignProfile":
+                return getForeignProfile(requestBody);
+            case "getForeignProfileClubs":
+                return getForeignProfileClubs(requestBody);
+            case "getForeignProfileUpcomingEvents":
+                return getForeignProfileUpcomingEvents(requestBody);
             case "updateProfile":
                 return updateProfile(user, requestBody);
             case "setInterests":
@@ -250,7 +256,73 @@ public class APIHandler {
         data.put("lastName", user.getLastName());
         data.put("major", user.getMajor());
         data.put("interests", new JSONArray(user.getInterests()));
-        data.put("clubIds", new JSONArray(user.getClubIds()));
+        data.put("clubPrivileges", new JSONObject(user.getClubPrivileges()));
+        return buildResponse(200, data, null);
+    }
+
+    private static JSONObject getForeignProfile(JSONObject requestBody) {
+        Integer userId = requestBody.optInt("targetUserId");
+        Filter userIdFilter = new Filter();
+        userIdFilter.addFilter("id", userId);
+        User targetUser = manager.queryUser(userIdFilter);
+        JSONObject data = new JSONObject();
+        data.put("userId", targetUser.getId());
+        data.put("fullName", targetUser.getFullName());
+        data.put("major", targetUser.getMajor());
+        data.put("interests", new JSONArray(targetUser.getInterests()));
+        data.put("clubPrivileges", new JSONObject(targetUser.getClubPrivileges()));
+        return buildResponse(200, data, null);
+    }
+
+    private static JSONObject getForeignProfileClubs(JSONObject requestBody) {
+        Integer userId = requestBody.optInt("targetUserId");
+        Filter userIdFilter = new Filter();
+        userIdFilter.addFilter("id", userId);
+        User targetUser = manager.queryUser(userIdFilter);
+        ArrayList<Integer> clubIds = targetUser.getClubIds();
+        JSONArray clubDatas = new JSONArray();
+        for (Integer clubId : clubIds) {
+            Filter clubFilter = new Filter();
+            clubFilter.addFilter("id", clubId);
+            Club club = manager.queryClub(clubFilter);
+            JSONObject clubData = new JSONObject();
+            clubData.put("id", club.getId());
+            clubData.put("name", club.getClubName());
+            clubData.put("icon", club.getIconFilename());
+            clubData.put("description", club.getClubDescription());
+            clubDatas.put(clubData);
+        }
+        JSONObject data = new JSONObject();
+        data.put("clubs", clubDatas);
+        return buildResponse(200, data, null);
+    }
+
+    private static JSONObject getForeignProfileUpcomingEvents(JSONObject requestBody) {
+        Integer userId = requestBody.optInt("targetUserId");
+        Long epoch = requestBody.optLong("startEpoch", 0);
+        Filter userIdFilter = new Filter();
+        Filter eventFilter = new Filter();
+        userIdFilter.addFilter("id", userId);
+        eventFilter.addFilter("date", epoch);
+        User targetUser = manager.queryUser(userIdFilter);
+        ArrayList<Integer> clubIds = targetUser.getClubIds();
+        JSONArray eventDatas = new JSONArray();
+        List<Event> events = manager.queryEvents(eventFilter);
+        for (Event event : events) {
+            if (!clubIds.contains(event.getClub().getId())) continue;
+            JSONObject eventObject = new JSONObject();
+            eventObject.put("name", event.getEventName());
+            eventObject.put("description", event.getDescription());
+            eventObject.put("quota", event.getQuota());
+            eventObject.put("registreeCount", event.getRegistreeCount());
+            eventObject.put("location", event.getLocation());
+            eventObject.put("posterImage", event.getPoster());
+            eventObject.put("clubName", event.getClub().getClubName());
+            eventObject.put("clubId", event.getClub().getId());
+            eventDatas.put(eventObject);
+        }
+        JSONObject data = new JSONObject();
+        data.put("events", eventDatas);
         return buildResponse(200, data, null);
     }
 

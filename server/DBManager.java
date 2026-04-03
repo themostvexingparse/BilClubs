@@ -162,9 +162,11 @@ public class DBManager {
         EntityManager clubManager = clubManagerFactory.createEntityManager();
         clubManager.getTransaction().begin();
         Club queriedClub = clubManager.find(Club.class, club.getId());
-        if (queriedClub == null)
-            return false; // To prevent creation of a duplicate club. Maybe. I am just adapting Ozan's
-                          // code to a new class to be honest...
+        if (queriedClub == null) {
+            clubManager.close();
+            return false; 
+        }
+        // To prevent creation of a duplicate club. Maybe. I am just adapting Ozan's code to a new class to be honest...
         clubManager.merge(club);
         clubManager.getTransaction().commit();
         clubManager.close();
@@ -191,9 +193,12 @@ public class DBManager {
             return false;
         EntityManager eventManager = eventManagerFactory.createEntityManager();
         eventManager.getTransaction().begin();
-        Club queriedClub = eventManager.find(Club.class, event.getId());
-        if (queriedClub == null)
+        Event queriedClub = eventManager.find(Event.class, event.getId());
+        if (queriedClub == null) {
+            eventManager.close();
             return false;
+        }
+
         eventManager.merge(event);
         eventManager.getTransaction().commit();
         eventManager.close();
@@ -265,8 +270,9 @@ public class DBManager {
             return null;
         Map<String, String> keyMap = new HashMap<String, String>() {
             {
-                put("id", "e.getId()");
-                put("name", "e.getEventName()");
+                put("id", "e.getId() ");
+                put("name", "e.getEventName() ");
+                put("date", "e.getStartEpoch() <"); // if startEpoch <= currentDate + 5 days i.e.
             }
         };
         StringBuilder queryBuilder = new StringBuilder();
@@ -285,7 +291,7 @@ public class DBManager {
                 queryBuilder.append("AND ");
             }
             queryBuilder.append(format);
-            queryBuilder.append(" = :");
+            queryBuilder.append("= :");
             queryBuilder.append(key);
             queryBuilder.append(" ");
         }

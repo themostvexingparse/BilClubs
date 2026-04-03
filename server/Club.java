@@ -17,6 +17,7 @@ public class Club {
     private HashMap<Integer, Integer> memberPrivileges = null;
     private ArrayList<Event> events = null;
     
+    private String iconFilename = "static/default-club-icon.jpg";
 
     // a no argument constructor is required by JPA
     public Club() {
@@ -69,6 +70,14 @@ public class Club {
 
     public String getClubDescription(){
         return clubDescription;
+    }
+
+    public String getIconFilename(){
+        return iconFilename;
+    }
+
+    public void setIconFilename(String iconFilename){
+        this.iconFilename = iconFilename;
     }
 
     public String toString(){

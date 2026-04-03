@@ -1,4 +1,5 @@
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 
 import javax.persistence.Entity;
@@ -17,6 +18,7 @@ public class Event {
     private LocalDateTime end;
     private Integer quota;
     private ArrayList<User> registeredUsers = null;
+    private String poster = "static/default-event-poster.jpg";
     private Club club;
 
     public Event(){
@@ -51,6 +53,14 @@ public class Event {
         registeredUsers.remove(user);
     }
 
+    public void setPoster(String poster){
+        this.poster = poster;
+    }
+
+    public String getPoster() {
+        return poster;
+    }
+
     public Integer getId(){
         return id;
     }
@@ -75,12 +85,20 @@ public class Event {
         return start;
     }
 
+    public long getStartEpoch(){
+        return start.toEpochSecond(ZoneOffset.UTC);
+    }
+
     public LocalDateTime getEnd(){
         return end;
     }
 
     public int getQuota(){
         return quota;
+    }
+
+    public int getRegistreeCount(){
+        return registeredUsers.size();
     }
 
     public void setName(String argName){
