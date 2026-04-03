@@ -210,6 +210,16 @@ public class User implements Embeddable {
         return new ArrayList<>(clubPrivileges.keySet());
     }
 
+    public int getPrivilege() {
+        initializeCollections();
+        return privileges;
+    }
+
+    public HashMap<Integer, Integer> getClubPrivileges() {
+        initializeCollections();
+        return clubPrivileges;
+    }
+
     public void banUser() {
         initializeCollections();
         for (int i = 0; i < embeddings.length; i++) {

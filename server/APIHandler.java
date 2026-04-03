@@ -256,7 +256,7 @@ public class APIHandler {
         data.put("lastName", user.getLastName());
         data.put("major", user.getMajor());
         data.put("interests", new JSONArray(user.getInterests()));
-        data.put("clubIds", new JSONArray(user.getClubIds()));
+        data.put("clubPrivileges", new JSONObject(user.getClubPrivileges()));
         return buildResponse(200, data, null);
     }
 
@@ -270,6 +270,7 @@ public class APIHandler {
         data.put("fullName", targetUser.getFullName());
         data.put("major", targetUser.getMajor());
         data.put("interests", new JSONArray(targetUser.getInterests()));
+        data.put("clubPrivileges", new JSONObject(targetUser.getClubPrivileges()));
         return buildResponse(200, data, null);
     }
 

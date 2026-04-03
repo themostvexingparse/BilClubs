@@ -272,7 +272,7 @@ public class DBManager {
             {
                 put("id", "e.getId() ");
                 put("name", "e.getEventName() ");
-                put("date", "e.getStartEpoch() >"); //
+                put("date", "e.getStartEpoch() <"); // if startEpoch <= currentDate + 5 days i.e.
             }
         };
         StringBuilder queryBuilder = new StringBuilder();
