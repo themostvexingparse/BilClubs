@@ -38,6 +38,8 @@ public class User implements Embeddable {
     private ArrayList<Event> registeredEvents = null;
     private int privileges = Privileges.NORMAL_USER;
 
+    private int GE250Points = 0;
+
     // a no argument constructor is required by JPA
     public User() {
         initializeCollections();
@@ -86,6 +88,10 @@ public class User implements Embeddable {
         return major;
     }
 
+    public int getGE250Points() {
+        return GE250Points;
+    }
+
     public void setFirstName(String firstName) {
         this.firstName = firstName.trim();
     }
@@ -96,6 +102,20 @@ public class User implements Embeddable {
 
     public void setMajor(String major) {
         this.major = major.trim();
+    }
+
+    public void setGE250Points(int GE250Points) {
+        this.GE250Points = GE250Points;
+    }
+
+    public void awardGE250Points(int increment) {
+        if (increment <= 0) return;
+        this.GE250Points += increment;
+    }
+
+    public void deductGE250Points(int decrement) {
+        if (decrement <= 0) return;
+        this.GE250Points -= decrement;
     }
 
     public void setEmail(String email) {
