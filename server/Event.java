@@ -36,7 +36,7 @@ public class Event {
     }
 
     public boolean isOpen(){
-        return registeredUsers.size() != quota && LocalDateTime.now().isBefore(start);
+        return (quota == null || registeredUsers.size() != quota) && LocalDateTime.now().isBefore(start);
     }
 
     public boolean conflictsWith(Event other){
