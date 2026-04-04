@@ -85,7 +85,11 @@ public class APIHandler {
             case "login":
                 return login(requestBody);
             case "logout":
+            case "joinClub":
             case "getProfile":
+            case "getForeignProfile":
+            case "getForeignProfileClubs":
+            case "getForeignProfileUpcomingEvents":
             case "updateProfile":
             case "setInterests":
             case "generateEmbeddings":
@@ -117,6 +121,8 @@ public class APIHandler {
         switch (action) {
             case "logout":
                 return logout(user, requestBody);
+            case "joinClub":
+                return joinClub(user, requestBody);
             case "getProfile":
                 return getProfile(user, requestBody);
             case "getForeignProfile":
@@ -132,7 +138,7 @@ public class APIHandler {
             case "generateEmbeddings":
                 return generateEmbeddings(user, requestBody);
             case "listClubs":
-                return listUserClubs(user, requestBody);
+                return listClubs(requestBody);
             default:
                 return buildResponse(400, null, "Unsupported user action.");
         }
@@ -146,6 +152,8 @@ public class APIHandler {
         switch (action) {
             case "create":
                 return createClub(authResult.user, requestBody);
+            case "getMembers":
+                return getMembersOfClub(requestBody);
             default:
                 return buildResponse(400, null, "Unsupported club action.");
         }
@@ -248,6 +256,26 @@ public class APIHandler {
         return buildResponse(200, null, null);
     }
 
+    private static JSONObject joinClub(User user, JSONObject requestBody) {
+        Integer clubId = requestBody.optIntegerObject("clubId", null);
+        JSONObject data = new JSONObject();
+        if (clubId == null) {
+            return buildResponse(400, null, "clubId cannot be empty.");
+        } else {
+            Filter clubFilter = new Filter();
+            clubFilter.addFilter("id", clubId);
+            Club club = manager.queryClub(clubFilter);
+            if (club == null) {
+                return buildResponse(400, null, "No club found with the given clubId.");
+            }
+            club.addMember(user);
+            user.joinClub(club);
+            manager.updateUser(user);
+            manager.updateClub(club);
+            return buildResponse(200, data, null);
+        }
+    }
+
     private static JSONObject getProfile(User user, JSONObject requestBody) {
         JSONObject data = new JSONObject();
         data.put("userId", user.getId());
@@ -309,7 +337,8 @@ public class APIHandler {
         JSONArray eventDatas = new JSONArray();
         List<Event> events = manager.queryEvents(eventFilter);
         for (Event event : events) {
-            if (!clubIds.contains(event.getClub().getId())) continue;
+            if (!clubIds.contains(event.getClub().getId()))
+                continue;
             JSONObject eventObject = new JSONObject();
             eventObject.put("name", event.getEventName());
             eventObject.put("description", event.getDescription());
@@ -375,15 +404,10 @@ public class APIHandler {
         return buildResponse(200, null, null);
     }
 
-    private static JSONObject listUserClubs(User user, JSONObject requestBody) {
+    private static JSONObject listClubs(JSONObject requestBody) {
         JSONArray clubArray = new JSONArray();
-        for (Integer clubId : user.getClubIds()) {
-            Filter clubFilter = new Filter();
-            clubFilter.addFilter("id", clubId);
-            Club club = manager.queryClub(clubFilter);
-            if (club == null)
-                continue;
-
+        List<Club> clubs = manager.queryClubs(new Filter());
+        for (Club club : clubs) {
             JSONObject clubJson = new JSONObject();
             clubJson.put("id", club.getId());
             clubJson.put("clubName", club.getClubName());
@@ -426,6 +450,33 @@ public class APIHandler {
         JSONObject data = new JSONObject();
         data.put("clubId", newClub.getId());
         data.put("clubName", newClub.getClubName());
+        return buildResponse(200, data, null);
+    }
+
+    public static JSONObject getMembersOfClub(JSONObject requestBody) {
+        Integer clubId = requestBody.optInt("clubId", -1);
+        if (clubId == -1) {
+            return buildResponse(400, null, "clubId cannot be empty.");
+        }
+        Filter filter = new Filter();
+        filter.addFilter("id", clubId);
+        Club club = manager.queryClub(filter);
+        if (club == null) {
+            return buildResponse(404, null, "Club not found.");
+        }
+        JSONArray members = new JSONArray();
+        for (User member : club.getMembers()) {
+            JSONObject memberJson = new JSONObject();
+            // memberJson.put("email", member.getEmail()); // do not add email because we
+            // wouldn't want stalking
+            memberJson.put("id", member.getId());
+            memberJson.put("name", member.getFirstName() + " " + member.getLastName());
+            memberJson.put("privilege", member.getClubPrivileges().get(club.getId()));
+            memberJson.put("profilePicture", member.getProfilePicture());
+            members.put(memberJson);
+        }
+        JSONObject data = new JSONObject();
+        data.put("members", members);
         return buildResponse(200, data, null);
     }
 

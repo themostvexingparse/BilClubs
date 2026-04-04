@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -25,6 +26,8 @@ public class User implements Embeddable {
     private String email = "";
     private String major = "";
 
+    private String profilePicture = "static/default-profile-picture.jpg";
+
     private String token = null;
 
     private float[] embeddings;
@@ -33,6 +36,7 @@ public class User implements Embeddable {
     private ArrayList<String> interests = null;
     @ElementCollection(fetch = FetchType.EAGER)
     private ArrayList<User> followedUsers = null;
+    @ElementCollection(fetch = FetchType.EAGER)
     private HashMap<Integer, Integer> clubPrivileges = null;
     @ElementCollection(fetch = FetchType.EAGER)
     private ArrayList<Event> registeredEvents = null;
@@ -92,6 +96,10 @@ public class User implements Embeddable {
         return GE250Points;
     }
 
+    public String getProfilePicture() {
+        return profilePicture;
+    }
+
     public void setFirstName(String firstName) {
         this.firstName = firstName.trim();
     }
@@ -109,12 +117,14 @@ public class User implements Embeddable {
     }
 
     public void awardGE250Points(int increment) {
-        if (increment <= 0) return;
+        if (increment <= 0)
+            return;
         this.GE250Points += increment;
     }
 
     public void deductGE250Points(int decrement) {
-        if (decrement <= 0) return;
+        if (decrement <= 0)
+            return;
         this.GE250Points -= decrement;
     }
 
@@ -140,7 +150,11 @@ public class User implements Embeddable {
         initializeCollections();
         if (isRegisteredInClub(club))
             return;
-        clubPrivileges.put(club.getId(), Privileges.NORMAL_USER);
+        if (hasGeneralPrivilege(Privileges.ADMIN)) {
+            clubPrivileges.put(club.getId(), Privileges.ADMIN);
+        } else {
+            clubPrivileges.put(club.getId(), Privileges.NORMAL_USER);
+        }
     }
 
     public boolean isRegisteredInClub(Club club) {
@@ -279,7 +293,7 @@ public class User implements Embeddable {
     public void clearToken() {
         token = null;
     }
-    
+
     public boolean validateToken(String providedToken) {
         if (token == null || providedToken == null)
             return false;
@@ -289,8 +303,24 @@ public class User implements Embeddable {
         // Doing some seemingly stupid things to avoid compiler optimizations that
         // might introduce timing vulnerabilities
         int counter = 0;
-        for (int i = 0; i < 32; i++) counter += (token.charAt(i) == providedToken.charAt(i)) ? 2 : 1; 
+        for (int i = 0; i < 32; i++)
+            counter += (token.charAt(i) == providedToken.charAt(i)) ? 2 : 1;
         return counter == 64;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        User other = (User) o;
+        return id != null && id.equals(other.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
     }
 
     @Override

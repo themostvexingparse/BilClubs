@@ -1,15 +1,18 @@
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.Objects;
 
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity
 public class Event {
-    @Id 
-    @GeneratedValue 
+    @Id
+    @GeneratedValue
     private Integer id;
     private String name;
     private String description;
@@ -17,14 +20,16 @@ public class Event {
     private LocalDateTime start;
     private LocalDateTime end;
     private Integer quota;
+    @ElementCollection(fetch = FetchType.EAGER)
     private ArrayList<User> registeredUsers = null;
     private String poster = "static/default-event-poster.jpg";
     private Club club;
 
-    public Event(){
+    public Event() {
     }
 
-    public Event(String argName, Club argClub, String argDescription, String argPlace, LocalDateTime argStart, LocalDateTime argEnd, Integer argQuota){
+    public Event(String argName, Club argClub, String argDescription, String argPlace, LocalDateTime argStart,
+            LocalDateTime argEnd, Integer argQuota) {
         name = argName;
         description = argDescription;
         club = argClub;
@@ -35,25 +40,27 @@ public class Event {
         registeredUsers = new ArrayList<>();
     }
 
-    public boolean isOpen(){
+    public boolean isOpen() {
         return (quota == null || registeredUsers.size() != quota) && LocalDateTime.now().isBefore(start);
     }
 
-    public boolean conflictsWith(Event other){
+    public boolean conflictsWith(Event other) {
         LocalDateTime otherStart = other.getStart();
         LocalDateTime otherEnd = other.getEnd();
-        return !(end.isBefore(otherStart) && otherEnd.isBefore(start));
+        return !(end.isBefore(otherStart) || otherEnd.isBefore(start));
     }
 
-    public void registerUser(User user){
+    public void registerUser(User user) {
+        if (registeredUsers.contains(user))
+            return;
         registeredUsers.add(user);
     }
 
-    public void removeUser(User user){
+    public void removeUser(User user) {
         registeredUsers.remove(user);
     }
 
-    public void setPoster(String poster){
+    public void setPoster(String poster) {
         this.poster = poster;
     }
 
@@ -61,70 +68,87 @@ public class Event {
         return poster;
     }
 
-    public Integer getId(){
+    public Integer getId() {
         return id;
     }
 
-    public String getEventName(){
+    public String getEventName() {
         return name;
     }
 
-    public String getDescription(){
+    public String getDescription() {
         return description;
     }
 
-    public Club getClub(){
+    public Club getClub() {
         return club;
     }
 
-    public String getLocation(){
+    public String getLocation() {
         return location;
     }
 
-    public LocalDateTime getStart(){
+    public LocalDateTime getStart() {
         return start;
     }
 
-    public long getStartEpoch(){
+    public long getStartEpoch() {
         return start.toEpochSecond(ZoneOffset.UTC);
     }
 
-    public LocalDateTime getEnd(){
+    public LocalDateTime getEnd() {
         return end;
     }
 
-    public int getQuota(){
+    public int getQuota() {
         return quota;
     }
 
-    public int getRegistreeCount(){
+    public int getRegistreeCount() {
         return registeredUsers.size();
     }
 
-    public void setName(String argName){
+    public void setName(String argName) {
         name = argName;
     }
 
-    public void setDescription(String argDescription){
-        name = argDescription;
+    public void setDescription(String argDescription) {
+        description = argDescription;
     }
 
-    public void setLocation(String argLocation){
+    public void setLocation(String argLocation) {
         location = argLocation;
     }
 
-    public void setStartAndEnd(LocalDateTime argStart, LocalDateTime argEnd){
+    public void setStartAndEnd(LocalDateTime argStart, LocalDateTime argEnd) {
         start = argStart;
         end = argEnd;
     }
 
-    public boolean setQuta(int argQuota){
-        if (quota < registeredUsers.size()) return false;
+    public boolean setQuota(int argQuota) {
+        if (argQuota < registeredUsers.size())
+            return false;
         quota = argQuota;
         return true;
     }
 
-    public String toString(){
-        return "Club ID: " + id + "named " + name;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        Event other = (Event) o;
+        return id != null && id.equals(other.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
+
+    @Override
+    public String toString() {
+        return "Event ID: " + id + " named " + name;
     }
 }

@@ -164,9 +164,10 @@ public class DBManager {
         Club queriedClub = clubManager.find(Club.class, club.getId());
         if (queriedClub == null) {
             clubManager.close();
-            return false; 
+            return false;
         }
-        // To prevent creation of a duplicate club. Maybe. I am just adapting Ozan's code to a new class to be honest...
+        // To prevent creation of a duplicate club. Maybe. I am just adapting Ozan's
+        // code to a new class to be honest...
         clubManager.merge(club);
         clubManager.getTransaction().commit();
         clubManager.close();
@@ -178,7 +179,7 @@ public class DBManager {
     public boolean addEvent(Event event) {
         if (event == null || !initialized)
             return false;
-        EntityManager eventManager = clubManagerFactory.createEntityManager();
+        EntityManager eventManager = eventManagerFactory.createEntityManager();
         eventManager.getTransaction().begin();
         eventManager.persist(event);
         eventManager.getTransaction().commit();
