@@ -5,6 +5,12 @@ public class Sanitizer {
         string = string.replace("\n", "\\n");
         string = string.replace("\r", "\\r");
         string = string.replace("\t", "\\t");
+        string = string.replace("<", " ");
+        string = string.replace(">", " ");
+        string = string.replace("-", " ");
+        string = string.replace(" AND ", " and ");
+        string = string.replace(" OR ", " or ");
+        string = string.replace(" WHERE ", " where ");
         return string;
     }
 }
