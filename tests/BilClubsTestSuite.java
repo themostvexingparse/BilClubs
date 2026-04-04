@@ -84,6 +84,7 @@ public class BilClubsTestSuite extends JFrame implements TabContext {
         tabs.addTab("Profile",         new ProfileTab(session, this));
         tabs.addTab("Foreign Profile", new ForeignProfileTab(session, this));
         tabs.addTab("Clubs",           new ClubsTab(session, this));
+        tabs.addTab("Events",          new EventsTab(session, this));
         tabs.addTab("Upload",          new UploadTab(session, this));
         tabs.addTab("Misc",            new MiscTab(session, this));
         return tabs;

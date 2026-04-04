@@ -1,6 +1,9 @@
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -337,8 +340,11 @@ public class APIHandler {
         JSONArray eventDatas = new JSONArray();
         List<Event> events = manager.queryEvents(eventFilter);
         for (Event event : events) {
-            if (!clubIds.contains(event.getClub().getId()))
+            if (!clubIds.contains(event.getClubId()))
                 continue;
+            Filter clubFilter = new Filter();
+            clubFilter.addFilter("id", event.getClubId());
+            Club eventClub = manager.queryClub(clubFilter);
             JSONObject eventObject = new JSONObject();
             eventObject.put("name", event.getEventName());
             eventObject.put("description", event.getDescription());
@@ -346,8 +352,8 @@ public class APIHandler {
             eventObject.put("registreeCount", event.getRegistreeCount());
             eventObject.put("location", event.getLocation());
             eventObject.put("posterImage", event.getPoster());
-            eventObject.put("clubName", event.getClub().getClubName());
-            eventObject.put("clubId", event.getClub().getId());
+            eventObject.put("clubName", eventClub != null ? eventClub.getClubName() : "");
+            eventObject.put("clubId", event.getClubId());
             eventDatas.put(eventObject);
         }
         JSONObject data = new JSONObject();
@@ -533,6 +539,225 @@ public class APIHandler {
         return buildResponse(200, data, null);
     }
 
+    private static JSONObject handleEventAction(String action, JSONObject requestBody) {
+        AuthResult authResult = authenticate(requestBody);
+        if (authResult.errorResponse != null)
+            return authResult.errorResponse;
+
+        switch (action) {
+            case "create":
+                return createEvent(authResult.user, requestBody);
+            case "modify":
+                return modifyEvent(authResult.user, requestBody);
+            case "register":
+                return registerEvent(authResult.user, requestBody);
+            case "leave":
+                return leaveEvent(authResult.user, requestBody);
+            default:
+                return buildResponse(400, null, "Unsupported event action.");
+        }
+    }
+
+    private static JSONObject createEvent(User user, JSONObject requestBody) {
+        Integer clubId = requestBody.optIntegerObject("clubId", null);
+        if (clubId == null) {
+            return buildResponse(400, null, "clubId is required.");
+        }
+
+        Filter clubFilter = new Filter();
+        clubFilter.addFilter("id", clubId);
+        Club club = manager.queryClub(clubFilter);
+        if (club == null) {
+            return buildResponse(404, null, "Club not found.");
+        }
+
+        if (!user.hasClubPrivilege(club, Privileges.ADMIN)) {
+            return buildResponse(403, null, "Only club admins can create events.");
+        }
+
+        String eventName = requestBody.optString("name", null);
+        String description = requestBody.optString("description", null);
+        String location = requestBody.optString("location", null);
+        Long startEpoch = requestBody.has("startEpoch") ? requestBody.getLong("startEpoch") : null;
+        Long endEpoch = requestBody.has("endEpoch") ? requestBody.getLong("endEpoch") : null;
+
+        if (eventName == null || description == null || location == null || startEpoch == null || endEpoch == null) {
+            return buildResponse(400, null,
+                    "Missing required fields: name, description, location, startEpoch, endEpoch.");
+        }
+
+        if (endEpoch <= startEpoch) {
+            return buildResponse(400, null, "endEpoch must be after startEpoch.");
+        }
+
+        LocalDateTime start = LocalDateTime.ofInstant(Instant.ofEpochSecond(startEpoch), ZoneOffset.UTC);
+        LocalDateTime end = LocalDateTime.ofInstant(Instant.ofEpochSecond(endEpoch), ZoneOffset.UTC);
+
+        // quota is optional and null means unlimited
+        Integer quota = requestBody.has("quota") ? requestBody.getInt("quota") : null;
+
+        Event newEvent = new Event(eventName.trim(), club, description.trim(), location.trim(), start, end, quota);
+
+        // poster image: client uploads via /api/upload first, then provides the stored
+        // filename
+        String posterFilename = requestBody.optString("posterFilename", null);
+        if (posterFilename != null && !posterFilename.trim().isEmpty()) {
+            newEvent.setPoster(posterFilename.trim());
+        }
+
+        if (!manager.addEvent(newEvent)) {
+            return buildResponse(500, null, "Event could not be created due to a database error.");
+        }
+
+        club.addEvent(newEvent);
+        if (!manager.updateClub(club)) {
+            return buildResponse(500, null, "Event was created but could not be linked to the club.");
+        }
+
+        JSONObject data = new JSONObject();
+        data.put("eventId", newEvent.getId());
+        data.put("eventName", newEvent.getEventName());
+        data.put("clubId", club.getId());
+        return buildResponse(200, data, null);
+    }
+
+    private static JSONObject modifyEvent(User user, JSONObject requestBody) {
+        Integer eventId = requestBody.optIntegerObject("eventId", null);
+        if (eventId == null) {
+            return buildResponse(400, null, "eventId is required.");
+        }
+
+        Filter eventFilter = new Filter();
+        eventFilter.addFilter("id", eventId);
+        Event event = manager.queryEvent(eventFilter);
+        if (event == null) {
+            return buildResponse(404, null, "Event not found.");
+        }
+
+        Filter clubFilterForModify = new Filter();
+        clubFilterForModify.addFilter("id", event.getClubId());
+        Club club = manager.queryClub(clubFilterForModify);
+        if (club == null) {
+            return buildResponse(404, null, "The club associated with this event no longer exists.");
+        }
+        if (!user.hasClubPrivilege(club, Privileges.ADMIN)) {
+            return buildResponse(403, null, "Only club admins can modify events.");
+        }
+
+        // partial updates, only modify fields that are present in the request
+        if (requestBody.has("name")) {
+            String name = requestBody.optString("name", "").trim();
+            if (name.isEmpty())
+                return buildResponse(400, null, "name cannot be empty.");
+            event.setName(name);
+        }
+        if (requestBody.has("description")) {
+            String description = requestBody.optString("description", "").trim();
+            if (description.isEmpty())
+                return buildResponse(400, null, "description cannot be empty.");
+            event.setDescription(description);
+        }
+        if (requestBody.has("location")) {
+            String location = requestBody.optString("location", "").trim();
+            if (location.isEmpty())
+                return buildResponse(400, null, "location cannot be empty.");
+            event.setLocation(location);
+        }
+        if (requestBody.has("startEpoch") && requestBody.has("endEpoch")) {
+            long startEpoch = requestBody.getLong("startEpoch");
+            long endEpoch = requestBody.getLong("endEpoch");
+            if (endEpoch <= startEpoch) {
+                return buildResponse(400, null, "endEpoch must be after startEpoch.");
+            }
+            LocalDateTime start = LocalDateTime.ofInstant(Instant.ofEpochSecond(startEpoch), ZoneOffset.UTC);
+            LocalDateTime end = LocalDateTime.ofInstant(Instant.ofEpochSecond(endEpoch), ZoneOffset.UTC);
+            event.setStartAndEnd(start, end);
+        }
+        if (requestBody.has("quota")) {
+            int quota = requestBody.getInt("quota");
+            if (!event.setQuota(quota)) {
+                return buildResponse(400, null,
+                        "Quota cannot be less than the current number of registered users.");
+            }
+        }
+        if (requestBody.has("posterFilename")) {
+            String posterFilename = requestBody.optString("posterFilename", "").trim();
+            if (!posterFilename.isEmpty()) {
+                event.setPoster(posterFilename);
+            }
+        }
+
+        if (!manager.updateEvent(event)) {
+            return buildResponse(500, null, "Event could not be updated due to a database error.");
+        }
+
+        JSONObject data = new JSONObject();
+        data.put("eventId", event.getId());
+        data.put("eventName", event.getEventName());
+        return buildResponse(200, data, null);
+    }
+
+    private static JSONObject registerEvent(User user, JSONObject requestBody) {
+        Integer eventId = requestBody.optIntegerObject("eventId", null);
+        if (eventId == null) {
+            return buildResponse(400, null, "eventId is required.");
+        }
+
+        Filter eventFilter = new Filter();
+        eventFilter.addFilter("id", eventId);
+        Event event = manager.queryEvent(eventFilter);
+        if (event == null) {
+            return buildResponse(404, null, "Event not found.");
+        }
+
+        if (user.isRegisteredToEvent(event)) {
+            return buildResponse(400, null, "You are already registered to this event.");
+        }
+
+        if (!user.canRegisterToEvent(event)) {
+            return buildResponse(400, null,
+                    "Cannot register: the event is full, closed, or conflicts with another registered event.");
+        }
+
+        if (!manager.addUserToEvent(user, event)) {
+            return buildResponse(500, null, "Registration failed due to a database error.");
+        }
+
+        JSONObject data = new JSONObject();
+        data.put("eventId", event.getId());
+        data.put("eventName", event.getEventName());
+        data.put("registreeCount", event.getRegistreeCount());
+        return buildResponse(200, data, null);
+    }
+
+    private static JSONObject leaveEvent(User user, JSONObject requestBody) {
+        Integer eventId = requestBody.optIntegerObject("eventId", null);
+        if (eventId == null) {
+            return buildResponse(400, null, "eventId is required.");
+        }
+
+        Filter eventFilter = new Filter();
+        eventFilter.addFilter("id", eventId);
+        Event event = manager.queryEvent(eventFilter);
+        if (event == null) {
+            return buildResponse(404, null, "Event not found.");
+        }
+
+        if (!user.isRegisteredToEvent(event)) {
+            return buildResponse(400, null, "You are not registered to this event.");
+        }
+
+        if (!manager.removeUserFromEvent(user, event)) {
+            return buildResponse(500, null, "Could not leave the event due to a database error.");
+        }
+
+        JSONObject data = new JSONObject();
+        data.put("eventId", event.getId());
+        data.put("eventName", event.getEventName());
+        data.put("registreeCount", event.getRegistreeCount());
+        return buildResponse(200, data, null);
+    }
+
     public static JSONObject handle(HttpExchange httpExchange) {
         String remoteAddress = httpExchange.getRemoteAddress().toString() + "/";
         String path = httpExchange.getRequestURI().getRawPath();
@@ -583,7 +808,12 @@ public class APIHandler {
                 return handleClubAction(action, requestBody);
             }
 
-            return buildResponse(404, null, "Endpoint not found. Supported endpoints are /api/user and /api/club.");
+            if (endpoint.equals("event")) {
+                return handleEventAction(action, requestBody);
+            }
+
+            return buildResponse(404, null,
+                    "Endpoint not found. Supported endpoints are /api/user, /api/club, and /api/event.");
 
         } catch (Exception e) {
             if (ServerConfig.PRINT_STACK_TRACES)

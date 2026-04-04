@@ -23,7 +23,7 @@ public class Event {
     @ElementCollection(fetch = FetchType.EAGER)
     private ArrayList<User> registeredUsers = null;
     private String poster = "static/default-event-poster.jpg";
-    private Club club;
+    private Integer clubId;
 
     public Event() {
     }
@@ -32,7 +32,7 @@ public class Event {
             LocalDateTime argEnd, Integer argQuota) {
         name = argName;
         description = argDescription;
-        club = argClub;
+        clubId = argClub.getId();
         location = argPlace;
         start = argStart;
         end = argEnd;
@@ -41,7 +41,7 @@ public class Event {
     }
 
     public boolean isOpen() {
-        return (quota == null || registeredUsers.size() != quota) && LocalDateTime.now().isBefore(start);
+        return (quota == null || registeredUsers.size() != quota) && LocalDateTime.now(ZoneOffset.UTC).isBefore(start);
     }
 
     public boolean conflictsWith(Event other) {
@@ -80,8 +80,8 @@ public class Event {
         return description;
     }
 
-    public Club getClub() {
-        return club;
+    public Integer getClubId() {
+        return clubId;
     }
 
     public String getLocation() {
