@@ -7,7 +7,7 @@ import org.json.JSONObject;
 /**
  * Foreign Profile tab — getForeignProfile / getForeignProfileClubs /
  * getForeignProfileUpcomingEvents.
- * Endpoint: POST api/user  (all actions require auth)
+ * Endpoint: POST api/user (all actions require auth)
  */
 public class ForeignProfileTab extends JPanel {
 
@@ -59,35 +59,5 @@ public class ForeignProfileTab extends JPanel {
             ctx.send("api/user", body);
         });
         add(fpcPanel);
-
-        /* ── getForeignProfileUpcomingEvents ── */
-        JTextField fpeUserId = TabHelpers.hint("target userId (integer)");
-        JTextField fpeEpoch  = TabHelpers.hint("startEpoch ms (0 = all)");
-        JPanel fpePanel = TabHelpers.form("Get Foreign Profile Upcoming Events",
-                "Target User ID",   fpeUserId,
-                "Start Epoch (ms)", fpeEpoch);
-        TabHelpers.addButton(fpePanel, "Get Events", Color.decode("#1565c0"), () -> {
-            JSONObject body = session.authAction("getForeignProfileUpcomingEvents");
-            String uid = TabHelpers.text(fpeUserId);
-            if (!uid.isEmpty()) {
-                try {
-                    body.put("targetUserId", Integer.parseInt(uid));
-                } catch (NumberFormatException ignored) {
-                    ctx.showError("targetUserId must be an integer.");
-                    return;
-                }
-            }
-            String epoch = TabHelpers.text(fpeEpoch);
-            if (!epoch.isEmpty()) {
-                try {
-                    body.put("startEpoch", Long.parseLong(epoch));
-                } catch (NumberFormatException ignored) {
-                    ctx.showError("startEpoch must be a long integer.");
-                    return;
-                }
-            }
-            ctx.send("api/user", body);
-        });
-        add(fpePanel);
     }
 }

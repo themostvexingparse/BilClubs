@@ -9,10 +9,10 @@ import org.json.JSONObject;
 /**
  * Events tab — createEvent / modifyEvent / registerEvent / leaveEvent.
  *
- * createEvent  → POST api/event action="create"   (auth required, club ADMIN only)
- * modifyEvent  → POST api/event action="modify"    (auth required, club ADMIN only)
- * registerEvent→ POST api/event action="register"  (auth required)
- * leaveEvent   → POST api/event action="leave"     (auth required)
+ * createEvent → POST api/event action="create" (auth required, club ADMIN only)
+ * modifyEvent → POST api/event action="modify" (auth required, club ADMIN only)
+ * registerEvent→ POST api/event action="register" (auth required)
+ * leaveEvent → POST api/event action="leave" (auth required)
  */
 public class EventsTab extends JPanel {
 
@@ -38,18 +38,19 @@ public class EventsTab extends JPanel {
     // CREATE EVENT (ADMIN only)
     // ════════════════════════════════════════════════════════════════════════
     private JPanel buildCreatePanel() {
-        JTextField clubIdField     = TabHelpers.hint("clubId (integer)");
-        JTextField nameField       = TabHelpers.hint("Spring Workshop");
-        JTextField descField       = TabHelpers.hint("A hands-on workshop...");
-        JTextField locationField   = TabHelpers.hint("Bilkent B-101");
+        JTextField clubIdField = TabHelpers.hint("clubId (integer)");
+        JTextField nameField = TabHelpers.hint("Spring Workshop");
+        JTextField descField = TabHelpers.hint("A hands-on workshop...");
+        JTextField locationField = TabHelpers.hint("Bilkent B-101");
         JTextField startEpochField = TabHelpers.hint("startEpoch (seconds)");
-        JTextField endEpochField   = TabHelpers.hint("endEpoch (seconds)");
-        JTextField quotaField      = TabHelpers.hint("quota (optional)");
+        JTextField endEpochField = TabHelpers.hint("endEpoch (seconds)");
+        JTextField quotaField = TabHelpers.hint("quota (optional)");
+        JTextField GE250Field = TabHelpers.hint("GE250 (optional)");
 
         // Poster file picker
         JLabel posterLabel = new JLabel("No file selected");
         posterLabel.setForeground(Color.GRAY);
-        final File[] selectedPoster = {null};
+        final File[] selectedPoster = { null };
 
         JButton choosePosterBtn = new JButton("Choose Poster…");
         choosePosterBtn.addActionListener(e -> {
@@ -69,30 +70,54 @@ public class EventsTab extends JPanel {
         posterRow.add(posterLabel);
 
         JPanel panel = TabHelpers.form("Create Event (ADMIN)",
-                "Club ID",     clubIdField,
-                "Event Name",  nameField,
+                "Club ID", clubIdField,
+                "Event Name", nameField,
                 "Description", descField,
-                "Location",    locationField,
+                "Location", locationField,
                 "Start Epoch", startEpochField,
-                "End Epoch",   endEpochField,
-                "Quota",       quotaField,
-                "Poster",      posterRow);
+                "End Epoch", endEpochField,
+                "Quota", quotaField,
+                "GE250", GE250Field,
+                "Poster", posterRow);
 
         TabHelpers.addButton(panel, "Create Event", Color.decode("#2e7d32"), () -> {
             String cid = TabHelpers.text(clubIdField);
-            if (cid.isEmpty()) { ctx.showError("Club ID cannot be empty."); return; }
+            if (cid.isEmpty()) {
+                ctx.showError("Club ID cannot be empty.");
+                return;
+            }
             String name = TabHelpers.text(nameField);
-            if (name.isEmpty()) { ctx.showError("Event name cannot be empty."); return; }
+            if (name.isEmpty()) {
+                ctx.showError("Event name cannot be empty.");
+                return;
+            }
             String desc = TabHelpers.text(descField);
-            String loc  = TabHelpers.text(locationField);
-            String se   = TabHelpers.text(startEpochField);
-            String ee   = TabHelpers.text(endEpochField);
-            if (se.isEmpty() || ee.isEmpty()) { ctx.showError("Start and End epoch are required."); return; }
+            String loc = TabHelpers.text(locationField);
+            String se = TabHelpers.text(startEpochField);
+            String ee = TabHelpers.text(endEpochField);
+
+            String ge250 = TabHelpers.text(GE250Field);
+            Integer ge250Int = null;
+            if (!ge250.isEmpty()) {
+                try {
+                    ge250Int = Integer.parseInt(ge250);
+                } catch (NumberFormatException ex) {
+                    ctx.showError("GE250 must be an integer.");
+                    return;
+                }
+            } else {
+                ge250Int = null;
+            }
+
+            if (se.isEmpty() || ee.isEmpty()) {
+                ctx.showError("Start and End epoch are required.");
+                return;
+            }
 
             try {
                 int clubId = Integer.parseInt(cid);
                 long startEpoch = Long.parseLong(se);
-                long endEpoch   = Long.parseLong(ee);
+                long endEpoch = Long.parseLong(ee);
 
                 // Step 1: Upload poster if selected
                 String posterFilename = null;
@@ -127,6 +152,10 @@ public class EventsTab extends JPanel {
                 body.put("startEpoch", startEpoch);
                 body.put("endEpoch", endEpoch);
 
+                if (ge250Int != null) {
+                    body.put("GE250", ge250Int);
+                }
+
                 String quota = TabHelpers.text(quotaField);
                 if (!quota.isEmpty()) {
                     body.put("quota", Integer.parseInt(quota));
@@ -148,18 +177,19 @@ public class EventsTab extends JPanel {
     // MODIFY EVENT (ADMIN only)
     // ════════════════════════════════════════════════════════════════════════
     private JPanel buildModifyPanel() {
-        JTextField eventIdField    = TabHelpers.hint("eventId (integer)");
-        JTextField nameField       = TabHelpers.hint("(optional) new name");
-        JTextField descField       = TabHelpers.hint("(optional) new desc");
-        JTextField locationField   = TabHelpers.hint("(optional) new location");
+        JTextField eventIdField = TabHelpers.hint("eventId (integer)");
+        JTextField nameField = TabHelpers.hint("(optional) new name");
+        JTextField descField = TabHelpers.hint("(optional) new desc");
+        JTextField locationField = TabHelpers.hint("(optional) new location");
         JTextField startEpochField = TabHelpers.hint("(optional) startEpoch");
-        JTextField endEpochField   = TabHelpers.hint("(optional) endEpoch");
-        JTextField quotaField      = TabHelpers.hint("(optional) quota");
+        JTextField endEpochField = TabHelpers.hint("(optional) endEpoch");
+        JTextField quotaField = TabHelpers.hint("(optional) quota");
+        JTextField GE250Field = TabHelpers.hint("GE250 (optional)");
 
         // Poster replacement picker
         JLabel posterLabel = new JLabel("No file selected");
         posterLabel.setForeground(Color.GRAY);
-        final File[] selectedPoster = {null};
+        final File[] selectedPoster = { null };
 
         JButton choosePosterBtn = new JButton("New Poster…");
         choosePosterBtn.addActionListener(e -> {
@@ -179,18 +209,22 @@ public class EventsTab extends JPanel {
         posterRow.add(posterLabel);
 
         JPanel panel = TabHelpers.form("Modify Event (ADMIN)",
-                "Event ID",    eventIdField,
-                "Name",        nameField,
+                "Event ID", eventIdField,
+                "Name", nameField,
                 "Description", descField,
-                "Location",    locationField,
+                "Location", locationField,
                 "Start Epoch", startEpochField,
-                "End Epoch",   endEpochField,
-                "Quota",       quotaField,
-                "Poster",      posterRow);
+                "End Epoch", endEpochField,
+                "Quota", quotaField,
+                "GE250", GE250Field,
+                "Poster", posterRow);
 
         TabHelpers.addButton(panel, "Modify Event", Color.decode("#e65100"), () -> {
             String eid = TabHelpers.text(eventIdField);
-            if (eid.isEmpty()) { ctx.showError("Event ID cannot be empty."); return; }
+            if (eid.isEmpty()) {
+                ctx.showError("Event ID cannot be empty.");
+                return;
+            }
 
             try {
                 int eventId = Integer.parseInt(eid);
@@ -223,16 +257,23 @@ public class EventsTab extends JPanel {
                 body.put("eventId", eventId);
 
                 String name = TabHelpers.text(nameField);
-                if (!name.isEmpty()) body.put("name", name);
+                if (!name.isEmpty())
+                    body.put("name", name);
 
                 String desc = TabHelpers.text(descField);
-                if (!desc.isEmpty()) body.put("description", desc);
+                if (!desc.isEmpty())
+                    body.put("description", desc);
 
                 String loc = TabHelpers.text(locationField);
-                if (!loc.isEmpty()) body.put("location", loc);
+                if (!loc.isEmpty())
+                    body.put("location", loc);
 
                 String se = TabHelpers.text(startEpochField);
                 String ee = TabHelpers.text(endEpochField);
+                String ge250 = TabHelpers.text(GE250Field);
+                if (!ge250.isEmpty())
+                    body.put("GE250", ge250);
+
                 if (!se.isEmpty() && !ee.isEmpty()) {
                     body.put("startEpoch", Long.parseLong(se));
                     body.put("endEpoch", Long.parseLong(ee));
@@ -242,9 +283,11 @@ public class EventsTab extends JPanel {
                 }
 
                 String quota = TabHelpers.text(quotaField);
-                if (!quota.isEmpty()) body.put("quota", Integer.parseInt(quota));
+                if (!quota.isEmpty())
+                    body.put("quota", Integer.parseInt(quota));
 
-                if (posterFilename != null) body.put("posterFilename", posterFilename);
+                if (posterFilename != null)
+                    body.put("posterFilename", posterFilename);
 
                 ctx.send("api/event", body);
             } catch (NumberFormatException ex) {
@@ -253,6 +296,7 @@ public class EventsTab extends JPanel {
         });
 
         return panel;
+
     }
 
     // ════════════════════════════════════════════════════════════════════════
@@ -265,7 +309,10 @@ public class EventsTab extends JPanel {
 
         TabHelpers.addButton(panel, "Register", Color.decode("#1565c0"), () -> {
             String eid = TabHelpers.text(eventIdField);
-            if (eid.isEmpty()) { ctx.showError("Event ID cannot be empty."); return; }
+            if (eid.isEmpty()) {
+                ctx.showError("Event ID cannot be empty.");
+                return;
+            }
             try {
                 JSONObject body = session.authAction("register");
                 body.put("eventId", Integer.parseInt(eid));
@@ -288,7 +335,10 @@ public class EventsTab extends JPanel {
 
         TabHelpers.addButton(panel, "Leave Event", Color.decode("#c62828"), () -> {
             String eid = TabHelpers.text(eventIdField);
-            if (eid.isEmpty()) { ctx.showError("Event ID cannot be empty."); return; }
+            if (eid.isEmpty()) {
+                ctx.showError("Event ID cannot be empty.");
+                return;
+            }
             try {
                 JSONObject body = session.authAction("leave");
                 body.put("eventId", Integer.parseInt(eid));

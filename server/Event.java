@@ -24,6 +24,7 @@ public class Event {
     private ArrayList<User> registeredUsers = null;
     private String poster = "static/default-event-poster.jpg";
     private Integer clubId;
+    private Integer GE250 = 0;
 
     public Event() {
     }
@@ -100,7 +101,11 @@ public class Event {
         return end;
     }
 
-    public int getQuota() {
+    public long getEndEpoch() {
+        return end.toEpochSecond(ZoneOffset.UTC);
+    }
+
+    public Integer getQuota() {
         return quota;
     }
 
@@ -130,6 +135,14 @@ public class Event {
             return false;
         quota = argQuota;
         return true;
+    }
+
+    public void setGE250(Integer GE250) {
+        this.GE250 = GE250;
+    }
+
+    public Integer getGE250() {
+        return GE250;
     }
 
     @Override

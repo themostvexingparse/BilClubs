@@ -92,7 +92,7 @@ public class APIHandler {
             case "getProfile":
             case "getForeignProfile":
             case "getForeignProfileClubs":
-            case "getForeignProfileUpcomingEvents":
+            case "getUpcomingEvents":
             case "updateProfile":
             case "setInterests":
             case "generateEmbeddings":
@@ -132,8 +132,8 @@ public class APIHandler {
                 return getForeignProfile(requestBody);
             case "getForeignProfileClubs":
                 return getForeignProfileClubs(requestBody);
-            case "getForeignProfileUpcomingEvents":
-                return getForeignProfileUpcomingEvents(requestBody);
+            case "getUpcomingEvents":
+                return getUpcomingEvents(user, requestBody);
             case "updateProfile":
                 return updateProfile(user, requestBody);
             case "setInterests":
@@ -292,10 +292,16 @@ public class APIHandler {
     }
 
     private static JSONObject getForeignProfile(JSONObject requestBody) {
-        Integer userId = requestBody.optInt("targetUserId");
+        Integer userId = requestBody.optInt("targetUserId", -1);
+        if (userId == -1) {
+            return buildResponse(400, null, "targetUserId cannot be empty.");
+        }
         Filter userIdFilter = new Filter();
         userIdFilter.addFilter("id", userId);
         User targetUser = manager.queryUser(userIdFilter);
+        if (targetUser == null) {
+            return buildResponse(404, null, "No user found with the given userId.");
+        }
         JSONObject data = new JSONObject();
         data.put("userId", targetUser.getId());
         data.put("fullName", targetUser.getFullName());
@@ -306,10 +312,16 @@ public class APIHandler {
     }
 
     private static JSONObject getForeignProfileClubs(JSONObject requestBody) {
-        Integer userId = requestBody.optInt("targetUserId");
+        Integer userId = requestBody.optInt("targetUserId", -1);
+        if (userId == -1) {
+            return buildResponse(400, null, "targetUserId cannot be empty.");
+        }
         Filter userIdFilter = new Filter();
         userIdFilter.addFilter("id", userId);
         User targetUser = manager.queryUser(userIdFilter);
+        if (targetUser == null) {
+            return buildResponse(404, null, "No user found with the given userId.");
+        }
         ArrayList<Integer> clubIds = targetUser.getClubIds();
         JSONArray clubDatas = new JSONArray();
         for (Integer clubId : clubIds) {
@@ -328,37 +340,49 @@ public class APIHandler {
         return buildResponse(200, data, null);
     }
 
-    private static JSONObject getForeignProfileUpcomingEvents(JSONObject requestBody) {
-        Integer userId = requestBody.optInt("targetUserId");
-        Long epoch = requestBody.optLong("startEpoch", 0);
-        Filter userIdFilter = new Filter();
+    private static JSONObject getUpcomingEvents(User user, JSONObject requestBody) {
+        Long epochNow = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC);
+        Long epoch = requestBody.optLong("upToEpoch", Long.MAX_VALUE);
+        Boolean userSpecific = requestBody.optBoolean("userSpecific", false);
+        JSONArray clubIds = requestBody.optJSONArray("clubIds", new JSONArray());
+        ArrayList<Integer> clubIdsList = new ArrayList<>();
+        for (int i = 0; i < clubIds.length(); i++) {
+            clubIdsList.add(clubIds.getInt(i));
+        }
         Filter eventFilter = new Filter();
-        userIdFilter.addFilter("id", userId);
-        eventFilter.addFilter("date", epoch);
-        User targetUser = manager.queryUser(userIdFilter);
-        ArrayList<Integer> clubIds = targetUser.getClubIds();
+        eventFilter.addFilter("startDate", epochNow);
+        eventFilter.addFilter("endDate", epoch);
         JSONArray eventDatas = new JSONArray();
         List<Event> events = manager.queryEvents(eventFilter);
         for (Event event : events) {
-            if (!clubIds.contains(event.getClubId()))
+            if (userSpecific && !user.isRegisteredToEvent(event))
                 continue;
             Filter clubFilter = new Filter();
             clubFilter.addFilter("id", event.getClubId());
             Club eventClub = manager.queryClub(clubFilter);
+            if (!clubIdsList.isEmpty() && !clubIdsList.contains(eventClub.getId()))
+                continue;
             JSONObject eventObject = new JSONObject();
             eventObject.put("name", event.getEventName());
             eventObject.put("description", event.getDescription());
             eventObject.put("quota", event.getQuota());
             eventObject.put("registreeCount", event.getRegistreeCount());
             eventObject.put("location", event.getLocation());
+            eventObject.put("startDate", event.getStart().toString());
+            eventObject.put("endDate", event.getEnd().toString());
+            eventObject.put("GE250", event.getGE250());
             eventObject.put("posterImage", event.getPoster());
             eventObject.put("clubName", eventClub != null ? eventClub.getClubName() : "");
             eventObject.put("clubId", event.getClubId());
+            eventObject.put("eventId", event.getId());
             eventDatas.put(eventObject);
         }
+
         JSONObject data = new JSONObject();
         data.put("events", eventDatas);
-        return buildResponse(200, data, null);
+        return
+
+        buildResponse(200, data, null);
     }
 
     private static JSONObject updateProfile(User user, JSONObject requestBody) {
@@ -578,6 +602,7 @@ public class APIHandler {
         String eventName = requestBody.optString("name", null);
         String description = requestBody.optString("description", null);
         String location = requestBody.optString("location", null);
+        Integer GE250 = requestBody.optIntegerObject("GE250", null);
         Long startEpoch = requestBody.has("startEpoch") ? requestBody.getLong("startEpoch") : null;
         Long endEpoch = requestBody.has("endEpoch") ? requestBody.getLong("endEpoch") : null;
 
@@ -603,6 +628,10 @@ public class APIHandler {
         String posterFilename = requestBody.optString("posterFilename", null);
         if (posterFilename != null && !posterFilename.trim().isEmpty()) {
             newEvent.setPoster(posterFilename.trim());
+        }
+
+        if (GE250 != null) {
+            newEvent.setGE250(GE250);
         }
 
         if (!manager.addEvent(newEvent)) {
@@ -679,6 +708,10 @@ public class APIHandler {
                 return buildResponse(400, null,
                         "Quota cannot be less than the current number of registered users.");
             }
+        }
+        if (requestBody.has("GE250")) {
+            int GE250 = requestBody.getInt("GE250");
+            event.setGE250(GE250);
         }
         if (requestBody.has("posterFilename")) {
             String posterFilename = requestBody.optString("posterFilename", "").trim();

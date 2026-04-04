@@ -12,21 +12,23 @@ public class DBManager {
 
     private boolean initialized = false;
 
-    private EntityManagerFactory userManagerFactory = null;
-    private EntityManagerFactory clubManagerFactory = null;
-    private EntityManagerFactory eventManagerFactory = null;
+    // we used to have separate persistence units but this caused reference
+    // incompatibility or something like that
+
+    // so we had to switch to a single persistence unit for all core entities (User,
+    // Club, Event) so cross entity references are properly managed within one
+    // ObjectDB context.
+    private EntityManagerFactory coreFactory = null;
+
+    // media files are kept separately because they don't reference other entities
     private EntityManagerFactory fileManagerFactory = null;
 
     public void initialize(String directory) {
         if (initialized)
             return;
-        String userPersistence = String.format("objectdb:%s/users.odb", directory);
-        String clubPersistence = String.format("objectdb:%s/clubs.odb", directory);
-        String eventPersistence = String.format("objectdb:%s/events.odb", directory);
+        String corePersistence = String.format("objectdb:%s/bilclubs.odb", directory);
         String filePersistence = String.format("objectdb:%s/static.odb", directory);
-        userManagerFactory = Persistence.createEntityManagerFactory(userPersistence);
-        clubManagerFactory = Persistence.createEntityManagerFactory(clubPersistence);
-        eventManagerFactory = Persistence.createEntityManagerFactory(eventPersistence);
+        coreFactory = Persistence.createEntityManagerFactory(corePersistence);
         fileManagerFactory = Persistence.createEntityManagerFactory(filePersistence);
         initialized = true;
     }
@@ -70,15 +72,15 @@ public class DBManager {
             queryBuilder.append(" ");
         }
         String queryString = queryBuilder.toString().trim();
-        EntityManager userManager = userManagerFactory.createEntityManager();
-        TypedQuery<User> query = userManager.createQuery(queryString, User.class);
+        EntityManager em = coreFactory.createEntityManager();
+        TypedQuery<User> query = em.createQuery(queryString, User.class);
         for (String key : filterMap.keySet()) {
             if (!keyMap.containsKey(key))
                 continue;
             query.setParameter(key, filterMap.get(key));
         }
         List<User> results = query.getResultList();
-        userManager.close();
+        em.close();
         return results;
     }
 
@@ -101,11 +103,11 @@ public class DBManager {
         emailFilter.addFilter("email", user.getEmail());
         if (queryUser(emailFilter) != null)
             return false; // prevent creation of a new account with the same email
-        EntityManager userManager = userManagerFactory.createEntityManager();
-        userManager.getTransaction().begin();
-        userManager.persist(user);
-        userManager.getTransaction().commit();
-        userManager.close();
+        EntityManager em = coreFactory.createEntityManager();
+        em.getTransaction().begin();
+        em.persist(user);
+        em.getTransaction().commit();
+        em.close();
         if (ServerConfig.PRINT_DEBUG)
             System.out.printf("Added user: %s\n", user.toString());
         return true;
@@ -114,11 +116,11 @@ public class DBManager {
     public boolean addUserUnsafe(User user) {
         if (!initialized)
             return false;
-        EntityManager userManager = userManagerFactory.createEntityManager();
-        userManager.getTransaction().begin();
-        userManager.persist(user);
-        userManager.getTransaction().commit();
-        userManager.close();
+        EntityManager em = coreFactory.createEntityManager();
+        em.getTransaction().begin();
+        em.persist(user);
+        em.getTransaction().commit();
+        em.close();
         if (ServerConfig.PRINT_DEBUG)
             System.out.printf("Added user: %s\n", user.toString());
         return true;
@@ -127,17 +129,16 @@ public class DBManager {
     public boolean updateUser(User user) {
         if (user == null || user.getId() == null || !initialized)
             return false;
-        EntityManager userManager = userManagerFactory.createEntityManager();
-        userManager.getTransaction().begin();
-        User queriedUser = userManager.find(User.class, user.getId());
+        EntityManager em = coreFactory.createEntityManager();
+        em.getTransaction().begin();
+        User queriedUser = em.find(User.class, user.getId());
         if (queriedUser == null) {
-            userManager.close();
+            em.close();
             return false;
-        } // prevent creation of a new account with the same email
-        userManager.merge(user);
-        userManager.getTransaction().commit();
-        userManager.close();
-        // userManager.refresh(queriedUser);
+        }
+        em.merge(user);
+        em.getTransaction().commit();
+        em.close();
         if (ServerConfig.PRINT_DEBUG)
             System.out.printf("Updated user: %s\n", user.toString());
         return true;
@@ -146,11 +147,11 @@ public class DBManager {
     public boolean addClub(Club club) {
         if (club == null || !initialized)
             return false;
-        EntityManager clubManager = clubManagerFactory.createEntityManager();
-        clubManager.getTransaction().begin();
-        clubManager.persist(club);
-        clubManager.getTransaction().commit();
-        clubManager.close();
+        EntityManager em = coreFactory.createEntityManager();
+        em.getTransaction().begin();
+        em.persist(club);
+        em.getTransaction().commit();
+        em.close();
         if (ServerConfig.PRINT_DEBUG)
             System.out.printf("Added club: %s\n", club.toString());
         return true;
@@ -159,18 +160,16 @@ public class DBManager {
     public boolean updateClub(Club club) {
         if (club == null || club.getId() == null || !initialized)
             return false;
-        EntityManager clubManager = clubManagerFactory.createEntityManager();
-        clubManager.getTransaction().begin();
-        Club queriedClub = clubManager.find(Club.class, club.getId());
+        EntityManager em = coreFactory.createEntityManager();
+        em.getTransaction().begin();
+        Club queriedClub = em.find(Club.class, club.getId());
         if (queriedClub == null) {
-            clubManager.close();
+            em.close();
             return false;
         }
-        // To prevent creation of a duplicate club. Maybe. I am just adapting Ozan's
-        // code to a new class to be honest...
-        clubManager.merge(club);
-        clubManager.getTransaction().commit();
-        clubManager.close();
+        em.merge(club);
+        em.getTransaction().commit();
+        em.close();
         if (ServerConfig.PRINT_DEBUG)
             System.out.printf("Updated club: %s\n", club.toString());
         return true;
@@ -179,11 +178,11 @@ public class DBManager {
     public boolean addEvent(Event event) {
         if (event == null || !initialized)
             return false;
-        EntityManager eventManager = eventManagerFactory.createEntityManager();
-        eventManager.getTransaction().begin();
-        eventManager.persist(event);
-        eventManager.getTransaction().commit();
-        eventManager.close();
+        EntityManager em = coreFactory.createEntityManager();
+        em.getTransaction().begin();
+        em.persist(event);
+        em.getTransaction().commit();
+        em.close();
         if (ServerConfig.PRINT_DEBUG)
             System.out.printf("Added event: %s\n", event.toString());
         return true;
@@ -192,17 +191,16 @@ public class DBManager {
     public boolean updateEvent(Event event) {
         if (event == null || event.getId() == null || !initialized)
             return false;
-        EntityManager eventManager = eventManagerFactory.createEntityManager();
-        eventManager.getTransaction().begin();
-        Event queriedClub = eventManager.find(Event.class, event.getId());
-        if (queriedClub == null) {
-            eventManager.close();
+        EntityManager em = coreFactory.createEntityManager();
+        em.getTransaction().begin();
+        Event queriedEvent = em.find(Event.class, event.getId());
+        if (queriedEvent == null) {
+            em.close();
             return false;
         }
-
-        eventManager.merge(event);
-        eventManager.getTransaction().commit();
-        eventManager.close();
+        em.merge(event);
+        em.getTransaction().commit();
+        em.close();
         if (ServerConfig.PRINT_DEBUG)
             System.out.printf("Updated event: %s\n", event.toString());
         return true;
@@ -240,15 +238,15 @@ public class DBManager {
             queryBuilder.append(" ");
         }
         String queryString = queryBuilder.toString().trim();
-        EntityManager clubManager = clubManagerFactory.createEntityManager();
-        TypedQuery<Club> query = clubManager.createQuery(queryString, Club.class);
+        EntityManager em = coreFactory.createEntityManager();
+        TypedQuery<Club> query = em.createQuery(queryString, Club.class);
         for (String key : filterMap.keySet()) {
             if (!keyMap.containsKey(key))
                 continue;
             query.setParameter(key, filterMap.get(key));
         }
         List<Club> results = query.getResultList();
-        clubManager.close();
+        em.close();
         return results;
     }
 
@@ -273,7 +271,9 @@ public class DBManager {
             {
                 put("id", "e.getId() ");
                 put("name", "e.getEventName() ");
-                put("date", "e.getStartEpoch() <"); // if startEpoch <= currentDate + 5 days i.e.
+                put("startDate", "e.getStartEpoch() >"); // if startEpoch > currentDate + 5 days i.e.
+                put("endDate", "e.getEndEpoch() <"); // if endEpoch < currentDate i.e.
+                // we get events that are in the range of the given start and end dates
             }
         };
         StringBuilder queryBuilder = new StringBuilder();
@@ -297,15 +297,15 @@ public class DBManager {
             queryBuilder.append(" ");
         }
         String queryString = queryBuilder.toString().trim();
-        EntityManager eventManager = eventManagerFactory.createEntityManager();
-        TypedQuery<Event> query = eventManager.createQuery(queryString, Event.class);
+        EntityManager em = coreFactory.createEntityManager();
+        TypedQuery<Event> query = em.createQuery(queryString, Event.class);
         for (String key : filterMap.keySet()) {
             if (!keyMap.containsKey(key))
                 continue;
             query.setParameter(key, filterMap.get(key));
         }
         List<Event> results = query.getResultList();
-        eventManager.close();
+        em.close();
         return results;
     }
 
@@ -320,13 +320,6 @@ public class DBManager {
         }
         return events.get(0);
     }
-
-    // Interactions between Users and Clubs
-    // TODO: Updating user/club/event info
-    // TODO: Images for users/clubs/events
-    // TODO: Erase events?
-    // TODO: A tester class that runs tests on interactions between the three
-    // classes?
 
     public boolean addUserToClub(User newMember, Club club, User manager) {
         if (newMember.isBannedFromClub(club) || !manager.hasClubPrivilege(club, Privileges.MANAGER))
