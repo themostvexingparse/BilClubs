@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body,
+        table,
+        td,
+        a {
+            -webkit-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+        }
+
+        body {
+            height: 100% !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            width: 100% !important;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+        }
+
+        .email-wrapper {
+            width: 100%;
+            background-color: #f4f7f6;
+            padding: 40px 0;
+        }
+
+        .email-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .email-header {
+            background-color: #27AE60;
+            padding: 35px 20px;
+            text-align: center;
+            color: #ffffff;
+        }
+
+        .email-header h1 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .email-header p {
+            margin: 10px 0 0 0;
+            font-size: 16px;
+            opacity: 0.85;
+        }
+
+        .email-body {
+            padding: 40px 30px;
+            line-height: 1.6;
+            font-size: 16px;
+            color: #444444;
+        }
+
+        .email-body p {
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .highlight {
+            color: #27AE60;
+            font-weight: bold;
+        }
+
+        .info-box {
+            background-color: #f0faf4;
+            border-left: 4px solid #27AE60;
+            border-radius: 4px;
+            padding: 16px 20px;
+            margin-bottom: 24px;
+        }
+
+        .info-box p {
+            margin: 0;
+            font-size: 15px;
+            color: #333333;
+        }
+
+        .email-footer {
+            background-color: #fcfcfc;
+            padding: 20px;
+            text-align: center;
+            font-size: 13px;
+            color: #999999;
+            border-top: 1px solid #eeeeee;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="email-wrapper">
+        <div class="email-container">
+
+            <div class="email-header">
+                <h1>You Joined a Club!</h1>
+                <p>Welcome aboard</p>
+            </div>
+
+            <div class="email-body">
+                <p>Hi <strong>{{ name }}</strong>,</p>
+                <p>Great news, you have successfully joined <span class="highlight">{{ club_name }}</span>! You are now
+                    a member and will be kept up to date with everything happening in the club.</p>
+
+                <div class="info-box">
+                    <p><strong>Club:</strong> {{ club_name }}</p>
+                    <p style="margin-top: 8px;"><strong>Joined on:</strong> {{ join_date }}</p>
+                </div>
+
+                <p>As a member, you will receive notifications whenever a new event is created by <span
+                        class="highlight">{{ club_name }}</span>. Make sure your notification preferences are set up in
+                    your account settings.</p>
+                <p>If you have any questions, feel free to reply to this email.</p>
+                <p>Cheers,<br><strong>The NeoAim Team</strong></p>
+            </div>
+
+            <div class="email-footer">
+                &copy; 2026 BilClubs. All rights reserved.
+            </div>
+
+        </div>
+    </div>
+</body>
+
+</html>

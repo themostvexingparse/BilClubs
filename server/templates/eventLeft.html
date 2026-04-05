@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>        
+        body, table, td, a { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
+        body { 
+            height: 100% !important; 
+            margin: 0 !important; 
+            padding: 0 !important; 
+            width: 100% !important; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background-color: #f4f7f6; 
+        }
+        .email-wrapper { width: 100%; background-color: #f4f7f6; padding: 40px 0; }
+        .email-container { 
+            max-width: 600px; 
+            margin: 0 auto; 
+            background-color: #ffffff; 
+            border-radius: 8px; 
+            overflow: hidden; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05); 
+        }
+        .email-header { 
+            background-color: #E67E22; 
+            padding: 35px 20px; 
+            text-align: center; 
+            color: #ffffff; 
+        }
+        .email-header h1 { 
+            margin: 0; 
+            font-size: 28px; 
+            font-weight: 600; 
+            letter-spacing: 1px; 
+        }
+        .email-header p {
+            margin: 10px 0 0 0;
+            font-size: 16px;
+            opacity: 0.85;
+        }
+        .email-body { padding: 40px 30px; line-height: 1.6; font-size: 16px; color: #444444; }
+        .email-body p { margin-top: 0; margin-bottom: 20px; }
+        .highlight { color: #E67E22; font-weight: bold; }
+        .info-box {
+            background-color: #fef9f4;
+            border-left: 4px solid #E67E22;
+            border-radius: 4px;
+            padding: 16px 20px;
+            margin-bottom: 24px;
+        }
+        .info-box p { margin: 0; font-size: 15px; color: #333333; }
+        .email-footer { 
+            background-color: #fcfcfc; 
+            padding: 20px; 
+            text-align: center; 
+            font-size: 13px; 
+            color: #999999; 
+            border-top: 1px solid #eeeeee; 
+        }
+    </style>
+</head>
+<body>
+    <div class="email-wrapper">
+        <div class="email-container">
+            
+            <div class="email-header">
+                <h1>Registration Cancelled</h1>
+                <p>We hope to see you next time</p>
+            </div>
+
+            <div class="email-body">
+                <p>Hi <strong>{{ name }}</strong>,</p>
+                <p>This is a confirmation that your registration for <span class="highlight">{{ event_name }}</span>, organized by <span class="highlight">{{ club_name }}</span>, has been successfully cancelled.</p>
+
+                <div class="info-box">
+                    <p><strong>Event:</strong> {{ event_name }}</p>
+                    <p style="margin-top: 8px;"><strong>Organized by:</strong> {{ club_name }}</p>
+                    <p style="margin-top: 8px;"><strong>Date:</strong> {{ event_date }}</p>
+                    <p style="margin-top: 8px;"><strong>Time:</strong> {{ event_time }}</p>
+                    <p style="margin-top: 8px;"><strong>Location:</strong> {{ event_location }}</p>
+                    <p style="margin-top: 8px;"><strong>Cancelled on:</strong> {{ cancellation_date }}</p>
+                </div>
+
+                <p>If you change your mind and spots are still available, you can re-register for this event on the BilClubs event page.</p>
+                <p>If you did not request this cancellation or believe this was a mistake, please reply to this email right away.</p>
+                <p>Cheers,<br><strong>The NeoAim Team</strong></p>
+            </div>
+
+            <div class="email-footer">
+                &copy; 2026 BilClubs. All rights reserved.
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

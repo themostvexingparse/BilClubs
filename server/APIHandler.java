@@ -6,7 +6,9 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -18,6 +20,12 @@ import com.sun.net.httpserver.HttpExchange;
 
 public class APIHandler {
     private static final HTMLTemplate welcomeTemplate = new HTMLTemplate("templates/welcome.html");
+    private static final HTMLTemplate eventCreatedTemplate = new HTMLTemplate("templates/eventCreated.html");
+    private static final HTMLTemplate eventRegisteredTemplate = new HTMLTemplate("templates/eventRegistered.html");
+    private static final HTMLTemplate eventLeftTemplate = new HTMLTemplate("templates/eventLeft.html");
+    private static final HTMLTemplate clubJoinedTemplate = new HTMLTemplate("templates/clubJoined.html");
+    private static final HTMLTemplate clubLeftTemplate = new HTMLTemplate("templates/clubLeft.html");
+
     private static final ExecutorService concurrentExecutor = Executors.newCachedThreadPool();
     private static final Credentials credentials = new Credentials(System.getenv());
     public static DBManager manager = new DBManager();
@@ -642,6 +650,27 @@ public class APIHandler {
         club.addEvent(newEvent);
         if (!manager.updateClub(club)) {
             return buildResponse(500, null, "Event was created but could not be linked to the club.");
+        }
+
+        // loop through all members of the club and send emails
+        for (User member : club.getMembers()) {
+            HashMap<String, String> formatMap = new HashMap<>();
+            formatMap.put("name", member.getFullName());
+            formatMap.put("club_name", club.getClubName());
+            formatMap.put("event_name", newEvent.getEventName());
+            formatMap.put("event_date", newEvent.getStart().atZone(ZoneOffset.UTC).toString());
+            formatMap.put("event_duration", DurationFormatter.format(newEvent.getStart(), newEvent.getEnd()));
+            formatMap.put("event_location", newEvent.getLocation());
+            formatMap.put("event_capacity", newEvent.getQuota().toString());
+            formatMap.put("event_description", newEvent.getDescription());
+            HTMLTemplate eventCreatedMessage = eventCreatedTemplate.formatted(formatMap);
+            MailMessage message = new MailMessage();
+            message.setSubject(club.getClubName() + " has posted a new event!");
+            message.fromTemplate(eventCreatedMessage);
+            message.addRecipient(member.getEmail());
+            MailTask mailTask = session.getTask(message);
+            if (mailTask != null)
+                concurrentExecutor.submit(mailTask);
         }
 
         JSONObject data = new JSONObject();

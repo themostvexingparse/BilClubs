@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>        
+        body, table, td, a { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
+        body { 
+            height: 100% !important; 
+            margin: 0 !important; 
+            padding: 0 !important; 
+            width: 100% !important; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background-color: #f4f7f6; 
+        }
+        .email-wrapper { width: 100%; background-color: #f4f7f6; padding: 40px 0; }
+        .email-container { 
+            max-width: 600px; 
+            margin: 0 auto; 
+            background-color: #ffffff; 
+            border-radius: 8px; 
+            overflow: hidden; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05); 
+        }
+        .email-header { 
+            background-color: #7F8C8D; 
+            padding: 35px 20px; 
+            text-align: center; 
+            color: #ffffff; 
+        }
+        .email-header h1 { 
+            margin: 0; 
+            font-size: 28px; 
+            font-weight: 600; 
+            letter-spacing: 1px; 
+        }
+        .email-header p {
+            margin: 10px 0 0 0;
+            font-size: 16px;
+            opacity: 0.85;
+        }
+        .email-body { padding: 40px 30px; line-height: 1.6; font-size: 16px; color: #444444; }
+        .email-body p { margin-top: 0; margin-bottom: 20px; }
+        .highlight { color: #7F8C8D; font-weight: bold; }
+        .info-box {
+            background-color: #f7f8f8;
+            border-left: 4px solid #7F8C8D;
+            border-radius: 4px;
+            padding: 16px 20px;
+            margin-bottom: 24px;
+        }
+        .info-box p { margin: 0; font-size: 15px; color: #333333; }
+        .email-footer { 
+            background-color: #fcfcfc; 
+            padding: 20px; 
+            text-align: center; 
+            font-size: 13px; 
+            color: #999999; 
+            border-top: 1px solid #eeeeee; 
+        }
+    </style>
+</head>
+<body>
+    <div class="email-wrapper">
+        <div class="email-container">
+            
+            <div class="email-header">
+                <h1>You Left a Club</h1>
+                <p>We are sorry to see you go</p>
+            </div>
+
+            <div class="email-body">
+                <p>Hi <strong>{{ name }}</strong>,</p>
+                <p>This is a confirmation that you have left <span class="highlight">{{ club_name }}</span>. Your membership has been removed and you will no longer receive notifications from this club.</p>
+
+                <div class="info-box">
+                    <p><strong>Club:</strong> {{ club_name }}</p>
+                    <p style="margin-top: 8px;"><strong>Left on:</strong> {{ leave_date }}</p>
+                </div>
+
+                <p>Changed your mind? You can always rejoin <span class="highlight">{{ club_name }}</span> by visiting the club page on BilClubs. We would love to have you back.</p>
+                <p>If you did not request this change or believe this was a mistake, please reply to this email right away.</p>
+                <p>Cheers,<br><strong>The NeoAim Team</strong></p>
+            </div>
+
+            <div class="email-footer">
+                &copy; 2026 BilClubs. All rights reserved.
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>
