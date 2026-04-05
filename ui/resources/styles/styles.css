@@ -1,0 +1,136 @@
+.root {
+    /*Light default*/
+    -bg-color: #FFFFFF;
+    -text-color: #1A1A1A;
+    -primary-color: #385BAE;
+    -custom-light-blue:  #F0F5FF;
+    -menu-blue: #f5f9ff;
+    -signout-red:  #a33838;
+    -signout-red-hover:  #f18b8b;
+    -menubutton-color: #e9f3fb;
+    -menubutton-hover-blue: #7e98d4;
+    -gray-hue: #F0F0F0;
+    -manager-green: #59b47f;
+    -card-blue: #DBE1EE;
+    -club-card-blue: #ced9f4;
+    -dark-blue : #1C3F69;
+
+    -fx-background-color: -bg-color;
+}
+
+.label {
+    -fx-text-fill: -text-color;
+}
+
+
+.button {
+    -fx-background-color: -primary-color;
+    -fx-text-fill: white;
+    -fx-background-insets: 0;
+
+    transition: -fx-scale-x 0.3s ease-in-out, -fx-scale-y 0.3s ease-in-out;
+}
+
+.button:hover {
+    -fx-cursor: hand;
+    -fx-background-insets: 0;
+    -fx-background-color: -menubutton-hover-blue;
+    -fx-scale-x: 1.03;
+    -fx-scale-y: 1.08;
+}
+
+.club-card {
+    -fx-background-radius: 20;
+    transition: -fx-scale-x 0.3s ease-in-out, -fx-scale-y 0.3s ease-in-out;
+}
+
+
+.club-card:hover{
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+    -fx-cursor: hand;
+}
+
+.scroll-pane {
+    -fx-background-color: transparent;
+}
+
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+.scroll-pane .scroll-bar:vertical,
+.scroll-pane .scroll-bar:horizontal {
+    -fx-opacity: 0;
+    -fx-pref-width: 0;
+    -fx-pref-height: 0;
+}
+
+.button-menu{
+    -fx-background-color: -bg-color;
+    -fx-text-fill: -text-color;
+    -fx-background-insets: 0;
+
+    transition: -fx-scale-x 0.3s ease-in-out, -fx-scale-y 0.3s ease-in-out;
+}
+
+
+.button-menu:hover{
+    -fx-cursor: hand;
+    -fx-background-insets: 0;
+    -fx-background-color: -menubutton-color;
+    -fx-scale-x: 1.03;
+    -fx-scale-y: 1.08;
+} 
+
+.button-settings{
+    -fx-background-color: -custom-light-blue;
+    -fx-text-fill: -text-color;
+    -fx-background-insets: 0;
+
+    transition: -fx-scale-x 0.3s ease-in-out, -fx-scale-y 0.3s ease-in-out;
+}
+
+
+.button-settings:hover{
+    -fx-cursor: hand;
+    -fx-background-insets: 0;  
+    -fx-background-color: -menubutton-color;
+    -fx-scale-x: 1.03;
+    -fx-scale-y: 1.08;
+} 
+
+.button-signOut{
+    -fx-background-color: -signout-red;
+    -fx-text-fill: -text-color;
+    -fx-background-insets: 0;
+
+    transition: -fx-scale-x 0.3s ease-in-out, -fx-scale-y 0.3s ease-in-out;
+}
+
+.button-signOut:hover{
+    -fx-cursor: hand;
+    -fx-background-insets: 0;
+    -fx-background-color: -signout-red-hover;
+    -fx-scale-x: 1.03;
+    -fx-scale-y: 1.08;
+} 
+
+.scroll-pane {
+    -fx-background-color: transparent;
+}
+
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+.stack-pane {
+    -fx-background-color: transparent;
+}
+
+.root.darkmode {
+    -bg-color: #131313;
+    -text-color: #e6e6e6;
+    -primary-color: #5b7cc7;
+    
+}

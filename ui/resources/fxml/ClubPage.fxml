@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.text.Font?>
+
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1050.0" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Pane layoutX="26.0" layoutY="22.0" prefHeight="472.0" prefWidth="1002.0" style="-fx-background-color: -menu-blue; -fx-background-radius: 20;">
+         <effect>
+            <DropShadow>
+               <color>
+                  <Color opacity="0.36692014336586" />
+               </color>
+            </DropShadow>
+         </effect>
+         <children>
+            <Label layoutX="31.0" layoutY="373.0" text="Club Name">
+               <font>
+                  <Font name="Arial Bold" size="31.0" />
+               </font>
+            </Label>
+            <Pane layoutX="228.0" layoutY="295.0" prefHeight="48.0" prefWidth="116.0" style="-fx-background-color: -dark-blue; -fx-background-radius: 10;">
+               <children>
+                  <Label layoutX="29.0" layoutY="14.0" style="-fx-text-fill: -bg-color;" text="Keyword">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+               </children>
+               <effect>
+                  <DropShadow>
+                     <color>
+                        <Color opacity="0.30000001192092896" />
+                     </color>
+                  </DropShadow>
+               </effect>
+            </Pane>
+            <Pane layoutX="359.0" layoutY="295.0" prefHeight="48.0" prefWidth="116.0" style="-fx-background-color: -dark-blue; -fx-background-radius: 10;">
+               <children>
+                  <Label layoutX="29.0" layoutY="14.0" style="-fx-text-fill: -bg-color;" text="Keyword">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+               </children>
+               <effect>
+                  <DropShadow>
+                     <color>
+                        <Color opacity="0.30000001192092896" />
+                     </color>
+                  </DropShadow>
+               </effect>
+            </Pane>
+            <Pane layoutX="486.0" layoutY="295.0" prefHeight="48.0" prefWidth="116.0" style="-fx-background-color: -dark-blue; -fx-background-radius: 10;">
+               <children>
+                  <Label layoutX="29.0" layoutY="14.0" style="-fx-text-fill: -bg-color;" text="Keyword">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+               </children>
+               <effect>
+                  <DropShadow>
+                     <color>
+                        <Color opacity="0.30000001192092896" />
+                     </color>
+                  </DropShadow>
+               </effect>
+            </Pane>
+            <Label layoutX="31.0" layoutY="442.0" text="&quot;Brief Club Desc&quot;" />
+            <Label layoutX="31.0" layoutY="416.0" text="Member Count">
+               <graphic>
+                  <ImageView fitHeight="21.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../assets/Icon.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Label>
+         </children>
+      </Pane>
+      <ImageView fx:id="clubBanner" fitHeight="259.0" fitWidth="981.0" layoutX="39.0" layoutY="33.0" pickOnBounds="true">
+         <image>
+            <Image url="@../assets/download.jpg" />
+         </image>
+      </ImageView>
+      <Pane layoutX="49.0" layoutY="218.0" prefHeight="162.0" prefWidth="175.0" style="-fx-background-color: -menu-blue; -fx-background-radius: 20;">
+         <children>
+            <ImageView fitHeight="153.0" fitWidth="153.0" layoutX="11.0" layoutY="5.0" pickOnBounds="true">
+               <image>
+                  <Image url="@../assets/defaultProfile.png" />
+               </image>
+            </ImageView>
+         </children>
+         <effect>
+            <DropShadow>
+               <color>
+                  <Color opacity="0.3700000047683716" />
+               </color>
+            </DropShadow>
+         </effect>
+      </Pane>
+      <ScrollPane layoutX="39.0" layoutY="535.0" prefHeight="153.0" prefWidth="804.0" style="-fx-background-color: -bg-color;">
+         <content>
+            <VBox fx:id="happeningSoonVBox" prefHeight="27.0" prefWidth="40.0" style="-fx-spacing: 15; -fx-padding: 25 25 30 25;" />
+         </content>
+      </ScrollPane>
+      <Label layoutX="44.0" layoutY="509.0" text="Upcoming Events">
+         <font>
+            <Font name="Arial Bold" size="22.0" />
+         </font>
+      </Label>
+   </children>
+</Pane>

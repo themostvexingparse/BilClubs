@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1050.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <GridPane layoutX="222.0" layoutY="112.0" prefHeight="502.0" prefWidth="752.0" style="-fx-background-color: #FAFCFF; -fx-border-color: #000000; -fx-border-width: 1; -fx-border-style: solid;">
+        <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints maxHeight="23.5" minHeight="10.0" prefHeight="23.5" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="79.5" minHeight="10.0" prefHeight="79.5" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="137.5" minHeight="10.0" prefHeight="73.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="147.0" minHeight="10.0" prefHeight="80.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="129.5" minHeight="10.0" prefHeight="72.5" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="112.5" minHeight="10.0" prefHeight="81.5" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="105.5" minHeight="10.0" prefHeight="87.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label text="Mon">
+               <padding>
+                  <Insets left="8.0" />
+               </padding>
+               <font>
+                  <Font name="Arial" size="12.0" />
+               </font>
+            </Label>
+            <Label text="Tue" GridPane.columnIndex="1">
+               <padding>
+                  <Insets left="8.0" />
+               </padding>
+               <font>
+                  <Font name="Arial" size="12.0" />
+               </font>
+            </Label>
+            <Label text="Wed" GridPane.columnIndex="2">
+               <padding>
+                  <Insets left="8.0" />
+               </padding>
+            </Label>
+            <Label text="Thu" GridPane.columnIndex="3">
+               <padding>
+                  <Insets left="10.0" />
+               </padding>
+            </Label>
+            <Label text="Fri" GridPane.columnIndex="4">
+               <padding>
+                  <Insets left="15.0" />
+               </padding>
+            </Label>
+            <Label text="Sat" GridPane.columnIndex="5">
+               <padding>
+                  <Insets left="13.0" />
+               </padding>
+            </Label>
+            <Label text="Sun" GridPane.columnIndex="6">
+               <padding>
+                  <Insets left="11.0" />
+               </padding>
+            </Label>
+            <StackPane prefHeight="150.0" prefWidth="200.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 0; -fx-border-radius: 0;" GridPane.rowIndex="1">
+               <effect>
+                  <DropShadow>
+                     <color>
+                        <Color opacity="0.05513308197259903" />
+                     </color>
+                  </DropShadow>
+               </effect>
+            </StackPane>
+            <StackPane prefHeight="40.0" prefWidth="108.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 0; -fx-border-radius: 0;" GridPane.rowIndex="2">
+               <effect>
+                  <DropShadow>
+                     <color>
+                        <Color opacity="0.05000000074505806" />
+                     </color>
+                  </DropShadow>
+               </effect>
+            </StackPane>
+         </children>
+      </GridPane>
+      <ComboBox layoutX="222.0" layoutY="73.0" prefHeight="25.0" prefWidth="76.0" />
+      <ComboBox layoutX="308.0" layoutY="73.0" prefHeight="25.0" prefWidth="76.0" />
+   </children>
+</AnchorPane>

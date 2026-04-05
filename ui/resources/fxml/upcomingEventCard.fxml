@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.text.Font?>
+
+<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="117.0" prefWidth="700.0" style="-fx-background-color: -card-blue; -fx-background-radius: 20;" styleClass="club-card" stylesheets="@../styles/styles.css" type="Pane" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+   <effect>
+      <DropShadow>
+         <color>
+            <Color opacity="0.550000011920929" />
+         </color>
+      </DropShadow>
+   </effect>
+   <children>
+      <StackPane layoutY="1.0" prefHeight="150.0" prefWidth="200.0" />
+      <ImageView fitHeight="110.0" fitWidth="110.0" layoutX="14.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true" />
+      <Label fx:id="eventName" layoutX="180.0" layoutY="21.0" style="-fx-text-fill: -text-color;" text="Event Name">
+         <font>
+            <Font name="Arial Bold" size="20.0" />
+         </font>
+      </Label>
+      <Label fx:id="clubName" layoutX="180.0" layoutY="48.0" style="-fx-text-fill: -primary-color;" text="Club name">
+         <font>
+            <Font name="Arial" size="18.0" />
+         </font>
+      </Label>
+      <Pane layoutX="180.0" layoutY="76.0" prefHeight="27.0" prefWidth="87.0" style="-fx-background-color: -bg-color; -fx-background-radius: 30;">
+         <children>
+            <Label layoutX="7.0" layoutY="3.0" prefHeight="21.0" prefWidth="27.0" text="GE:">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="gePoints" layoutX="41.0" layoutY="3.0" prefHeight="21.0" prefWidth="54.0" text="PTS" />
+         </children>
+         <effect>
+            <DropShadow>
+               <color>
+                  <Color opacity="0.5475285053253174" />
+               </color>
+            </DropShadow>
+         </effect>
+      </Pane>
+   </children>
+</fx:root>
