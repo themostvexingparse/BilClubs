@@ -286,6 +286,7 @@ public class APIHandler {
         data.put("firstName", user.getFirstName());
         data.put("lastName", user.getLastName());
         data.put("major", user.getMajor());
+        data.put("profilePicture", user.getProfilePicture());
         data.put("interests", new JSONArray(user.getInterests()));
         data.put("clubPrivileges", new JSONObject(user.getClubPrivileges()));
         return buildResponse(200, data, null);
