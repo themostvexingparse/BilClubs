@@ -25,7 +25,6 @@
                   <Image url="@../assets/banner.png" />
                </image>
             </ImageView>
-<<<<<<< HEAD
             <Button fx:id="registerButton" layoutX="732.0" layoutY="328.0" mnemonicParsing="false" onAction="#registerEvent" prefHeight="47.0" prefWidth="101.0" style="-fx-background-radius: 20;" text="Register">
                <font>
                   <Font name="Arial" size="17.0" />
@@ -39,9 +38,6 @@
                </effect>
             </Button>
             <Button fx:id="leaveButton" disable="true" layoutX="732.0" layoutY="328.0" mnemonicParsing="false" onAction="#leaveEvent" prefHeight="47.0" prefWidth="101.0" style="-fx-background-radius: 20; -fx-background-color: -signout-red;" text="Leave" visible="false">
-=======
-            <Button fx:id="leaveButton" layoutX="732.0" layoutY="328.0" mnemonicParsing="false" onAction="#leaveEvent" prefHeight="47.0" prefWidth="101.0" style="-fx-background-radius: 20; -fx-background-color: -signout-red;" text="Leave">
->>>>>>> a2b0fec (event methods added, fixes needed)
                <font>
                   <Font name="Arial" size="17.0" />
                </font>
@@ -82,18 +78,6 @@
                   </ImageView>
                </graphic>
             </Label>
-            <Button fx:id="registerButton" layoutX="732.0" layoutY="328.0" mnemonicParsing="false" onAction="#registerEvent" prefHeight="47.0" prefWidth="101.0" style="-fx-background-radius: 20;" text="Register">
-               <font>
-                  <Font name="Arial" size="17.0" />
-               </font>
-               <effect>
-                  <DropShadow>
-                     <color>
-                        <Color opacity="0.30000001192092896" />
-                     </color>
-                  </DropShadow>
-               </effect>
-            </Button>
          </children>
       </Pane>
       <Pane layoutX="50.0" layoutY="509.0" prefHeight="185.0" prefWidth="676.0" style="-fx-background-color: -card-blue; -fx-background-radius: 20;">

@@ -9,7 +9,6 @@ import javafx.stage.*;
 import javafx.scene.control.*;
 
 import java.io.IOException;
-
 import bilclubs.utils.LoadHelper;
 
 
@@ -53,6 +52,9 @@ public class MenuController {
         LoadHelper.safelyLoad(new FXMLLoader(getClass().getResource("/fxml/adminProfile.fxml")), rightAnchor);
     }
 
+    public void goToSearch(ActionEvent e) throws IOException{
+        LoadHelper.safelyLoad(new FXMLLoader(getClass().getResource("/fxml/searchbarpage.fxml")), rightAnchor);
+    }
     public void goToSettings(ActionEvent e) throws IOException {
         LoadHelper.safelyLoad(new FXMLLoader(getClass().getResource("/fxml/Settings.fxml")), rightAnchor);
     }

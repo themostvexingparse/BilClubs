@@ -62,12 +62,12 @@
                      <graphic>
                         <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../assets/search.png" />
+                              <Image url="@../assets/browseicon.png" />
                            </image>
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button fx:id="calendar" layoutX="7.0" layoutY="228.0" mnemonicParsing="false" onAction="#goToCalendar" prefHeight="30.0" prefWidth="208.0" style="-fx-background-radius: 10; -fx-padding: 0 0 0 -65;" styleClass="button-menu" stylesheets="@../styles/styles.css" text="Calendar">
+                  <Button fx:id="calendar" layoutX="8.0" layoutY="271.0" mnemonicParsing="false" onAction="#goToCalendar" prefHeight="30.0" prefWidth="208.0" style="-fx-background-radius: 10; -fx-padding: 0 0 0 -65;" styleClass="button-menu" stylesheets="@../styles/styles.css" text="Calendar">
                      <font>
                         <Font name="Arial Bold" size="14.0" />
                      </font>
@@ -89,7 +89,7 @@
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button fx:id="alerts" layoutX="7.0" layoutY="272.0" mnemonicParsing="false" onAction="#goToAlerts" prefHeight="30.0" prefWidth="208.0" style="-fx-background-radius: 10; -fx-padding: 0 0 0 -80;" styleClass="button-menu" stylesheets="@../styles/styles.css" text="Alerts">
+                  <Button fx:id="alerts" layoutX="8.0" layoutY="317.0" mnemonicParsing="false" onAction="#goToAlerts" prefHeight="30.0" prefWidth="208.0" style="-fx-background-radius: 10; -fx-padding: 0 0 0 -80;" styleClass="button-menu" stylesheets="@../styles/styles.css" text="Alerts">
                      <font>
                         <Font name="Arial Bold" size="14.0" />
                      </font>
@@ -111,7 +111,7 @@
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button fx:id="profile" layoutX="7.0" layoutY="316.0" mnemonicParsing="false" onAction="#goToAdminProfile" prefHeight="30.0" prefWidth="208.0" style="-fx-background-radius: 10; -fx-padding: 0 0 0 -80;" styleClass="button-menu" stylesheets="@../styles/styles.css" text="Profile">
+                  <Button fx:id="profile" layoutX="7.0" layoutY="360.0" mnemonicParsing="false" onAction="#goToAdminProfile" prefHeight="30.0" prefWidth="208.0" style="-fx-background-radius: 10; -fx-padding: 0 0 0 -80;" styleClass="button-menu" stylesheets="@../styles/styles.css" text="Profile">
                      <font>
                         <Font name="Arial Bold" size="14.0" />
                      </font>
@@ -133,7 +133,7 @@
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button fx:id="settings" layoutX="7.0" layoutY="360.0" mnemonicParsing="false" onAction="#goToSettings" prefHeight="30.0" prefWidth="208.0" style="-fx-background-radius: 10; -fx-padding: 0 0 0 -80;" styleClass="button-menu" stylesheets="@../styles/styles.css" text="Settings">
+                  <Button fx:id="settings" layoutX="8.0" layoutY="403.0" mnemonicParsing="false" onAction="#goToSettings" prefHeight="30.0" prefWidth="208.0" style="-fx-background-radius: 10; -fx-padding: 0 0 0 -80;" styleClass="button-menu" stylesheets="@../styles/styles.css" text="Settings">
                      <font>
                         <Font name="Arial Bold" size="14.0" />
                      </font>
@@ -187,6 +187,28 @@
                               </ImageView>
                            </graphic>
                         </Label>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="search" layoutX="8.0" layoutY="228.0" mnemonicParsing="false" onAction="#goToSearch" prefHeight="30.0" prefWidth="208.0" style="-fx-background-radius: 10; -fx-padding: 0 0 0 -78;" styleClass="button-menu" stylesheets="@../styles/styles.css" text="Search">
+                     <font>
+                        <Font name="Arial Bold" size="14.0" />
+                     </font>
+                     <effect>
+                        <DropShadow height="5.0" radius="2.0" width="5.0">
+                           <color>
+                              <Color opacity="0.20000000298023224" />
+                           </color>
+                        </DropShadow>
+                     </effect>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <graphic>
+                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../assets/search.png" />
+                           </image>
+                        </ImageView>
                      </graphic>
                   </Button>
                </children>

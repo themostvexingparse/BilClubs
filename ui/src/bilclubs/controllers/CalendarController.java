@@ -22,6 +22,12 @@ import java.net.URL;
 import java.time.ZonedDateTime;
 import java.util.*;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import bilclubs.utils.RequestManager;
+import bilclubs.utils.Response;
+
 public class CalendarController implements Initializable {
 
     ZonedDateTime dateFocus;
@@ -66,6 +72,25 @@ public class CalendarController implements Initializable {
         double strokeWidth = 1;
         double spacingH = calendar.getHgap();
         double spacingV = calendar.getVgap();
+
+        // JSONObject eventReq = new JSONObject();
+        // eventReq.put("action", "getUpcomingEvents");
+        // eventReq.put("userId", Controller.userId);
+        // eventReq.put("userSpecific", true);
+        // eventReq.put("sessionToken", Controller.sessionToken);
+
+        // Response eventResponse = RequestManager.sendPostRequest("api/user", eventReq);
+        // JSONArray userEvents = eventResponse.getPayload().optJSONArray("events");
+        // if (userEvents == null) userEvents = new JSONArray();
+        // Map<Integer,List<JSONObject>> events = new HashMap<>();
+        // events= getCalendarActivitiesMonth(userEvents);
+
+
+        // int monthMaxDate = dateFocus.getMonth().maxLength();
+        // //Check for leap year
+        // if(dateFocus.getYear() % 4 == 0 && monthMaxDate == 29){
+        //     monthMaxDate = 28;
+        // }
 
         //List of activities for a given month
         // Map<Integer, List<CalendarActivity>> calendarActivityMap = getCalendarActivitiesMonth(dateFocus);

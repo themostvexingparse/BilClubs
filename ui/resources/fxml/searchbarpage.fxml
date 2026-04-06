@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.URL?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
@@ -11,7 +12,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.paint.Color?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1050.0" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1050.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bilclubs.controllers.SearchController">
    <children>
       <Label layoutX="24.0" layoutY="29.0" prefHeight="48.0" prefWidth="683.0" style="-fx-background-radius: 20; -fx-background-color: -menu-blue;" styleClass="button-menu" stylesheets="@../styles/styles.css">
          <effect>
@@ -22,8 +23,8 @@
             </DropShadow>
          </effect></Label>
       <ImageView fitHeight="29.0" fitWidth="26.0" layoutX="217.0" layoutY="29.0" pickOnBounds="true" preserveRatio="true" />
-      <ChoiceBox fx:id="searchPicker" layoutX="635.0" layoutY="41.0" prefHeight="25.0" prefWidth="49.0" styleClass="menu-button" />
-      <TextField fx:id="searchField" layoutX="39.0" layoutY="35.0" prefHeight="37.0" prefWidth="590.0" style="-fx-background-color: transparent;" text="Search..." />
+      <ChoiceBox fx:id="searchPicker" layoutX="635.0" layoutY="41.0" prefHeight="25.0" prefWidth="49.0" styleClass="menu-button" stylesheets="@../styles/styles.css" />
+      <TextField fx:id="searchField" layoutX="39.0" layoutY="35.0" onAction="#search" prefHeight="37.0" prefWidth="590.0" promptText="Search..." style="-fx-background-color: transparent;" />
       <ImageView fitHeight="25.0" fitWidth="26.0" layoutX="592.0" layoutY="41.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../assets/search.png" />
@@ -40,4 +41,8 @@
          </content>
       </ScrollPane>
    </children>
+   <stylesheets>
+      <URL value="@../styles/styles.css" />
+      <URL value="@../styles/styles.css" />
+   </stylesheets>
 </Pane>
