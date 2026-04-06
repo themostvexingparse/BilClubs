@@ -130,6 +130,10 @@ public class User implements Embeddable {
         return profilePicture;
     }
 
+    public void setProfilePicture(String profilePicture) {
+        this.profilePicture = profilePicture;
+    }
+
     public void setFirstName(String firstName) {
         this.firstName = firstName.trim();
     }

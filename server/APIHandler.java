@@ -439,6 +439,13 @@ public class APIHandler {
             user.setInterests(interestsList);
         }
 
+        if (requestBody.has("profilePicture")) {
+            String profilePicture = requestBody.optString("profilePicture", "").trim();
+            if (profilePicture.isEmpty())
+                return buildResponse(400, null, "profilePicture cannot be empty.");
+            user.setProfilePicture("static/" + profilePicture);
+        }
+
         manager.updateUser(user);
         return buildResponse(200, null, null);
     }
