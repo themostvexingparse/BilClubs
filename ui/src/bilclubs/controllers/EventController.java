@@ -1,8 +1,11 @@
 package bilclubs.controllers;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import bilclubs.utils.RequestManager;
+import bilclubs.utils.Response;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -10,37 +13,144 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 public class EventController {
-    @FXML private Label eventNameLbl;
-    @FXML private Label clubNameLbl;
-    @FXML private Label descLbl;
-    @FXML private Label datelbl;
-    @FXML private Label placelbl;
-    @FXML private Label durationlbl;
-    @FXML private Label detailslbl;
-    @FXML private Label gelbl;
-    @FXML private ImageView eventBanner;
-    @FXML private Button registerButton;
-
-    //instance
-    private JSONObject currentEvent;
 
     @FXML
-    public void initialize(){
+    private Label eventNameLbl;
+    @FXML
+    private Label clubNameLbl;
+    @FXML
+    private Label descLbl;
+    @FXML
+    private Label datelbl;
+    @FXML
+    private Label placelbl;
+    @FXML
+    private Label durationlbl;
+    @FXML
+    private Label detailslbl;
+    @FXML
+    private Label gelbl;
+    @FXML
+    private ImageView eventBanner;
+    @FXML
+    private Button registerButton;
+    @FXML
+    private Button leaveButton;
+
+    private JSONObject currentEvent;
+    private int currentEventId;
+
+    @FXML
+    public void initialize() {
         currentEvent = Controller.currentEventObject;
+        currentEventId = currentEvent.getInt("eventId");
 
         eventNameLbl.setText(currentEvent.getString("name"));
         clubNameLbl.setText(currentEvent.getString("clubName"));
         descLbl.setText(currentEvent.getString("description"));
         datelbl.setText(currentEvent.getString("startDate"));
         placelbl.setText(currentEvent.getString("location"));
-        // durationlbl.setText(currentEvent.getString("duration"));
-        // gelbl.setText(String.valueOf(currentEvent.getInt("points")));
+        durationlbl.setText(currentEvent.optString("duration", "N/A"));
 
+        int ge250 = currentEvent.optInt("GE250", 0);
+        gelbl.setText(ge250 > 0 ? String.valueOf(ge250) : "None");
 
-        String posterImage = currentEvent.getString("posterImage");
-        Image eventImg = new Image(RequestManager.defaultAddress + posterImage, true);
-        eventBanner.setImage(eventImg);
+        int registreeCount = currentEvent.optInt("registreeCount", 0);
+        Object quotaRaw = currentEvent.opt("quota");
+        if (quotaRaw == null || quotaRaw == JSONObject.NULL) {
+            detailslbl.setText(registreeCount + " registered  ·  Unlimited capacity");
+        } else {
+            int quota = currentEvent.getInt("quota");
+            detailslbl.setText(registreeCount + " / " + quota + " registered");
+        }
+
+        String posterImage = currentEvent.optString("posterImage", "");
+        if (!posterImage.isEmpty()) {
+            Image eventImg = new Image(RequestManager.defaultAddress + posterImage, true);
+            eventBanner.setImage(eventImg);
+        }
+
+        // Determine if the user is already registered for this event by
+        // fetching their registered events (userSpecific=true filters to only
+        // events the authenticated user has registered for).
+        checkRegistrationState();
     }
 
+    /**
+     * Calls getUpcomingEvents with userSpecific=true to see if the current
+     * event is already in the user's registered events. Sets button visibility
+     * accordingly: show Leave if registered, show Register if not.
+     */
+    private void checkRegistrationState() {
+        JSONObject req = new JSONObject();
+        req.put("action", "getUpcomingEvents");
+        req.put("userId", Controller.userId);
+        req.put("sessionToken", Controller.sessionToken);
+        req.put("userSpecific", true);
 
+        Response response = RequestManager.sendPostRequest("api/user", req);
+        if (!response.isSuccess())
+            return;
+
+        JSONArray events = response.getPayload().optJSONArray("events");
+        if (events == null)
+            return;
+
+        boolean isRegistered = false;
+        for (int i = 0; i < events.length(); i++) {
+            if (events.getJSONObject(i).optInt("eventId", -1) == currentEventId) {
+                isRegistered = true;
+                break;
+            }
+        }
+
+        setRegisteredState(isRegistered);
+    }
+
+    /** Shows the Leave button and hides Register, or vice versa. */
+    private void setRegisteredState(boolean registered) {
+        if (registered) {
+            registerButton.setVisible(false);
+            registerButton.setDisable(true);
+            leaveButton.setVisible(true);
+            leaveButton.setDisable(false);
+        } else {
+            leaveButton.setVisible(false);
+            leaveButton.setDisable(true);
+            registerButton.setVisible(true);
+            registerButton.setDisable(false);
+        }
+    }
+
+    /** Handles the Register button click. Sends action:"register" to /api/event. */
+    public void registerEvent(ActionEvent e) {
+        JSONObject req = new JSONObject();
+        req.put("action", "register");
+        req.put("eventId", currentEventId);
+        req.put("userId", Controller.userId);
+        req.put("sessionToken", Controller.sessionToken);
+
+        Response response = RequestManager.sendPostRequest("api/event", req);
+        System.out.println("registerEvent: " + response);
+
+        if (response.isSuccess()) {
+            setRegisteredState(true);
+        }
+    }
+
+    /** Handles the Leave button click. Sends action:"leave" to /api/event. */
+    public void leaveEvent(ActionEvent e) {
+        JSONObject req = new JSONObject();
+        req.put("action", "leave");
+        req.put("eventId", currentEventId);
+        req.put("userId", Controller.userId);
+        req.put("sessionToken", Controller.sessionToken);
+
+        Response response = RequestManager.sendPostRequest("api/event", req);
+        System.out.println("leaveEvent: " + response);
+
+        if (response.isSuccess()) {
+            setRegisteredState(false);
+        }
+    }
 }

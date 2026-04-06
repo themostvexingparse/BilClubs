@@ -25,7 +25,19 @@
                   <Image url="@../assets/banner.png" />
                </image>
             </ImageView>
-            <Button fx:id="registerButton" layoutX="732.0" layoutY="328.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="101.0" style="-fx-background-radius: 20;" text="Register">
+            <Button fx:id="registerButton" layoutX="732.0" layoutY="328.0" mnemonicParsing="false" onAction="#registerEvent" prefHeight="47.0" prefWidth="101.0" style="-fx-background-radius: 20;" text="Register">
+               <font>
+                  <Font name="Arial" size="17.0" />
+               </font>
+               <effect>
+                  <DropShadow>
+                     <color>
+                        <Color opacity="0.30000001192092896" />
+                     </color>
+                  </DropShadow>
+               </effect>
+            </Button>
+            <Button fx:id="leaveButton" disable="true" layoutX="732.0" layoutY="328.0" mnemonicParsing="false" onAction="#leaveEvent" prefHeight="47.0" prefWidth="101.0" style="-fx-background-radius: 20; -fx-background-color: -signout-red;" text="Leave" visible="false">
                <font>
                   <Font name="Arial" size="17.0" />
                </font>
