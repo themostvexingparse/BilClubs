@@ -62,6 +62,7 @@ public class InterestController {
     @FXML private CheckBox journalism;
     @FXML private CheckBox politics;
     @FXML private TextArea bioArea;
+    @FXML private Button submitButton;
 
     //anchor
     @FXML private AnchorPane interestAnchor;
@@ -91,20 +92,11 @@ public class InterestController {
     }
 
     public void goToHomePage(ActionEvent e) throws IOException{
-        getKeywords(e);
-
-        FXMLLoader root = new FXMLLoader(getClass().getResource("./fxml/MenuBarSizedUp.fxml"));
-        stage = (Stage)bioArea.getScene().getWindow();
-
-        LoadHelper.safelyLoad(root, stage);
-        
+        stage = (Stage)submitButton.getScene().getWindow();
+        FXMLLoader mainPageFXML = new FXMLLoader(getClass().getResource("/fxml/welcomescenebuilder.fxml"));
+        LoadHelper.safelyLoad(mainPageFXML, stage);
     }
 
-    private void getKeywords(ActionEvent e){
-        //burda aynı zamanda embeddingse göndermemiz lazım
-        String toEmbed = bioArea.getText();
-        interestList.add(toEmbed);
-    }
 
     
 

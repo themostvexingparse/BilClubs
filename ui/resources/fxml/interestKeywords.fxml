@@ -15,7 +15,7 @@
             <Font name="Arial Bold" size="16.0" />
          </font>
       </Label>
-      <Button layoutX="607.0" layoutY="222.0" mnemonicParsing="false" onAction="#goToHomePage" prefHeight="27.0" prefWidth="63.0" text="Submit!" textFill="WHITE" />
+      <Button fx:id="submitButton" layoutX="607.0" layoutY="222.0" mnemonicParsing="false" onAction="#goToHomePage" prefHeight="27.0" prefWidth="63.0" text="Submit!" textFill="WHITE" />
       <ImageView fitHeight="80.0" fitWidth="103.0" layoutX="599.0" layoutY="115.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../assets/bilclubs%20logo%201.png" />

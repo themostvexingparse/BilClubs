@@ -6,7 +6,10 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
 import bilclubs.components.ClubPane;
@@ -18,6 +21,10 @@ public class HomePageController {
     
     @FXML private HBox yourClubsHBox;
     @FXML private VBox happeningSoonVBox;
+    @FXML private ImageView sleepingIcon;
+    @FXML private Label noClubText;
+    @FXML private Pane borderPane;
+
 
     @FXML
     public void initialize() throws IOException{
@@ -37,7 +44,19 @@ public class HomePageController {
         clubReq.put("action", "getForeignProfileClubs");
 
         Response clubResponse = RequestManager.sendPostRequest("api/user", clubReq);
-        JSONArray clubData = clubResponse.getPayload().getJSONArray("clubs");
+        JSONArray clubData = clubResponse.getPayload().optJSONArray("clubs");
+        if (clubData == null) clubData = new JSONArray();
+
+        if(clubData.length() == 0){
+            sleepingIcon.setVisible(true);
+            noClubText.setVisible(true);
+        }
+
+        else{
+            sleepingIcon.setVisible(false);
+            noClubText.setVisible(false);
+            borderPane.setStyle("-fx-border-color: transparent;");
+        }
 
         JSONArray clubIds = new JSONArray();
         for(Object obj : clubData){
@@ -59,7 +78,10 @@ public class HomePageController {
         eventReq.put("sessionToken", Controller.sessionToken);
 
         Response eventResponse = RequestManager.sendPostRequest("api/user", eventReq);
-        JSONArray userEvents = eventResponse.getPayload().getJSONArray("events");
+        JSONArray userEvents = eventResponse.getPayload().optJSONArray("events");
+        if (userEvents == null) userEvents = new JSONArray();
+
+
         for (Object obj :  userEvents){
             JSONObject anEvent = (JSONObject)obj;
             EventPane displayEvent = new EventPane(anEvent.getString("name"), anEvent.getString("clubName"),  String.valueOf(anEvent.optInt("points", 0)));
