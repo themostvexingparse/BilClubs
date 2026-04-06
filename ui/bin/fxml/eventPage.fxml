@@ -9,7 +9,6 @@
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1050.0" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bilclubs.controllers.EventController">
    <children>
       <Pane layoutX="50.0" layoutY="47.0" prefHeight="418.0" prefWidth="855.0" style="-fx-background-color: -card-blue; -fx-background-radius: 20;">
@@ -38,12 +37,12 @@
                   </DropShadow>
                </effect>
             </Button>
-            <Label fx:id="eventNameLbl" layoutX="24.0" layoutY="315.0" prefHeight="41.0" prefWidth="173.0" text="Event Name">
+            <Label fx:id="eventNameLbl" layoutX="24.0" layoutY="315.0" prefHeight="41.0" prefWidth="689.0" text="Event Name">
                <font>
                   <Font name="Arial Bold" size="25.0" />
                </font>
             </Label>
-            <Label fx:id="clubNameLbl" layoutX="26.0" layoutY="346.0" prefHeight="41.0" prefWidth="173.0" text="clubName">
+            <Label fx:id="clubNameLbl" layoutX="26.0" layoutY="346.0" prefHeight="41.0" prefWidth="676.0" text="clubName">
                <font>
                   <Font name="Arial Bold" size="16.0" />
                </font>
@@ -55,7 +54,7 @@
                   </ImageView>
                </graphic>
             </Label>
-            <Label fx:id="descLbl" layoutX="26.0" layoutY="369.0" prefHeight="41.0" prefWidth="173.0" text="Desc">
+            <Label fx:id="descLbl" layoutX="26.0" layoutY="369.0" prefHeight="41.0" prefWidth="700.0" text="Desc">
                <font>
                   <Font name="Arial" size="16.0" />
                </font>
@@ -98,16 +97,16 @@
                   <Font name="Arial Bold" size="18.0" />
                </font>
             </Label>
-            <Label fx:id="datelbl" layoutX="90.0" layoutY="20.0" text="datelbl" />
-            <Label fx:id="placelbl" layoutX="93.0" layoutY="54.0" text="placelbl" />
-            <Label fx:id="durationlbl" layoutX="120.0" layoutY="89.0" text="durationlbl" />
-            <Label fx:id="detailslbl" layoutX="102.0" layoutY="124.0" text="detailslbl" />
+            <Label fx:id="datelbl" layoutX="90.0" layoutY="20.0" prefHeight="17.0" prefWidth="379.0" text="datelbl" />
+            <Label fx:id="placelbl" layoutX="93.0" layoutY="54.0" prefHeight="17.0" prefWidth="379.0" text="placelbl" />
+            <Label fx:id="durationlbl" layoutX="120.0" layoutY="89.0" prefHeight="17.0" prefWidth="379.0" text="durationlbl" />
+            <Label fx:id="detailslbl" layoutX="102.0" layoutY="124.0" prefHeight="17.0" prefWidth="437.0" text="detailslbl" />
             <Label layoutX="29.0" layoutY="150.0" text="GE-Points:">
                <font>
                   <Font name="Arial Bold" size="18.0" />
                </font>
             </Label>
-            <Label fx:id="gelbl" layoutX="135.0" layoutY="152.0" text="gelbl" />
+            <Label fx:id="gelbl" layoutX="135.0" layoutY="152.0" prefHeight="17.0" prefWidth="379.0" text="gelbl" />
          </children>
       </Pane>
       <Label layoutX="73.0" layoutY="465.0" prefHeight="47.0" prefWidth="181.0" text="Information">

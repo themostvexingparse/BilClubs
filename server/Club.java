@@ -23,7 +23,8 @@ public class Club {
     @ElementCollection(fetch = FetchType.EAGER)
     private ArrayList<Event> events = null;
 
-    private String iconFilename = "static/default-club-icon.jpg";
+    private String iconFilename = "static/default-club-icon.png";
+    private String coverFilename = "static/default-club-cover.jpg";
 
     // a no argument constructor is required by JPA
     public Club() {
@@ -93,6 +94,14 @@ public class Club {
 
     public void setIconFilename(String iconFilename) {
         this.iconFilename = iconFilename;
+    }
+
+    public String getCoverFilename() {
+        return coverFilename;
+    }
+
+    public void setCoverFilename(String coverFilename) {
+        this.coverFilename = coverFilename;
     }
 
     @Override

@@ -98,6 +98,7 @@ public class APIHandler {
                 return login(requestBody);
             case "logout":
             case "joinClub":
+            case "leaveClub":
             case "getProfile":
             case "getForeignProfile":
             case "getForeignProfileClubs":
@@ -135,6 +136,8 @@ public class APIHandler {
                 return logout(user, requestBody);
             case "joinClub":
                 return joinClub(user, requestBody);
+            case "leaveClub":
+                return leaveClub(user, requestBody);
             case "getProfile":
                 return getProfile(user, requestBody);
             case "getForeignProfile":
@@ -282,6 +285,9 @@ public class APIHandler {
             if (club == null) {
                 return buildResponse(400, null, "No club found with the given clubId.");
             }
+            if (user.isRegisteredInClub(club)) {
+                return buildResponse(400, null, "You are already a member of this club.");
+            }
             club.addMember(user);
             user.joinClub(club);
             manager.updateUser(user);
@@ -290,7 +296,7 @@ public class APIHandler {
                 HashMap<String, String> formatMap = new HashMap<>();
                 formatMap.put("name", user.getFullName());
                 formatMap.put("club_name", club.getClubName());
-                formatMap.put("join_date", LocalDateTime.now(ZoneOffset.UTC).toString());
+                formatMap.put("join_date", LocalDateTime.now().toString());
                 HTMLTemplate clubJoinedMessage = clubJoinedTemplate.formatted(formatMap);
                 MailMessage joinMessage = new MailMessage();
                 joinMessage.setSubject("You joined " + club.getClubName() + "!");
@@ -302,6 +308,41 @@ public class APIHandler {
             }
             return buildResponse(200, data, null);
         }
+    }
+
+    private static JSONObject leaveClub(User user, JSONObject requestBody) {
+        Integer clubId = requestBody.optIntegerObject("clubId", null);
+        if (clubId == null) {
+            return buildResponse(400, null, "clubId cannot be empty.");
+        }
+        Filter clubFilter = new Filter();
+        clubFilter.addFilter("id", clubId);
+        Club club = manager.queryClub(clubFilter);
+        if (club == null) {
+            return buildResponse(400, null, "No club found with the given clubId.");
+        }
+        if (!user.isRegisteredInClub(club)) {
+            return buildResponse(400, null, "You are not a member of this club.");
+        }
+        club.removeMember(user);
+        user.leaveClub(club);
+        manager.updateUser(user);
+        manager.updateClub(club);
+        if (user.wantToRecieveMails()) {
+            HashMap<String, String> formatMap = new HashMap<>();
+            formatMap.put("name", user.getFullName());
+            formatMap.put("club_name", club.getClubName());
+            formatMap.put("leave_date", LocalDateTime.now().toString());
+            HTMLTemplate clubLeftMessage = clubLeftTemplate.formatted(formatMap);
+            MailMessage leaveMessage = new MailMessage();
+            leaveMessage.setSubject("You left " + club.getClubName());
+            leaveMessage.fromTemplate(clubLeftMessage);
+            leaveMessage.addRecipient(user.getEmail());
+            MailTask leaveMailTask = session.getTask(leaveMessage);
+            if (leaveMailTask != null)
+                concurrentExecutor.submit(leaveMailTask);
+        }
+        return buildResponse(200, new JSONObject(), null);
     }
 
     private static JSONObject getProfile(User user, JSONObject requestBody) {
@@ -357,7 +398,8 @@ public class APIHandler {
             JSONObject clubData = new JSONObject();
             clubData.put("id", club.getId());
             clubData.put("name", club.getClubName());
-            clubData.put("icon", club.getIconFilename());
+            clubData.put("iconFilename", club.getIconFilename());
+            clubData.put("coverFilename", club.getCoverFilename());
             clubData.put("description", club.getClubDescription());
             clubDatas.put(clubData);
         }
@@ -475,6 +517,8 @@ public class APIHandler {
             clubJson.put("clubName", club.getClubName());
             clubJson.put("clubDescription", club.getClubDescription());
             clubJson.put("clubPrivilege", user.getClubPrivileges().get(club.getId()));
+            clubJson.put("iconFilename", club.getIconFilename());
+            clubJson.put("coverFilename", club.getCoverFilename());
             clubArray.put(clubJson);
         }
 
@@ -497,6 +541,16 @@ public class APIHandler {
         Club newClub = new Club(clubName, clubDescription);
         if (!manager.addClub(newClub)) {
             return buildResponse(500, null, "Club could not be created due to a database error.");
+        }
+
+        String iconFilename = requestBody.optString("iconFilename", null);
+        if (iconFilename != null) {
+            newClub.setIconFilename(iconFilename);
+        }
+
+        String coverFilename = requestBody.optString("coverFilename", null);
+        if (coverFilename != null) {
+            newClub.setCoverFilename(coverFilename);
         }
 
         newClub.addMember(user);
@@ -569,7 +623,7 @@ public class APIHandler {
             item.put("id", club.getId());
             item.put("name", club.getClubName());
             item.put("description", club.getClubDescription());
-            item.put("icon", club.getIconFilename());
+            item.put("iconFilename", club.getIconFilename());
             results.put(item);
         }
 
