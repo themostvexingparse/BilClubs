@@ -3,10 +3,15 @@ package bilclubs.controllers;
 import java.io.IOException;
 import java.util.Collection;
 
+import javax.swing.Action;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
@@ -24,6 +29,9 @@ public class ClubController {
     @FXML private Label keyword1;
     @FXML private Label keyword2;
     @FXML private Label keyword3;
+    @FXML private Button joinButton;
+    @FXML private Button leaveButton;
+    @FXML private Button manageButton;
 
     @FXML
     public void initialize() throws IOException{
@@ -37,12 +45,17 @@ public class ClubController {
 
         for(Object obj : allClubsJSONArray){
             JSONObject club = (JSONObject)obj;
-
+            int clubPrivilege = club.getInt("clubPrivilege");
+            if(clubPrivilege > 1){
+                //manager
+                manageButton.setVisible(true);
+                manageButton.setDisable(false);
+            }
             if(club.getInt("id") == Controller.currentClubId){
                 clubNameLbl.setText(club.getString("clubName"));
                 clubDescLbl.setText(club.getString("clubDescription").split("\n")[0]);
 
-                //TODO: Image handling
+                //TODO: Image handling yapılcak
 
                 break;
             }
@@ -65,5 +78,46 @@ public class ClubController {
             happeningSoonVBox.getChildren().add(event);
         }
     }
+
+    public void joinClub(ActionEvent e) throws IOException{
+        JSONObject joinRequest = new JSONObject();
+        joinRequest.put("action", "joinClub");
+        joinRequest.put("clubId", new JSONArray().put(Controller.currentClubId));
+        joinRequest.put("userId", Controller.userId);
+        joinRequest.put("sessionToken", Controller.sessionToken);
+
+        Response joinResponse = RequestManager.sendPostRequest("api/user", joinRequest);
+        System.out.println(joinResponse);
+
+        if(joinResponse.isSuccess()){
+            joinButton.setVisible(false);
+            joinButton.setDisable(true);
+
+            leaveButton.setVisible(true);
+            leaveButton.setDisable(false);
+        }
+    }
+
+    public void leaveClub(ActionEvent e) throws IOException{
+        JSONObject leaveRequest = new JSONObject();
+        leaveRequest.put("action", "leaveClub"); //bu eklenecek
+        leaveRequest.put("clubId", new JSONArray().put(Controller.currentClubId));
+        leaveRequest.put("userId", Controller.userId);
+        leaveRequest.put("sessionToken", Controller.sessionToken);
+
+        Response leaveResponse = RequestManager.sendPostRequest("api/user", leaveRequest);
+        System.out.println(leaveResponse);
+
+        if(leaveResponse.isSuccess()){
+            leaveButton.setVisible(false);
+            leaveButton.setDisable(true);
+
+            joinButton.setVisible(true);
+            joinButton.setDisable(false);
+        }
+    }
     
+    public void manageClub(ActionEvent e) throws IOException{
+        // FXMLLoader manageClubPage = new FXMLLoader()
+    }
 }

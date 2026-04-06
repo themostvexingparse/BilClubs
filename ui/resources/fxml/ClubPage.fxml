@@ -37,8 +37,17 @@
                   </ImageView>
                </graphic>
             </Label>
-            <Button layoutX="217.0" layoutY="303.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="133.0" style="-fx-background-color: -signout-red;" text="Leave Club" />
-            <Button layoutX="217.0" layoutY="303.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="133.0" style="-fx-background-color: -dark-blue;" text="Join Club" />
+            <Button fx:id="leaveButton" layoutX="217.0" layoutY="303.0" mnemonicParsing="false" onAction="#leaveClub" prefHeight="48.0" prefWidth="133.0" style="-fx-background-color: -signout-red;" text="Leave Club" />
+            <Button fx:id="joinButton" layoutX="217.0" layoutY="303.0" mnemonicParsing="false" onAction="#joinClub" prefHeight="48.0" prefWidth="133.0" style="-fx-background-color: -dark-blue;" text="Join Club">
+               <font>
+                  <Font name="Arial Bold" size="12.0" />
+               </font>
+            </Button>
+            <Button fx:id="manageButton" disable="true" layoutX="368.0" layoutY="303.0" mnemonicParsing="false" onAction="#joinClub" prefHeight="48.0" prefWidth="133.0" style="-fx-background-color: -manager-green;" text="Manage Club" visible="false">
+               <font>
+                  <Font name="Arial Bold" size="12.0" />
+               </font>
+            </Button>
          </children>
       </Pane>
       <ImageView fx:id="clubBanner" fitHeight="259.0" fitWidth="981.0" layoutX="39.0" layoutY="33.0" pickOnBounds="true">

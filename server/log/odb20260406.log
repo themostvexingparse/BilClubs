@@ -1,64 +1,20 @@
 ------------------------------------------------------------------------------------------------------------------------
 
-[2026-04-06 18:40:06 #1 store] 
-Database 'C:\Users\nazli\Desktop\BilClubs\server\db\bilclubs.odb' has been recovered (tr. 248-248)
+[2026-04-06 22:54:51 #1 store] 
+Database 'C:\Users\nazli\Desktop\BilClubs\server\db\bilclubs.odb' has been recovered (tr. 262-262)
 
-[2026-04-06 18:40:06 #2 store] 
-Database 'C:\Users\nazli\Desktop\BilClubs\server\db\bilclubs.odb' is opened by 58632@LAPTOP-2FMELNRI
+[2026-04-06 22:54:51 #2 store] 
+Database 'C:\Users\nazli\Desktop\BilClubs\server\db\bilclubs.odb' is opened by 60260@LAPTOP-2FMELNRI
 
-[2026-04-06 18:40:06 #3 store] 
+[2026-04-06 22:54:51 #3 store] 
 Configuration path: ?
 
-[2026-04-06 18:40:06 #4 type] 
+[2026-04-06 22:54:51 #4 type] 
 Type User is not enhanced.
 
-[2026-04-06 18:40:06 #5 type] 
+[2026-04-06 22:54:51 #5 type] 
 Type Event is not enhanced.
 
-[2026-04-06 18:40:06 #6 type] 
+[2026-04-06 22:54:51 #6 type] 
 Type Club is not enhanced.
-
-[2026-04-06 18:40:15 #7 store] 
-Database 'C:\Users\nazli\Desktop\BilClubs\server\db\static.odb' has been recovered (tr. 6-8)
-
-[2026-04-06 18:40:15 #8 store] 
-Database 'C:\Users\nazli\Desktop\BilClubs\server\db\static.odb' is opened by 58632@LAPTOP-2FMELNRI
-
-[2026-04-06 18:40:15 #9 store] 
-Configuration path: ?
-
-[2026-04-06 18:40:15 #10 type] 
-Type Media is not enhanced.
-
-------------------------------------------------------------------------------------------------------------------------
-
-[2026-04-06 18:42:39 #1 store] 
-Database 'C:\Users\nazli\Desktop\BilClubs\server\db\bilclubs.odb' has been recovered (tr. 249-250)
-
-[2026-04-06 18:42:40 #2 store] 
-Database 'C:\Users\nazli\Desktop\BilClubs\server\db\bilclubs.odb' is opened by 71648@LAPTOP-2FMELNRI
-
-[2026-04-06 18:42:40 #3 store] 
-Configuration path: ?
-
-[2026-04-06 18:42:40 #4 type] 
-Type User is not enhanced.
-
-[2026-04-06 18:42:40 #5 type] 
-Type Event is not enhanced.
-
-[2026-04-06 18:42:40 #6 type] 
-Type Club is not enhanced.
-
-[2026-04-06 18:42:52 #7 store] 
-Database 'C:\Users\nazli\Desktop\BilClubs\server\db\static.odb' has been recovered (tr. 9-9)
-
-[2026-04-06 18:42:52 #8 store] 
-Database 'C:\Users\nazli\Desktop\BilClubs\server\db\static.odb' is opened by 71648@LAPTOP-2FMELNRI
-
-[2026-04-06 18:42:52 #9 store] 
-Configuration path: ?
-
-[2026-04-06 18:42:52 #10 type] 
-Type Media is not enhanced.
 

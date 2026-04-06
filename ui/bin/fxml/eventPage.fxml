@@ -1,6 +1,119 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.text.Font?>
 
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1050.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" />
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1050.0" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bilclubs.controllers.EventController">
+   <children>
+      <Pane layoutX="50.0" layoutY="47.0" prefHeight="418.0" prefWidth="855.0" style="-fx-background-color: -card-blue; -fx-background-radius: 20;">
+         <effect>
+            <DropShadow>
+               <color>
+                  <Color opacity="0.30000001192092896" />
+               </color>
+            </DropShadow>
+         </effect>
+         <children>
+            <ImageView fx:id="eventBanner" fitHeight="298.0" fitWidth="819.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true">
+               <image>
+                  <Image url="@../assets/banner.png" />
+               </image>
+            </ImageView>
+            <Button fx:id="registerButton" layoutX="732.0" layoutY="328.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="101.0" style="-fx-background-radius: 20;" text="Register">
+               <font>
+                  <Font name="Arial" size="17.0" />
+               </font>
+               <effect>
+                  <DropShadow>
+                     <color>
+                        <Color opacity="0.30000001192092896" />
+                     </color>
+                  </DropShadow>
+               </effect>
+            </Button>
+            <Label fx:id="eventNameLbl" layoutX="24.0" layoutY="315.0" prefHeight="41.0" prefWidth="173.0" text="Event Name">
+               <font>
+                  <Font name="Arial Bold" size="25.0" />
+               </font>
+            </Label>
+            <Label fx:id="clubNameLbl" layoutX="26.0" layoutY="346.0" prefHeight="41.0" prefWidth="173.0" text="clubName">
+               <font>
+                  <Font name="Arial Bold" size="16.0" />
+               </font>
+               <graphic>
+                  <ImageView fitHeight="24.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../assets/Icon.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Label>
+            <Label fx:id="descLbl" layoutX="26.0" layoutY="369.0" prefHeight="41.0" prefWidth="173.0" text="Desc">
+               <font>
+                  <Font name="Arial" size="16.0" />
+               </font>
+               <graphic>
+                  <ImageView fitHeight="27.0" fitWidth="17.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../assets/search.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Label>
+         </children>
+      </Pane>
+      <Pane layoutX="50.0" layoutY="509.0" prefHeight="185.0" prefWidth="676.0" style="-fx-background-color: -card-blue; -fx-background-radius: 20;">
+         <effect>
+            <DropShadow>
+               <color>
+                  <Color opacity="0.30000001192092896" />
+               </color>
+            </DropShadow>
+         </effect>
+         <children>
+            <Label layoutX="29.0" layoutY="18.0" text="Date:">
+               <font>
+                  <Font name="Arial Bold" size="18.0" />
+               </font>
+            </Label>
+            <Label layoutX="30.0" layoutY="52.0" text="Place:">
+               <font>
+                  <Font name="Arial Bold" size="18.0" />
+               </font>
+            </Label>
+            <Label layoutX="29.0" layoutY="122.0" text="Details:">
+               <font>
+                  <Font name="Arial Bold" size="18.0" />
+               </font>
+            </Label>
+            <Label layoutX="29.0" layoutY="87.0" text="Duration:">
+               <font>
+                  <Font name="Arial Bold" size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="datelbl" layoutX="90.0" layoutY="20.0" text="datelbl" />
+            <Label fx:id="placelbl" layoutX="93.0" layoutY="54.0" text="placelbl" />
+            <Label fx:id="durationlbl" layoutX="120.0" layoutY="89.0" text="durationlbl" />
+            <Label fx:id="detailslbl" layoutX="102.0" layoutY="124.0" text="detailslbl" />
+            <Label layoutX="29.0" layoutY="150.0" text="GE-Points:">
+               <font>
+                  <Font name="Arial Bold" size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="gelbl" layoutX="135.0" layoutY="152.0" text="gelbl" />
+         </children>
+      </Pane>
+      <Label layoutX="73.0" layoutY="465.0" prefHeight="47.0" prefWidth="181.0" text="Information">
+         <font>
+            <Font name="Arial Bold" size="25.0" />
+         </font>
+      </Label>
+   </children>
+</Pane>

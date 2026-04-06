@@ -150,7 +150,7 @@ public class APIHandler {
             case "generateEmbeddings":
                 return generateEmbeddings(user, requestBody);
             case "listClubs":
-                return listClubs(requestBody);
+                return listClubs(user, requestBody);
             default:
                 return buildResponse(400, null, "Unsupported user action.");
         }
@@ -465,7 +465,7 @@ public class APIHandler {
         return buildResponse(200, null, null);
     }
 
-    private static JSONObject listClubs(JSONObject requestBody) {
+    private static JSONObject listClubs(User user, JSONObject requestBody) {
         JSONArray clubArray = new JSONArray();
         List<Club> clubs = manager.queryClubs(new Filter());
         for (Club club : clubs) {
@@ -473,6 +473,7 @@ public class APIHandler {
             clubJson.put("id", club.getId());
             clubJson.put("clubName", club.getClubName());
             clubJson.put("clubDescription", club.getClubDescription());
+            clubJson.put("clubPrivilege", user.getClubPrivileges().get(club.getId()));
             clubArray.put(clubJson);
         }
 

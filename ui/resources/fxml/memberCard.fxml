@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.text.Font?>
+
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="60.0" prefWidth="250.0" style="-fx-background-color: -menu-blue; -fx-background-radius: 20;" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+   <effect>
+      <DropShadow>
+         <color>
+            <Color opacity="0.4000000059604645" />
+         </color>
+      </DropShadow>
+   </effect>
+   <children>
+      <ImageView fx:id="clubImage" fitHeight="50.0" fitWidth="50.0" layoutX="10.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../assets/bilclubspfp.jpg" />
+         </image>
+         <effect>
+            <DropShadow>
+               <color>
+                  <Color opacity="0.3821292817592621" />
+               </color>
+            </DropShadow>
+         </effect>
+      </ImageView>
+      <Label fx:id="namelbl" layoutX="64.0" layoutY="14.0" prefHeight="15.0" prefWidth="169.0" text="Member name">
+         <font>
+            <Font name="Arial Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label fx:id="desclbl" layoutX="64.0" layoutY="29.0" prefHeight="17.0" prefWidth="169.0" text="Major" />
+   </children>
+</Pane>
