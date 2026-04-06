@@ -34,39 +34,6 @@ public class ProfileController {
         Circle clipCircle = new Circle(profileImage.getFitWidth()/2, profileImage.getFitHeight()/2, imageSize/2);
         profileImage.setClip(clipCircle);
 
-        // ClubDisplay deneme3 = new ClubDisplay();
-        // deneme3.setName("yok");
-        // deneme3.setDesc("o da yok");
-
-        // ClubDisplay deneme4 = new ClubDisplay();
-        // deneme3.setName("yok");
-        // deneme3.setDesc("o da yok");
-
-        // ClubDisplay deneme5 = new ClubDisplay();
-        // deneme3.setName("yok");
-        // deneme3.setDesc("o da yok");
-
-        // ClubDisplay deneme6 = new ClubDisplay();
-        // deneme3.setName("yok");
-        // deneme3.setDesc("o da yok");
-
-        // ClubDisplay deneme7 = new ClubDisplay();
-        // deneme3.setName("yok");
-        // deneme3.setDesc("o da yok");
-
-        // ClubDisplay deneme8 = new ClubDisplay();
-        // deneme3.setName("yok");
-        // deneme3.setDesc("o da yok");
-
-
-        // ClubsBox.getChildren().addAll(deneme3, deneme4, deneme5, deneme6, deneme7, deneme8);
-
-        //user display için json aç, getprofile action. sessiontoken userid
-        //Başka profili görüntüleme: getForeignProfile sessiontoken userid targetUserId
-
-        // JSONObject userJSON = new JSONObject();
-        // userJSON.put()
-
         JSONObject request = new JSONObject();
         request.put("userId", Controller.userId);
         request.put("sessionToken", Controller.sessionToken);
@@ -74,6 +41,21 @@ public class ProfileController {
         Response userProfile = RequestManager.sendPostRequest("api/user", request);
 
         JSONObject userData = userProfile.getPayload();
+
+        Image image = new Image(RequestManager.defaultAddress + userData.getString("profilePicture"), true);
+        System.out.println(RequestManager.defaultAddress + userData.getString("profilePicture"));
+        image.errorProperty().addListener((obs, oldVal, isError) -> {
+            if (isError) {
+                System.out.println("Image failed to load: " + image.getException().getMessage());
+            }
+        });
+        image.progressProperty().addListener((obs, oldVal, progress) -> {
+            if (progress.doubleValue() == 1.0 && !image.isError()) {
+                profileImage.setImage(image);
+                System.out.println("Image loaded successfully");
+            }
+        });
+        profileImage.setImage(image);
 
         namelbl.setText(userData.getString("firstName") + " " + userData.getString("lastName"));
         deptlbl.setText("Department: " + userData.getString("major"));
@@ -131,7 +113,12 @@ public class ProfileController {
             });
             System.out.println(RequestManager.defaultAddress + "static/" + file);
             profileImage.setImage(image);
-
+            JSONObject pfpreq = new JSONObject();
+            pfpreq.put("action", "updateProfile");
+            pfpreq.put("userId", Controller.userId);
+            pfpreq.put("sessionToken", Controller.sessionToken);
+            pfpreq.put("profilePicture", file);
+            RequestManager.sendPostRequest("api/user", pfpreq);
         }
     }
 

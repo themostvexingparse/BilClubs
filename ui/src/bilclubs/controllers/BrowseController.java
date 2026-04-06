@@ -44,6 +44,7 @@ public class BrowseController {
         JSONObject eventReq = new JSONObject();
         eventReq.put("action", "getUpcomingEvents");
         eventReq.put("userId", Controller.userId);
+        eventReq.put("getAll", true);
         eventReq.put("sessionToken", Controller.sessionToken);
 
         Response eventResponse = RequestManager.sendPostRequest("api/user", eventReq);

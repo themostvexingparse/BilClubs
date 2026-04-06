@@ -64,6 +64,9 @@ public class HomePageController {
             clubIds.put(aClub.getInt("id"));
         }
 
+        if(clubIds.length() == 0)
+            clubIds.put(-1);
+
         for(Object obj : clubData){
             JSONObject club = (JSONObject)obj;
             
@@ -75,6 +78,7 @@ public class HomePageController {
         eventReq.put("action", "getUpcomingEvents");
         eventReq.put("clubIds", clubIds);
         eventReq.put("userId", Controller.userId);
+        eventReq.put("userSpecific", false);
         eventReq.put("sessionToken", Controller.sessionToken);
 
         Response eventResponse = RequestManager.sendPostRequest("api/user", eventReq);
