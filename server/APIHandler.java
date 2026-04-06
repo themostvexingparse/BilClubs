@@ -401,6 +401,7 @@ public class APIHandler {
             eventObject.put("clubName", clubName);
             eventObject.put("clubId", clubId);
             eventObject.put("eventId", event.getId());
+            eventObject.put("duration", DurationFormatter.format(event.getStart(), event.getEnd()));
             eventDatas.put(eventObject);
         }
 
