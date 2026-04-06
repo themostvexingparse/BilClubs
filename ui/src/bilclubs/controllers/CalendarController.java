@@ -80,10 +80,16 @@ public class CalendarController implements Initializable {
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 7; j++) {
                 StackPane stackPane = new StackPane();
-
                 Rectangle rectangle = new Rectangle();
-                rectangle.setFill(Color.TRANSPARENT);
-                rectangle.setStroke(Color.BLACK);
+                
+                if(!Controller.isDarkMode){
+                    rectangle.setFill(Color.TRANSPARENT);
+                }
+                else{
+                    rectangle.setFill(Color.rgb(86, 101, 122));
+                }
+
+                rectangle.setStroke(month.getFill());
                 rectangle.setStrokeWidth(strokeWidth);
                 double rectangleWidth =(calendarWidth/7) - strokeWidth - spacingH;
                 rectangleWidth = Math.max(rectangleWidth, 50);

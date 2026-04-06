@@ -11,6 +11,7 @@
     -menubutton-hover-blue: #7e98d4;
     -gray-hue: #F0F0F0;
     -manager-green: #59b47f;
+    -manager-light-green: #def6e8;
     -card-blue: #DBE1EE;
     -club-card-blue: #ced9f4;
     -dark-blue : #1C3F69;
@@ -116,6 +117,28 @@
     -fx-scale-y: 1.08;
 } 
 
+.check-box .box {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.check-box {
+    -fx-background-color: -dark-blue;
+    -fx-background-radius: 5;
+    -fx-padding: 3;
+}
+
+/* .box .mark {
+    -fx-background-color: transparent;
+    -fx-background-radius: 50%;
+    -fx-padding: 8;
+}
+
+.box:pressed {
+    -fx-background-color: -primary-color;
+    -fx-translate-x: 25;
+} */
+
 .scroll-pane {
     -fx-background-color: transparent;
 }
@@ -129,8 +152,18 @@
 }
 
 .root.darkmode {
-    -bg-color: #131313;
-    -text-color: #e6e6e6;
-    -primary-color: #5b7cc7;
-    
+    -bg-color: #0F1115; 
+    -text-color: #E1E7EF; 
+    -primary-color: #4B7BEC; 
+    -custom-light-blue: #1A1D24; 
+    -menu-blue: #14171C; 
+    -signout-red: #591414; 
+    -signout-red-hover: #9c2c2c; 
+    -menubutton-color: #232830; 
+    -menubutton-hover-blue: #323A46; 
+    -gray-hue: #2B303B; 
+    -manager-green: #20BF6B; 
+    -card-blue: #1A1D24; 
+    -club-card-blue: #232830; 
+    -dark-blue: #060709; 
 }

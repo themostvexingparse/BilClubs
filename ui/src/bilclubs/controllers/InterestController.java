@@ -15,6 +15,8 @@ import javafx.scene.control.*;
 import java.io.IOException;
 import java.util.*;
 
+import bilclubs.utils.LoadHelper;
+
 public class InterestController {
 
     
@@ -82,34 +84,19 @@ public class InterestController {
         }
 
         FXMLLoader mainPageFXML = new FXMLLoader(getClass().getResource("/fxml/interestKeywords.fxml"));
-        Parent root = mainPageFXML.load();
-
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run(){
-                Scene mainPageScene = new Scene(root);
-                stage = (Stage)archeology.getScene().getWindow();
-                stage.setScene(mainPageScene);
-            }
-        });   
+        stage = (Stage)archeology.getScene().getWindow();
+        
+        LoadHelper.safelyLoad(mainPageFXML, stage);
 
     }
 
     public void goToHomePage(ActionEvent e) throws IOException{
         getKeywords(e);
 
-        Parent root = FXMLLoader.load(getClass().getResource("./fxml/MenuBarSizedUp.fxml"));
-        Scene menu = new Scene(root);
+        FXMLLoader root = new FXMLLoader(getClass().getResource("./fxml/MenuBarSizedUp.fxml"));
+        stage = (Stage)bioArea.getScene().getWindow();
 
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run(){
-                stage = (Stage)bioArea.getScene().getWindow();
-                stage.setScene(menu);
-                stage.show();
-            }
-        });
-
+        LoadHelper.safelyLoad(root, stage);
         
     }
 

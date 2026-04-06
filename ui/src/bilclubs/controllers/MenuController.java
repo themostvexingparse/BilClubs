@@ -27,58 +27,34 @@ public class MenuController {
     private Button signOutButton;
 
 
-    //instances
-    Parent homeRoot;
-    Parent browseRoot;
-    Parent calendarRoot;
-    Parent alertsRoot;
-    Parent profileRoot;
-    Parent settingsRoot;
-    FXMLLoader welcomeRoot;
-
     @FXML
     public void initialize() throws IOException {
-        homeRoot = FXMLLoader.load(getClass().getResource("/fxml/Home.fxml"));
-        browseRoot = FXMLLoader.load(getClass().getResource("/fxml/Browse.fxml"));
-        calendarRoot = FXMLLoader.load(getClass().getResource("/fxml/Calendar.fxml"));
-        alertsRoot = FXMLLoader.load(getClass().getResource("/fxml/Alerts.fxml"));
-        profileRoot = FXMLLoader.load(getClass().getResource("/fxml/adminProfile.fxml"));
-        settingsRoot = FXMLLoader.load(getClass().getResource("/fxml/Settings.fxml"));
-        welcomeRoot = new FXMLLoader(getClass().getResource("/fxml/welcomescenebuilder.fxml"));
-
-        rightAnchor.getChildren().setAll(homeRoot);
-
+        LoadHelper.safelyLoad(new FXMLLoader(getClass().getResource("/fxml/Home.fxml")), rightAnchor);
     }
 
 
-    public void goToSettings(ActionEvent e) throws IOException{
-        rightAnchor.getChildren().setAll(settingsRoot);
-        
+    public void goToHome(ActionEvent e) throws IOException {
+        LoadHelper.safelyLoad(new FXMLLoader(getClass().getResource("/fxml/Home.fxml")), rightAnchor);
     }
 
-    public void goToAdminProfile(ActionEvent e) throws IOException{
-        rightAnchor.getChildren().setAll(profileRoot);
-        
+    public void goToBrowse(ActionEvent e) throws IOException {
+        LoadHelper.safelyLoad(new FXMLLoader(getClass().getResource("/fxml/Browse.fxml")), rightAnchor);
     }
 
-    public void goToBrowse(ActionEvent e) throws IOException{
-        rightAnchor.getChildren().setAll(browseRoot);
-        
+    public void goToCalendar(ActionEvent e) throws IOException {
+        LoadHelper.safelyLoad(new FXMLLoader(getClass().getResource("/fxml/Calendar.fxml")), rightAnchor);
     }
 
-    public void goToCalendar(ActionEvent e) throws IOException{
-        rightAnchor.getChildren().setAll(calendarRoot);
-        
+    public void goToAlerts(ActionEvent e) throws IOException {
+        LoadHelper.safelyLoad(new FXMLLoader(getClass().getResource("/fxml/Alerts.fxml")), rightAnchor);
     }
 
-    public void goToAlerts(ActionEvent e) throws IOException{
-        rightAnchor.getChildren().setAll(alertsRoot);
-        
+    public void goToAdminProfile(ActionEvent e) throws IOException {
+        LoadHelper.safelyLoad(new FXMLLoader(getClass().getResource("/fxml/adminProfile.fxml")), rightAnchor);
     }
 
-    public void goToHome(ActionEvent e) throws IOException{
-        rightAnchor.getChildren().setAll(homeRoot);
-        
+    public void goToSettings(ActionEvent e) throws IOException {
+        LoadHelper.safelyLoad(new FXMLLoader(getClass().getResource("/fxml/Settings.fxml")), rightAnchor);
     }
 
     //sesssiontoken userid
@@ -90,7 +66,7 @@ public class MenuController {
         Controller.sessionToken = null;
         Controller.userId = null;
 
-        LoadHelper.safelyLoad(welcomeRoot, stage);
+        LoadHelper.safelyLoad(new FXMLLoader(getClass().getResource("/fxml/welcomescenebuilder.fxml")), stage);
 
     }
 

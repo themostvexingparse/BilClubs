@@ -55,6 +55,8 @@ public class Controller {
     //stack of scenes going forward
     public static ArrayList<Scene> frontscenes = new ArrayList<>();
 
+    public static boolean isDarkMode = false;
+
     @FXML
     public void goToPassword(){
         webmailPasswordField.requestFocus();
@@ -78,26 +80,18 @@ public class Controller {
     }
     
     public void switchToLogin(ActionEvent e) throws IOException{
-        Parent loginRoot = FXMLLoader.load(getClass().getResource("/fxml/loginscenebuilder.fxml"));
+        FXMLLoader loginRoot = new FXMLLoader(getClass().getResource("/fxml/loginscenebuilder.fxml"));
 
         stage = (Stage)((Node)e.getSource()).getScene().getWindow();
-
-        Scene loginScene = new Scene(loginRoot);
-        stage.setScene(loginScene);
-        backscenes.add(loginScene);
-        stage.show();
+        LoadHelper.safelyLoad(loginRoot, stage);
     }
 
     public void switchToSignUp(ActionEvent e) throws IOException{
-        Parent signUpRoot = FXMLLoader.load(getClass().getResource("/fxml/signupscenebuilder.fxml"));
+        FXMLLoader signUpRoot = new FXMLLoader(getClass().getResource("/fxml/signupscenebuilder.fxml"));
 
         //stage i getiriyoruz
         stage = (Stage)((Node)e.getSource()).getScene().getWindow();
-
-        Scene signUpScene = new Scene(signUpRoot);
-        stage.setScene(signUpScene);
-        backscenes.add(signUpScene);
-        stage.show();
+        LoadHelper.safelyLoad(signUpRoot, stage);
     }
 
 
