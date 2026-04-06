@@ -370,6 +370,7 @@ public class APIHandler {
         Long epochNow = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC);
         Long epoch = requestBody.optLong("upToEpoch", Long.MAX_VALUE);
         Boolean userSpecific = requestBody.optBoolean("userSpecific", false);
+        Boolean getAll = requestBody.optBoolean("getAll", false);
         JSONArray clubIds = requestBody.optJSONArray("clubIds", new JSONArray());
         ArrayList<Integer> clubIdsList = new ArrayList<>();
         for (int i = 0; i < clubIds.length(); i++) {
@@ -381,14 +382,12 @@ public class APIHandler {
         JSONArray eventDatas = new JSONArray();
         List<Event> events = manager.queryEvents(eventFilter);
         for (Event event : events) {
-            if (userSpecific && !user.isRegisteredToEvent(event))
+            if (!getAll && userSpecific && !user.isRegisteredToEvent(event))
                 continue;
             Integer clubId = event.getClubId();
-            if (!clubIdsList.isEmpty() && !clubIdsList.contains(clubId))
-                continue;
-            if (userSpecific == false && clubIdsList.isEmpty())
-                continue;
             String clubName = event.getClubName();
+            if (!getAll && !clubIdsList.isEmpty() && !clubIdsList.contains(clubId))
+                continue;
             JSONObject eventObject = new JSONObject();
             eventObject.put("name", event.getEventName());
             eventObject.put("description", event.getDescription());
