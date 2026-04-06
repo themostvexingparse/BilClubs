@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -165,6 +166,8 @@ public class APIHandler {
                 return createClub(authResult.user, requestBody);
             case "getMembers":
                 return getMembersOfClub(requestBody);
+            case "search":
+                return searchClubs(requestBody);
             default:
                 return buildResponse(400, null, "Unsupported club action.");
         }
@@ -533,6 +536,42 @@ public class APIHandler {
         return buildResponse(200, data, null);
     }
 
+    private static JSONObject searchClubs(JSONObject requestBody) {
+        String query = requestBody.optString("query", "").trim();
+        if (query.isEmpty()) {
+            return buildResponse(400, null, "query cannot be empty.");
+        }
+
+        List<Club> clubs = manager.queryClubs(new Filter());
+        List<Map.Entry<Club, Double>> scored = new ArrayList<>();
+
+        for (Club club : clubs) {
+            double s = SearchScorer.score(query, club.getClubName(), club.getClubDescription());
+            if (s > 0.0) {
+                scored.add(Map.entry(club, s));
+            }
+        }
+
+        scored.sort(Collections.reverseOrder(Map.Entry.comparingByValue()));
+
+        JSONArray results = new JSONArray();
+        for (int i = 0; i < scored.size(); i++) {
+            Club club = scored.get(i).getKey();
+            JSONObject item = new JSONObject();
+            item.put("rank", i + 1);
+            item.put("id", club.getId());
+            item.put("name", club.getClubName());
+            item.put("description", club.getClubDescription());
+            item.put("icon", club.getIconFilename());
+            results.put(item);
+        }
+
+        JSONObject data = new JSONObject();
+        data.put("results", results);
+        data.put("count", results.length());
+        return buildResponse(200, data, null);
+    }
+
     private static JSONObject uploadFiles(User user, JSONObject requestBody) {
         JSONObject data = new JSONObject();
         JSONObject fileMap = new JSONObject();
@@ -600,6 +639,8 @@ public class APIHandler {
                 return registerEvent(authResult.user, requestBody);
             case "leave":
                 return leaveEvent(authResult.user, requestBody);
+            case "search":
+                return searchEvents(requestBody);
             default:
                 return buildResponse(400, null, "Unsupported event action.");
         }
@@ -854,10 +895,79 @@ public class APIHandler {
             return buildResponse(500, null, "Could not leave the event due to a database error.");
         }
 
+        if (user.wantToRecieveClubAndEventAlerts()) {
+            Filter clubFilterForLeave = new Filter();
+            clubFilterForLeave.addFilter("id", event.getClubId());
+            Club eventClubForLeave = manager.queryClub(clubFilterForLeave);
+
+            HashMap<String, String> formatMap = new HashMap<>();
+            formatMap.put("name", user.getFullName());
+            formatMap.put("event_name", event.getEventName());
+            formatMap.put("club_name", eventClubForLeave != null ? eventClubForLeave.getClubName() : "");
+            formatMap.put("event_date", event.getStart().atZone(ZoneOffset.UTC).toString());
+            formatMap.put("event_time", DurationFormatter.format(event.getStart(), event.getEnd()));
+            formatMap.put("event_location", event.getLocation());
+            formatMap.put("cancellation_date", LocalDateTime.now(ZoneOffset.UTC).toString());
+
+            HTMLTemplate eventLeftMessage = eventLeftTemplate.formatted(formatMap);
+            MailMessage leaveEventMessage = new MailMessage();
+            leaveEventMessage.setSubject("Registration cancelled: " + event.getEventName());
+            leaveEventMessage.fromTemplate(eventLeftMessage);
+            leaveEventMessage.addRecipient(user.getEmail());
+            MailTask leaveEventMailTask = session.getTask(leaveEventMessage);
+            if (leaveEventMailTask != null)
+                concurrentExecutor.submit(leaveEventMailTask);
+        }
+
         JSONObject data = new JSONObject();
         data.put("eventId", event.getId());
         data.put("eventName", event.getEventName());
         data.put("registreeCount", event.getRegistreeCount());
+        return buildResponse(200, data, null);
+    }
+
+    private static JSONObject searchEvents(JSONObject requestBody) {
+        String query = requestBody.optString("query", "").trim();
+        if (query.isEmpty()) {
+            return buildResponse(400, null, "query cannot be empty.");
+        }
+
+        Long epochNow = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC);
+        Filter eventFilter = new Filter();
+        eventFilter.addFilter("startDate", epochNow);
+        List<Event> events = manager.queryEvents(eventFilter);
+        List<Map.Entry<Event, Double>> scored = new ArrayList<>();
+
+        for (Event event : events) {
+            double s = SearchScorer.score(query, event.getEventName(), event.getDescription());
+            if (s > 0.0) {
+                scored.add(Map.entry(event, s));
+            }
+        }
+
+        scored.sort(Collections.reverseOrder(Map.Entry.comparingByValue()));
+
+        JSONArray results = new JSONArray();
+        for (int i = 0; i < scored.size(); i++) {
+            Event event = scored.get(i).getKey();
+            Filter cf = new Filter();
+            cf.addFilter("id", event.getClubId());
+            Club owningClub = manager.queryClub(cf);
+            JSONObject item = new JSONObject();
+            item.put("rank", i + 1);
+            item.put("id", event.getId());
+            item.put("name", event.getEventName());
+            item.put("description", event.getDescription());
+            item.put("location", event.getLocation());
+            item.put("startDate", event.getStart().toString());
+            item.put("clubId", event.getClubId());
+            item.put("clubName", owningClub != null ? owningClub.getClubName() : "");
+            results.put(item);
+        }
+
+        JSONObject data = new JSONObject();
+        data.put("results", results);
+        data.put("count", results.length());
         return buildResponse(200, data, null);
     }
 
