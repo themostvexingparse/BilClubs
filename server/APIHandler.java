@@ -283,6 +283,20 @@ public class APIHandler {
             user.joinClub(club);
             manager.updateUser(user);
             manager.updateClub(club);
+            if (user.wantToRecieveMails()) {
+                HashMap<String, String> formatMap = new HashMap<>();
+                formatMap.put("name", user.getFullName());
+                formatMap.put("club_name", club.getClubName());
+                formatMap.put("join_date", LocalDateTime.now(ZoneOffset.UTC).toString());
+                HTMLTemplate clubJoinedMessage = clubJoinedTemplate.formatted(formatMap);
+                MailMessage joinMessage = new MailMessage();
+                joinMessage.setSubject("You joined " + club.getClubName() + "!");
+                joinMessage.fromTemplate(clubJoinedMessage);
+                joinMessage.addRecipient(user.getEmail());
+                MailTask joinMailTask = session.getTask(joinMessage);
+                if (joinMailTask != null)
+                    concurrentExecutor.submit(joinMailTask);
+            }
             return buildResponse(200, data, null);
         }
     }
@@ -654,6 +668,9 @@ public class APIHandler {
 
         // loop through all members of the club and send emails
         for (User member : club.getMembers()) {
+            if (!member.wantToRecieveMails() || !member.wantToRecieveClubAndEventAlerts()) {
+                continue;
+            }
             HashMap<String, String> formatMap = new HashMap<>();
             formatMap.put("name", member.getFullName());
             formatMap.put("club_name", club.getClubName());
