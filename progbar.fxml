@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.shape.Arc?>
+<?import javafx.scene.shape.Circle?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ProgressController">
+   <children>
+      <StackPane layoutX="200.0" layoutY="100.0" prefHeight="201.0" prefWidth="200.0" style="-fx-background-color: #000000;">
+         <children>
+            <Circle fill="#1f93ff00" radius="45.0" stroke="#bdb2ff" strokeType="INSIDE" strokeWidth="8.0" />
+            <Arc fx:id="progressArc" fill="#7b61ff00" length="360.0" radiusX="45.0" radiusY="45.0" startAngle="90.0" stroke="#7b61ff" strokeLineCap="BUTT" strokeType="INSIDE" strokeWidth="8.0" />
+            <Label fx:id="percentageLabel" prefHeight="47.0" prefWidth="70.0" style="-fx-text-fill: #7b61ff; -fx-font-weight: bold; -fx-padding: 20;" text="100%" />
+         </children>
+      </StackPane>
+   </children>
+</Pane>
