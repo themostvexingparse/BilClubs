@@ -2,16 +2,42 @@
 
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.paint.Color?>
 
-
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1050.0" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label layoutX="204.0" layoutY="29.0" prefHeight="29.0" prefWidth="234.0" style="-fx-background-color: #708090; -fx-background-radius: 15;" />
+      <Label layoutX="24.0" layoutY="29.0" prefHeight="48.0" prefWidth="683.0" style="-fx-background-radius: 20; -fx-background-color: -menu-blue;" styleClass="button-menu" stylesheets="@../styles/styles.css">
+         <effect>
+            <DropShadow>
+               <color>
+                  <Color opacity="0.3499999940395355" />
+               </color>
+            </DropShadow>
+         </effect></Label>
       <ImageView fitHeight="29.0" fitWidth="26.0" layoutX="217.0" layoutY="29.0" pickOnBounds="true" preserveRatio="true" />
-      <ChoiceBox layoutX="453.0" layoutY="31.0" prefHeight="13.0" prefWidth="73.0" />
-      <TextField layoutX="247.0" layoutY="31.0" text="Search..." />
+      <ChoiceBox fx:id="searchPicker" layoutX="635.0" layoutY="41.0" prefHeight="25.0" prefWidth="49.0" styleClass="menu-button" />
+      <TextField fx:id="searchField" layoutX="39.0" layoutY="35.0" prefHeight="37.0" prefWidth="590.0" style="-fx-background-color: transparent;" text="Search..." />
+      <ImageView fitHeight="25.0" fitWidth="26.0" layoutX="592.0" layoutY="41.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../assets/search.png" />
+         </image>
+      </ImageView>
+      <ScrollPane layoutX="44.0" layoutY="122.0" prefHeight="567.0" prefWidth="963.0">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
+        </content>
+      </ScrollPane>
+      <ScrollPane layoutX="39.0" layoutY="379.0" prefHeight="232.0" prefWidth="963.0">
+         <content>
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
+         </content>
+      </ScrollPane>
    </children>
 </Pane>

@@ -1,6 +1,11 @@
 package bilclubs.controllers;
 
+<<<<<<< HEAD
 import org.json.JSONArray;
+=======
+import java.io.IOException;
+
+>>>>>>> a2b0fec (event methods added, fixes needed)
 import org.json.JSONObject;
 
 import bilclubs.utils.RequestManager;
@@ -13,6 +18,23 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 public class EventController {
+<<<<<<< HEAD
+=======
+    @FXML private Label eventNameLbl;
+    @FXML private Label clubNameLbl;
+    @FXML private Label descLbl;
+    @FXML private Label datelbl;
+    @FXML private Label placelbl;
+    @FXML private Label durationlbl;
+    @FXML private Label detailslbl;
+    @FXML private Label gelbl;
+    @FXML private ImageView eventBanner;
+    @FXML private Button registerButton;
+    @FXML private Button leaveButton;
+
+    //instance
+    private JSONObject currentEvent;
+>>>>>>> a2b0fec (event methods added, fixes needed)
 
     @FXML
     private Label eventNameLbl;
@@ -76,6 +98,7 @@ public class EventController {
         checkRegistrationState();
     }
 
+<<<<<<< HEAD
     /**
      * Calls getUpcomingEvents with userSpecific=true to see if the current
      * event is already in the user's registered events. Sets button visibility
@@ -87,6 +110,44 @@ public class EventController {
         req.put("userId", Controller.userId);
         req.put("sessionToken", Controller.sessionToken);
         req.put("userSpecific", true);
+=======
+    public void registerEvent(ActionEvent e) throws IOException {
+        JSONObject registerReq = new JSONObject();
+        registerReq.put("action", "register");
+        registerReq.put("eventId", currentEvent.getInt("eventId"));
+        registerReq.put("userId", Controller.userId);
+        registerReq.put("sessionToken", Controller.sessionToken);
+
+        Response response = RequestManager.sendPostRequest("api/event", registerReq);
+        
+        if (response.isSuccess()) {
+            registerButton.setDisable(true);
+            registerButton.setVisible(false);
+
+            leaveButton.setVisible(true);
+            leaveButton.setDisable(false);
+        }
+    }
+
+    public void leaveEvent(ActionEvent e) throws IOException{
+        JSONObject leaveReq = new JSONObject();
+        leaveReq.put("action", "leave");
+        leaveReq.put("eventId", currentEvent.getInt("eventId"));
+        leaveReq.put("userId", Controller.userId);
+        leaveReq.put("sessionToken", Controller.sessionToken);
+
+        Response leaveResponse = RequestManager.sendPostRequest("api/event", leaveReq);
+
+        if(leaveResponse.isSuccess()){
+            leaveButton.setDisable(true);
+            leaveButton.setVisible(false);
+
+            registerButton.setDisable(false);
+            registerButton.setVisible(true);
+        }
+    }
+
+>>>>>>> a2b0fec (event methods added, fixes needed)
 
         Response response = RequestManager.sendPostRequest("api/user", req);
         if (!response.isSuccess())
