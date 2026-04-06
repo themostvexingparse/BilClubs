@@ -44,6 +44,11 @@ public class User implements Embeddable {
 
     private int GE250Points = 0;
 
+    private boolean clubAndEventAlerts = true;
+    private boolean generalNotifications = true;
+
+    private boolean wantToRecieveMails = true;
+
     // a no argument constructor is required by JPA
     public User() {
         initializeCollections();
@@ -68,6 +73,31 @@ public class User implements Embeddable {
     }
 
     // Getters and Setters
+
+    public boolean wantToRecieveMails() {
+        return wantToRecieveMails;
+    }
+
+    public boolean wantToRecieveClubAndEventAlerts() {
+        return clubAndEventAlerts;
+    }
+
+    public boolean wantToRecieveGeneralNotifications() {
+        return generalNotifications;
+    }
+
+    public void setWantToRecieveMails(boolean wantToRecieveMails) {
+        this.wantToRecieveMails = wantToRecieveMails;
+    }
+
+    public void setWantToRecieveClubAndEventAlerts(boolean wantToRecieveClubAndEventAlerts) {
+        this.clubAndEventAlerts = wantToRecieveClubAndEventAlerts;
+    }
+
+    public void setWantToRecieveGeneralNotifications(boolean wantToRecieveGeneralNotifications) {
+        this.generalNotifications = wantToRecieveGeneralNotifications;
+    }
+
     public Integer getId() {
         return id;
     }
