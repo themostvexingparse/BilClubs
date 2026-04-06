@@ -383,11 +383,12 @@ public class APIHandler {
         for (Event event : events) {
             if (userSpecific && !user.isRegisteredToEvent(event))
                 continue;
-            Filter clubFilter = new Filter();
-            clubFilter.addFilter("id", event.getClubId());
-            Club eventClub = manager.queryClub(clubFilter);
-            if (!clubIdsList.isEmpty() && !clubIdsList.contains(eventClub.getId()))
+            Integer clubId = event.getClubId();
+            if (!clubIdsList.isEmpty() && !clubIdsList.contains(clubId))
                 continue;
+            if (userSpecific == false && clubIdsList.isEmpty())
+                continue;
+            String clubName = event.getClubName();
             JSONObject eventObject = new JSONObject();
             eventObject.put("name", event.getEventName());
             eventObject.put("description", event.getDescription());
@@ -398,17 +399,15 @@ public class APIHandler {
             eventObject.put("endDate", event.getEnd().toString());
             eventObject.put("GE250", event.getGE250());
             eventObject.put("posterImage", event.getPoster());
-            eventObject.put("clubName", eventClub != null ? eventClub.getClubName() : "");
-            eventObject.put("clubId", event.getClubId());
+            eventObject.put("clubName", clubName);
+            eventObject.put("clubId", clubId);
             eventObject.put("eventId", event.getId());
             eventDatas.put(eventObject);
         }
 
         JSONObject data = new JSONObject();
         data.put("events", eventDatas);
-        return
-
-        buildResponse(200, data, null);
+        return buildResponse(200, data, null);
     }
 
     private static JSONObject updateProfile(User user, JSONObject requestBody) {

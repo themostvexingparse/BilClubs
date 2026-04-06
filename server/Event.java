@@ -24,6 +24,7 @@ public class Event {
     private ArrayList<User> registeredUsers = null;
     private String poster = "static/default-event-poster.jpg";
     private Integer clubId;
+    private String clubName;
     private Integer GE250 = 0;
 
     public Event() {
@@ -34,6 +35,7 @@ public class Event {
         name = argName;
         description = argDescription;
         clubId = argClub.getId();
+        clubName = argClub.getClubName();
         location = argPlace;
         start = argStart;
         end = argEnd;
@@ -75,6 +77,10 @@ public class Event {
 
     public String getEventName() {
         return name;
+    }
+
+    public String getClubName() {
+        return clubName;
     }
 
     public String getDescription() {
