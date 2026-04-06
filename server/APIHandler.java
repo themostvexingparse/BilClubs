@@ -283,6 +283,20 @@ public class APIHandler {
             user.joinClub(club);
             manager.updateUser(user);
             manager.updateClub(club);
+            if (user.wantToRecieveMails()) {
+                HashMap<String, String> formatMap = new HashMap<>();
+                formatMap.put("name", user.getFullName());
+                formatMap.put("club_name", club.getClubName());
+                formatMap.put("join_date", LocalDateTime.now(ZoneOffset.UTC).toString());
+                HTMLTemplate clubJoinedMessage = clubJoinedTemplate.formatted(formatMap);
+                MailMessage joinMessage = new MailMessage();
+                joinMessage.setSubject("You joined " + club.getClubName() + "!");
+                joinMessage.fromTemplate(clubJoinedMessage);
+                joinMessage.addRecipient(user.getEmail());
+                MailTask joinMailTask = session.getTask(joinMessage);
+                if (joinMailTask != null)
+                    concurrentExecutor.submit(joinMailTask);
+            }
             return buildResponse(200, data, null);
         }
     }
@@ -654,6 +668,9 @@ public class APIHandler {
 
         // loop through all members of the club and send emails
         for (User member : club.getMembers()) {
+            if (!member.wantToRecieveMails() || !member.wantToRecieveClubAndEventAlerts()) {
+                continue;
+            }
             HashMap<String, String> formatMap = new HashMap<>();
             formatMap.put("name", member.getFullName());
             formatMap.put("club_name", club.getClubName());
@@ -784,6 +801,29 @@ public class APIHandler {
 
         if (!manager.addUserToEvent(user, event)) {
             return buildResponse(500, null, "Registration failed due to a database error.");
+        }
+
+        if (user.wantToRecieveClubAndEventAlerts()) {
+            Filter clubFilterForEvent = new Filter();
+            clubFilterForEvent.addFilter("id", event.getClubId());
+            Club eventClub = manager.queryClub(clubFilterForEvent);
+
+            HashMap<String, String> formatMap = new HashMap<>();
+            formatMap.put("name", user.getFullName());
+            formatMap.put("event_name", event.getEventName());
+            formatMap.put("club_name", eventClub != null ? eventClub.getClubName() : "");
+            formatMap.put("event_date", event.getStart().atZone(ZoneOffset.UTC).toString());
+            formatMap.put("event_time", DurationFormatter.format(event.getStart(), event.getEnd()));
+            formatMap.put("event_location", event.getLocation());
+
+            HTMLTemplate eventRegisteredMessage = eventRegisteredTemplate.formatted(formatMap);
+            MailMessage registerMessage = new MailMessage();
+            registerMessage.setSubject("You're registered for " + event.getEventName() + "!");
+            registerMessage.fromTemplate(eventRegisteredMessage);
+            registerMessage.addRecipient(user.getEmail());
+            MailTask registerMailTask = session.getTask(registerMessage);
+            if (registerMailTask != null)
+                concurrentExecutor.submit(registerMailTask);
         }
 
         JSONObject data = new JSONObject();
