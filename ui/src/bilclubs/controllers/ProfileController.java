@@ -98,8 +98,6 @@ public class ProfileController {
 
         }
 
-
-
     }
 
     public void uploadProfilePicture(MouseEvent e) throws IOException{

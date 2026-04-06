@@ -2,7 +2,7 @@
 setlocal EnableDelayedExpansion
 
 :: ── Configure these two paths for your machine ──────────────────────────────
-set JAVAFX=C:\javafx-sdk-17.0.18\lib
+set JAVAFX=C:\Users\nazli\Desktop\filesjavafx\javafx-sdk-25.0.2\lib
 :: ─────────────────────────────────────────────────────────────────────────────
 
 :: Resolve all paths relative to this script, not the working directory

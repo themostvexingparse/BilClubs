@@ -12,6 +12,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import bilclubs.utils.LoadHelper;
+import bilclubs.controllers.Controller;
 
 public class ClubPane extends Pane {
 
@@ -23,8 +24,9 @@ public class ClubPane extends Pane {
     private String name;
     private String desc;
     private Stage stage;
+    private Integer clubId;
 
-    public ClubPane(String clubname, String clubDesc) throws IOException{
+    public ClubPane(String clubname, String clubDesc, Integer clubIdVal) throws IOException{
         FXMLLoader backbone = new FXMLLoader(getClass().getResource("/fxml/clubDisplayerPane.fxml"));
         backbone.setRoot(this);
         backbone.setController(this);
@@ -35,6 +37,7 @@ public class ClubPane extends Pane {
 
         this.name = clubname;
         this.desc = clubDesc;
+        this.clubId = clubIdVal;
     }
 
     public void setName(String aName){
@@ -48,9 +51,13 @@ public class ClubPane extends Pane {
     }
 
     public void goToClub(ActionEvent e) throws IOException{
+        Controller.currentClubId = this.clubId;
+        System.out.println("Navigating to club: " + this.clubId);
         FXMLLoader clubPage = new FXMLLoader(getClass().getResource("/fxml/ClubPage.fxml"));
         AnchorPane contentPane = (AnchorPane) this.getScene().lookup("#rightAnchor");
+        System.out.println("contentPane: " + contentPane);
         LoadHelper.safelyLoad(clubPage, contentPane);
+        System.out.println("Load called");
     }
     
 }

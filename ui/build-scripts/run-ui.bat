@@ -1,6 +1,6 @@
 @echo off
 setlocal
-set JAVAFX=C:\javafx-sdk-17.0.18\lib
+set JAVAFX=C:\Users\nazli\Desktop\filesjavafx\javafx-sdk-25.0.2\lib
 set ROOT=%~dp0..
 
 java --module-path "%JAVAFX%" ^

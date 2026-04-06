@@ -46,6 +46,8 @@ public class MenuController {
         settingsRoot = FXMLLoader.load(getClass().getResource("/fxml/Settings.fxml"));
         welcomeRoot = new FXMLLoader(getClass().getResource("/fxml/welcomescenebuilder.fxml"));
 
+        rightAnchor.getChildren().setAll(homeRoot);
+
     }
 
 

@@ -23,14 +23,14 @@ public class BrowseController {
 
         upcomingEventsHBox.getChildren().addAll(card1, card2, card3, card4, card5);
 
-        ClubPane club1 = new ClubPane("acm", "acm");
-        ClubPane club2 = new ClubPane("club2", "club2");
-        ClubPane club3 = new ClubPane("club2", "club2");
-        ClubPane club4 = new ClubPane("club2", "club2");
-        ClubPane club5 = new ClubPane("club2", "club2");
+        // ClubPane club1 = new ClubPane("acm", "acm");
+        // ClubPane club2 = new ClubPane("club2", "club2");
+        // ClubPane club3 = new ClubPane("club2", "club2");
+        // ClubPane club4 = new ClubPane("club2", "club2");
+        // ClubPane club5 = new ClubPane("club2", "club2");
 
 
-        clubsYouMayLikeHBox.getChildren().addAll(club1, club2, club3, club4, club5);
+        // clubsYouMayLikeHBox.getChildren().addAll(club1, club2, club3, club4, club5);
 
     }
 }

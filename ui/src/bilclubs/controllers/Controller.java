@@ -21,6 +21,7 @@ public class Controller {
     public static Integer userId = null;
     public static String sessionToken = null; 
     public static JSONObject userData = null;
+    public static Integer currentClubId = null;
 
     //instances
     private Stage stage;
