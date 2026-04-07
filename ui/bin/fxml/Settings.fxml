@@ -14,7 +14,7 @@
    <children>
       <VBox layoutX="150.0" layoutY="116.0" prefHeight="488.0" prefWidth="816.0">
          <children>
-            <Button mnemonicParsing="false" prefHeight="51.0" prefWidth="816.0" style="-fx-background-radius: 10; -fx-padding: 0 0 0 -700;" styleClass="button-settings" stylesheets="@../styles/styles.css" text="Account">
+            <Button fx:id="accountButton" mnemonicParsing="false" onAction="#account" prefHeight="51.0" prefWidth="816.0" style="-fx-background-radius: 10; -fx-padding: 0 0 0 -700;" styleClass="button-settings" stylesheets="@../styles/styles.css" text="Account">
                <effect>
                   <DropShadow>
                      <color>
@@ -30,7 +30,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <VBox prefHeight="200.0" prefWidth="100.0">
+            <VBox fx:id="accountBox" prefHeight="200.0" prefWidth="100.0">
                <children>
                   <Label />
                   <Button mnemonicParsing="false" prefHeight="45.0" prefWidth="920.0" style="-fx-background-radius: 10; -fx-padding: 0 0 0 -700;" styleClass="button-settings" stylesheets="@../styles/styles.css" text="Change Name">
@@ -75,7 +75,7 @@
                </children>
             </VBox>
             <Label style="-fx-background-color: -text-color;" stylesheets="@../styles/styles.css" />
-            <Button fx:id="notificationsButton" mnemonicParsing="false" prefHeight="61.0" prefWidth="816.0" style="-fx-background-radius: 10; -fx-padding: 0 0 0 -700;" styleClass="button-settings" text="Notifications">
+            <Button fx:id="notificationsButton" mnemonicParsing="false" onAction="#notifications" prefHeight="61.0" prefWidth="816.0" style="-fx-background-radius: 10; -fx-padding: 0 0 0 -700;" styleClass="button-settings" text="Notifications">
                <graphic>
                   <ImageView fitHeight="19.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -91,7 +91,7 @@
                   </DropShadow>
                </effect>
             </Button>
-            <VBox prefHeight="148.0" prefWidth="816.0" style="-fx-spacing: 15;">
+            <VBox fx:id="alertBox" prefHeight="148.0" prefWidth="816.0" style="-fx-spacing: 15;">
                <children>
                   <Label>
                      <font>

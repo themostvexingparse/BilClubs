@@ -181,7 +181,7 @@ public class ClubController {
             manageButton.setVisible(false);
             manageButton.setDisable(true);
 
-            NotificationCard leaveNotification = new NotificationCard(NotificationCard.leaveMessage, "You left " + Controller.currentClubName);
+            NotificationCard leaveNotification = new NotificationCard(NotificationCard.leaveMessage, "Check your webmail for details.");
             AlertsController.allNotifs.add(leaveNotification);
 
         }
@@ -191,7 +191,6 @@ public class ClubController {
         FXMLLoader root = new FXMLLoader(getClass().getResource("/fxml/ClubManagementPage.fxml"));
         AnchorPane rightAnchor = (AnchorPane) manageButton.getScene().lookup("#rightAnchor");
         LoadHelper.safelyLoad(root, rightAnchor);  
-        LoadHelper.safelyLoad(root, rightAnchor);
     }
 
     // public void setParentAnchor(AnchorPane anchor) {
