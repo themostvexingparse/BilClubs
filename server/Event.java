@@ -28,7 +28,7 @@ public class Event implements Embeddable {
     private Integer clubId;
     private String clubName;
     private Integer GE250 = 0;
-    private DiscussionManager discussion;
+    private Discussion discussion;
 
     private float[] embeddings;
 
@@ -46,10 +46,10 @@ public class Event implements Embeddable {
         end = argEnd;
         quota = argQuota; // set to null for infinite quota
         registeredUsers = new ArrayList<>();
-        discussion = new DiscussionManager();
+        discussion = new Discussion();
     }
 
-    public DiscussionManager getDiscussion() {
+    public Discussion getDiscussion() {
         return discussion;
     }
 

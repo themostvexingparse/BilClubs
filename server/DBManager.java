@@ -167,6 +167,7 @@ public class DBManager {
         EntityManager em = coreFactory.createEntityManager();
         em.getTransaction().begin();
         em.persist(club);
+        em.persist(club.getDiscussion());
         em.getTransaction().commit();
         em.close();
         if (ServerConfig.PRINT_DEBUG)
@@ -198,6 +199,7 @@ public class DBManager {
         EntityManager em = coreFactory.createEntityManager();
         em.getTransaction().begin();
         em.persist(event);
+        em.persist(event.getDiscussion());
         em.getTransaction().commit();
         em.close();
         if (ServerConfig.PRINT_DEBUG)
@@ -220,6 +222,68 @@ public class DBManager {
         em.close();
         if (ServerConfig.PRINT_DEBUG)
             System.out.printf("Updated event: %s\n", event.toString());
+        return true;
+    }
+
+    public boolean addComment(Comment comment) {
+        if (comment == null || !initialized)
+            return false;
+        EntityManager em = coreFactory.createEntityManager();
+        em.getTransaction().begin();
+        em.persist(comment);
+        em.getTransaction().commit();
+        em.close();
+        if (ServerConfig.PRINT_DEBUG)
+            System.out.printf("Added comment: %s\n", comment.toString());
+        return true;
+    }
+
+    public boolean updateComment(Comment comment) {
+        if (comment == null || comment.getId() == null || !initialized)
+            return false;
+        EntityManager em = coreFactory.createEntityManager();
+        em.getTransaction().begin();
+        Event queriedEvent = em.find(Event.class, comment.getId());
+        if (queriedEvent == null) {
+            em.close();
+            return false;
+        }
+        em.merge(comment);
+        em.getTransaction().commit();
+        em.close();
+        if (ServerConfig.PRINT_DEBUG)
+            System.out.printf("Updated comment: %s\n", comment.toString());
+        return true;
+    }
+
+    public boolean addDiscussion(Discussion discussion) {
+        if (discussion == null || !initialized)
+            return false;
+        EntityManager em = coreFactory.createEntityManager();
+        em.getTransaction().begin();
+        em.persist(discussion);
+        em.getTransaction().commit();
+        em.close();
+        if (ServerConfig.PRINT_DEBUG)
+            System.out.printf("Added discussion: %s\n", discussion.toString());
+        return true;
+    }
+
+    public boolean updateDiscussion(Discussion discussion) {
+        if (discussion == null || discussion.getId() == null || !initialized)
+            return false;
+        EntityManager em = coreFactory.createEntityManager();
+        em.getTransaction().begin();
+        Event queriedEvent = em.find(Event.class, discussion.getId());
+        if (queriedEvent == null) {
+            em.close();
+            return false;
+        }
+        em.merge(discussion);
+        em.getTransaction().commit();
+        em.close();
+        if (ServerConfig.PRINT_DEBUG)
+            System.out.printf("Updated discussion: %s\n", discussion.toString());
         return true;
     }
 
@@ -338,6 +402,117 @@ public class DBManager {
         return events.get(0);
     }
 
+    public List<Comment> queryComments(Filter filter) {
+        if (ServerConfig.PRINT_DEBUG)
+            System.out.printf("Queried comments for filter: %s\n", filter.toString());
+        if (!initialized)
+            return null;
+        Map<String, String> keyMap = new HashMap<String, String>() {
+            {
+                put("id", "c.getId() ");
+                put("name", "c.getEventName() ");
+            }
+        };
+        StringBuilder queryBuilder = new StringBuilder();
+        queryBuilder.append("SELECT c FROM Comment c ");
+        boolean hasFilter = false;
+        Map<String, Object> filterMap = filter.getMap();
+
+        for (String key : filterMap.keySet()) {
+            String format = keyMap.get(key);
+            if (format == null)
+                continue;
+            if (!hasFilter) {
+                queryBuilder.append("WHERE ");
+                hasFilter = true;
+            } else {
+                queryBuilder.append("AND ");
+            }
+            queryBuilder.append(format);
+            queryBuilder.append("= :");
+            queryBuilder.append(key);
+            queryBuilder.append(" ");
+        }
+        String queryString = queryBuilder.toString().trim();
+        EntityManager em = coreFactory.createEntityManager();
+        TypedQuery<Comment> query = em.createQuery(queryString, Comment.class);
+        for (String key : filterMap.keySet()) {
+            if (!keyMap.containsKey(key))
+                continue;
+            query.setParameter(key, filterMap.get(key));
+        }
+        List<Comment> results = query.getResultList();
+        em.close();
+        return results;
+    }
+
+    public Comment queryComment(Filter filter) {
+        if (!initialized)
+            return null;
+        List<Comment> comments = queryComments(filter);
+        if (comments.size() != 1) {
+            if (ServerConfig.PRINT_DEBUG)
+                System.out.printf("Info: %s returned %s results.\n", filter, comments.size());
+            return null;
+        }
+        return comments.get(0);
+    }
+
+    public List<Discussion> queryDiscussions(Filter filter) {
+        if (ServerConfig.PRINT_DEBUG)
+            System.out.printf("Queried discussions for filter: %s\n", filter.toString());
+        if (!initialized)
+            return null;
+        Map<String, String> keyMap = new HashMap<String, String>() {
+            {
+                put("id", "d.getId() ");
+            }
+        };
+        StringBuilder queryBuilder = new StringBuilder();
+        queryBuilder.append("SELECT d FROM Discussion d ");
+        boolean hasFilter = false;
+        Map<String, Object> filterMap = filter.getMap();
+
+        for (String key : filterMap.keySet()) {
+            String format = keyMap.get(key);
+            if (format == null)
+                continue;
+            if (!hasFilter) {
+                queryBuilder.append("WHERE ");
+                hasFilter = true;
+            } else {
+                queryBuilder.append("AND ");
+            }
+            queryBuilder.append(format);
+            queryBuilder.append("= :");
+            queryBuilder.append(key);
+            queryBuilder.append(" ");
+        }
+        String queryString = queryBuilder.toString().trim();
+        EntityManager em = coreFactory.createEntityManager();
+        TypedQuery<Discussion> query = em.createQuery(queryString, Discussion.class);
+        for (String key : filterMap.keySet()) {
+            if (!keyMap.containsKey(key))
+                continue;
+            query.setParameter(key, filterMap.get(key));
+        }
+        List<Discussion> results = query.getResultList();
+        em.close();
+        return results;
+    }
+
+    public Discussion queryDiscussion(Filter filter) {
+        if (!initialized)
+            return null;
+        List<Discussion> discussions = queryDiscussions(filter);
+        if (discussions.size() != 1) {
+            if (ServerConfig.PRINT_DEBUG)
+                System.out.printf("Info: %s returned %s results.\n", filter, discussions.size());
+            return null;
+        }
+        return discussions.get(0);
+    }
+
     public boolean addUserToClub(User newMember, Club club, User manager) {
         if (newMember.isBannedFromClub(club) || !manager.hasClubPrivilege(club, Privileges.MANAGER))
             return false;
@@ -345,6 +520,19 @@ public class DBManager {
         newMember.joinClub(club);
         updateUser(newMember);
         updateClub(club);
+        return true;
+    }
+
+    public boolean createClub(User admin, User firstManager, String name, String description){
+        if (firstManager.isBanned() || admin.hasGeneralPrivilege(Privileges.ADMIN)) return false;
+        Club club = new Club(name, description);
+        firstManager.joinClub(club);
+        firstManager.setClubPrivilege(club, Privileges.MANAGER | Privileges.NORMAL_USER);
+        club.addMember(firstManager);
+        club.setMemberPrivilege(firstManager, Privileges.MANAGER | Privileges.NORMAL_USER);
+        addClub(club);
+        addDiscussion(club.getDiscussion());
+        updateUser(firstManager);
         return true;
     }
 
@@ -377,6 +565,7 @@ public class DBManager {
                 eventQuota);
         eventClub.addEvent(newEvent);
         addEvent(newEvent);
+        addDiscussion(newEvent.getDiscussion());
         updateClub(eventClub);
         return true;
     }
@@ -398,6 +587,33 @@ public class DBManager {
         event.removeUser(user);
         updateUser(user);
         updateEvent(event);
+        return true;
+    }
+
+    public boolean postComment(Comment parent, User author, String content, Discussion discussion){
+        if (author.isBanned() || content.isEmpty()) return false;
+        Comment comment = new Comment(parent, author, content, discussion);
+        discussion.addNewComment(comment);
+        addComment(comment);
+        if (parent != null) updateComment(parent);
+        updateDiscussion(discussion);
+        return true;
+    }
+
+    public boolean editComment(Comment comment, User author, String newContent){
+        if (author != comment.getAuthor() || author.isBanned() || newContent.isEmpty()) return false;
+        comment.setContent(newContent);
+        updateComment(comment);
+        return true;
+    }
+
+    public boolean deleteComment(Comment comment, User author){
+        if (author != comment.getAuthor() || author.isBanned()) return false;
+        comment.getDiscussion().deleteComment(comment.getId());
+        updateDiscussion(comment.getDiscussion());
+        // FIXME: After deleting a comment the comment will still be stored within
+        // the ODB file because we haven't implemented Delete operations
+        // If you don't access Comments via Discussions this may cause bugs...
         return true;
     }
 
