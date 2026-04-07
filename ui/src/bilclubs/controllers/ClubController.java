@@ -19,6 +19,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import bilclubs.utils.Response;
+import bilclubs.components.NotificationCard;
 import bilclubs.components.SearchResultPane;
 import bilclubs.utils.LoadHelper;
 import bilclubs.utils.RequestManager;
@@ -154,6 +155,9 @@ public class ClubController {
 
             leaveButton.setVisible(true);
             leaveButton.setDisable(false);
+
+            NotificationCard joinNotification = new NotificationCard(NotificationCard.joinMessage, "You joined " + Controller.currentClubName);
+            AlertsController.allNotifs.add(joinNotification);
         }
     }
 
@@ -176,6 +180,10 @@ public class ClubController {
 
             manageButton.setVisible(false);
             manageButton.setDisable(true);
+
+            NotificationCard leaveNotification = new NotificationCard(NotificationCard.leaveMessage, "You left " + Controller.currentClubName);
+            AlertsController.allNotifs.add(leaveNotification);
+
         }
     }
 

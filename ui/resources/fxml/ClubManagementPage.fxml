@@ -18,7 +18,7 @@
         <content>
           <AnchorPane fx:id="memberPane" minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0">
                <children>
-                  <VBox fx:id="membersVBox" layoutX="5.0" layoutY="7.0" prefHeight="41.0" prefWidth="23.0" />
+                  <VBox fx:id="membersVBox" layoutX="5.0" layoutY="7.0" prefHeight="41.0" prefWidth="23.0" style="-fx-spacing: 15;" />
                </children></AnchorPane>
         </content>
       </ScrollPane>
@@ -55,7 +55,7 @@
          <content>
             <AnchorPane fx:id="eventPane" minHeight="0.0" minWidth="0.0" prefHeight="388.0" prefWidth="577.0">
                <children>
-                  <VBox fx:id="clubEventsVBox" layoutX="10.0" layoutY="7.0" prefHeight="50.0" prefWidth="503.0" />
+                  <VBox fx:id="clubEventsVBox" layoutX="10.0" layoutY="7.0" prefHeight="50.0" prefWidth="503.0" style="-fx-spacing: 15;" />
                </children></AnchorPane>
          </content>
       </ScrollPane>

@@ -22,6 +22,7 @@ public class Controller {
     public static String sessionToken = null; 
     public static JSONObject userData = null;
     public static Integer currentClubId = null;
+    public static String currentClubName = null;
     public static JSONObject currentEventObject = null;
 
     //instances

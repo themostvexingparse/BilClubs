@@ -29,6 +29,12 @@ public class HomePageController {
     private Label noClubText;
     @FXML
     private Pane borderPane;
+    @FXML
+    private ImageView sleepingIcon1;
+    @FXML
+    private Label noClubText1;
+    @FXML
+    private Pane borderPane1;
 
     @FXML
     public void initialize() throws IOException {
@@ -91,6 +97,17 @@ public class HomePageController {
         JSONArray userEvents = eventResponse.getPayload().optJSONArray("events");
         if (userEvents == null)
             userEvents = new JSONArray();
+
+        if (userEvents.length() == 0) {
+            sleepingIcon1.setVisible(true);
+            noClubText1.setVisible(true);
+        }
+
+        else {
+            sleepingIcon1.setVisible(false);
+            noClubText1.setVisible(false);
+            borderPane1.setStyle("-fx-border-color: transparent;");
+        }
 
         for (Object obj : userEvents) {
             JSONObject anEvent = (JSONObject) obj;

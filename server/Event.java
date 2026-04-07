@@ -136,6 +136,13 @@ public class Event {
         end = argEnd;
     }
 
+    public ArrayList<Integer> getRegisteredUserIds() {
+        ArrayList<Integer> ids = new ArrayList<>();
+        for (User user : registeredUsers)
+            ids.add(user.getId());
+        return ids;
+    }
+
     public boolean setQuota(int argQuota) {
         if (argQuota < registeredUsers.size())
             return false;

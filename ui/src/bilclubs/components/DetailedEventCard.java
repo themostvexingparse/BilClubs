@@ -19,24 +19,30 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import bilclubs.controllers.Controller;
 
-public class DetailedEventCard extends Pane{
-    
-    @FXML private Label name;
-    @FXML private Label date;
-    @FXML private Label place;
-    @FXML private Label clubnamelbl;
-    @FXML private ImageView eventBanner;
-    @FXML private JSONObject thisEvent;
+public class DetailedEventCard extends Pane {
 
     @FXML
-    public void initialise() throws IOException{
+    private Label name;
+    @FXML
+    private Label date;
+    @FXML
+    private Label place;
+    @FXML
+    private Label clubnamelbl;
+    @FXML
+    private ImageView eventBanner;
+    @FXML
+    private JSONObject thisEvent;
+
+    @FXML
+    public void initialise() throws IOException {
         FXMLLoader backbone = new FXMLLoader(getClass().getResource("/fxml/detailedEventCard.fxml"));
         backbone.setRoot(this);
         backbone.setController(this);
         backbone.load();
     }
 
-    public DetailedEventCard(JSONObject anEvent) throws IOException{
+    public DetailedEventCard(JSONObject anEvent) throws IOException {
         initialise();
 
         thisEvent = anEvent;
@@ -49,13 +55,13 @@ public class DetailedEventCard extends Pane{
 
         Platform.runLater(new Runnable() {
             @Override
-            public void run(){
+            public void run() {
                 name.setText(eventName);
                 date.setText(eventDate);
                 clubnamelbl.setText(eventclub);
                 place.setText(location);
                 if (posterImage.contains("default")) {
-                    Image defaultImg = new Image(getClass().getResourceAsStream("/assets/bilclubs logo 1.png"));
+                    Image defaultImg = new Image(getClass().getResourceAsStream("/assets/default-event-poster.jpg"));
                     eventBanner.setImage(defaultImg);
                 } else {
                     Image eventImg = new Image(RequestManager.defaultAddress + posterImage, true);
@@ -69,13 +75,12 @@ public class DetailedEventCard extends Pane{
                 clip.setArcHeight(20);
                 eventBanner.setClip(clip);
 
-
             }
         });
-        
+
     }
 
-    public void goToEventPage(ActionEvent e) throws IOException{
+    public void goToEventPage(ActionEvent e) throws IOException {
         Controller.currentEventObject = thisEvent;
         FXMLLoader eventPage = new FXMLLoader(getClass().getResource("/fxml/eventPage.fxml"));
         AnchorPane contentPane = (AnchorPane) this.getScene().lookup("#rightAnchor");
