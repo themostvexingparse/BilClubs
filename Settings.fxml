@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.text.Font?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1050.0" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bilclubs.controllers.SettingsController">
+   <children>
+      <VBox layoutX="150.0" layoutY="116.0" prefHeight="488.0" prefWidth="816.0">
+         <children>
+            <Button fx:id="accountButton" mnemonicParsing="false" onAction="#account" prefHeight="51.0" prefWidth="816.0" style="-fx-background-radius: 10; -fx-padding: 0 0 0 -700;" styleClass="button-settings" stylesheets="@../styles/styles.css" text="Account">
+               <effect>
+                  <DropShadow>
+                     <color>
+                        <Color opacity="0.30000001192092896" />
+                     </color>
+                  </DropShadow>
+               </effect>
+               <graphic>
+                  <ImageView fitHeight="20.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../assets/User.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <VBox fx:id="accountBox" prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Label />
+                  <Button mnemonicParsing="false" prefHeight="45.0" prefWidth="920.0" style="-fx-background-radius: 10; -fx-padding: 0 0 0 -700;" styleClass="button-settings" stylesheets="@../styles/styles.css" text="Change Name">
+                     <effect>
+                        <DropShadow>
+                           <color>
+                              <Color opacity="0.30000001192092896" />
+                           </color>
+                        </DropShadow>
+                     </effect>
+                  </Button>
+                  <Label />
+                  <Button mnemonicParsing="false" prefHeight="45.0" prefWidth="920.0" style="-fx-background-radius: 10; -fx-padding: 0 0 0 -680;" styleClass="button-settings" text="Change Last Name">
+                     <effect>
+                        <DropShadow>
+                           <color>
+                              <Color opacity="0.30000001192092896" />
+                           </color>
+                        </DropShadow>
+                     </effect>
+                  </Button>
+                  <Label />
+                  <Button mnemonicParsing="false" prefHeight="45.0" prefWidth="920.0" style="-fx-background-radius: 10; -fx-padding: 0 0 0 -700;" styleClass="button-settings" text="Change Major">
+                     <effect>
+                        <DropShadow>
+                           <color>
+                              <Color opacity="0.30000001192092896" />
+                           </color>
+                        </DropShadow>
+                     </effect>
+                  </Button>
+                  <Label />
+                  <Button mnemonicParsing="false" prefHeight="45.0" prefWidth="920.0" style="-fx-background-radius: 10; -fx-padding: 0 0 0 -650;" styleClass="button-settings" text="Change your Interests">
+                     <effect>
+                        <DropShadow>
+                           <color>
+                              <Color opacity="0.30000001192092896" />
+                           </color>
+                        </DropShadow>
+                     </effect>
+                  </Button>
+               </children>
+            </VBox>
+            <Label style="-fx-background-color: -text-color;" stylesheets="@../styles/styles.css" />
+            <Button fx:id="notificationsButton" mnemonicParsing="false" onAction="#notifications" prefHeight="61.0" prefWidth="816.0" style="-fx-background-radius: 10; -fx-padding: 0 0 0 -700;" styleClass="button-settings" text="Notifications">
+               <graphic>
+                  <ImageView fitHeight="19.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../assets/notifications.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <effect>
+                  <DropShadow>
+                     <color>
+                        <Color opacity="0.30000001192092896" />
+                     </color>
+                  </DropShadow>
+               </effect>
+            </Button>
+            <VBox fx:id="alertBox" prefHeight="148.0" prefWidth="816.0" style="-fx-spacing: 15;">
+               <children>
+                  <Label>
+                     <font>
+                        <Font size="1.0" />
+                     </font>
+                  </Label>
+                  <Pane prefHeight="31.0" prefWidth="816.0" style="-fx-background-radius: 10;" styleClass="button-settings">
+                     <effect>
+                        <DropShadow>
+                           <color>
+                              <Color opacity="0.30000001192092896" />
+                           </color>
+                        </DropShadow>
+                     </effect>
+                     <children>
+                        <Label layoutX="28.0" layoutY="8.0" text="Club / Event Alerts: " />
+                     </children>
+                  </Pane>
+                  <Pane prefHeight="31.0" prefWidth="816.0" style="-fx-background-radius: 10;" styleClass="button-settings">
+                     <effect>
+                        <DropShadow>
+                           <color>
+                              <Color opacity="0.30000001192092896" />
+                           </color>
+                        </DropShadow>
+                     </effect>
+                     <children>
+                        <Label layoutX="25.0" layoutY="7.0" text="Reply Alerts:" />
+                     </children>
+                  </Pane>
+                  <Pane prefHeight="29.0" prefWidth="816.0" style="-fx-background-radius: 10;" styleClass="button-settings">
+                     <effect>
+                        <DropShadow>
+                           <color>
+                              <Color opacity="0.30000001192092896" />
+                           </color>
+                        </DropShadow>
+                     </effect>
+                     <children>
+                        <Label layoutX="22.0" layoutY="6.0" text="Receive Alerts in Email:" />
+                     </children>
+                  </Pane>
+               </children>
+            </VBox>
+            <Label />
+            <Pane prefHeight="48.0" prefWidth="816.0" style="-fx-background-color: -menu-blue; -fx-background-radius: 10;" styleClass="button-menu">
+               <effect>
+                  <DropShadow>
+                     <color>
+                        <Color opacity="0.30000001192092896" />
+                     </color>
+                  </DropShadow>
+               </effect>
+               <children>
+                  <Label layoutX="38.0" layoutY="10.0" text="Dark Mode:" />
+                  <ImageView fitHeight="26.0" fitWidth="18.0" layoutX="14.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../assets/dark_mode.png" />
+                     </image>
+                  </ImageView>
+                  <Pane layoutX="740.0" layoutY="5.0" prefHeight="29.0" prefWidth="62.0" style="-fx-background-color: -bg-color; -fx-background-radius: 20;">
+                     <children>
+                        <Button fx:id="darkModeToggle" layoutX="4.0" layoutY="2.0" mnemonicParsing="false" onAction="#toggle" prefHeight="3.0" prefWidth="30.0" style="-fx-background-radius: 20; -fx-background-color: -dark-blue;" />
+                     </children>
+                     <effect>
+                        <DropShadow>
+                           <color>
+                              <Color opacity="0.12547528743743896" />
+                           </color>
+                        </DropShadow>
+                     </effect>
+                  </Pane>
+               </children>
+            </Pane>
+         </children>
+      </VBox>
+   </children>
+</Pane>
