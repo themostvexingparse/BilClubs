@@ -3,10 +3,10 @@
     -bg-color: #FFFFFF;
     -text-color: #1A1A1A;
     -primary-color: #385BAE;
-    -custom-light-blue:  #F0F5FF;
+    -custom-light-blue: #F0F5FF;
     -menu-blue: #f5f9ff;
-    -signout-red:  #a33838;
-    -signout-red-hover:  #f18b8b;
+    -signout-red: #a33838;
+    -signout-red-hover: #f18b8b;
     -menubutton-color: #e9f3fb;
     -menubutton-hover-blue: #7e98d4;
     -gray-hue: #F0F0F0;
@@ -14,7 +14,7 @@
     -manager-light-green: #def6e8;
     -card-blue: #DBE1EE;
     -club-card-blue: #ced9f4;
-    -dark-blue : #1C3F69;
+    -dark-blue: #1C3F69;
 
     -fx-background-color: -bg-color;
 }
@@ -42,13 +42,11 @@
 
 .club-card {
     -fx-background-radius: 20;
-    transition: -fx-scale-x 0.3s ease-in-out, -fx-scale-y 0.3s ease-in-out;
+    transition: -fx-translate-y 0.3s ease-in-out;
 }
 
-
-.club-card:hover{
-    -fx-scale-x: 1.05;
-    -fx-scale-y: 1.05;
+.club-card:hover {
+    -fx-translate-y: -3px;
     -fx-cursor: hand;
 }
 
@@ -56,7 +54,7 @@
     -fx-background-color: transparent;
 }
 
-.scroll-pane > .viewport {
+.scroll-pane>.viewport {
     -fx-background-color: transparent;
 }
 
@@ -67,7 +65,7 @@
     -fx-pref-height: 0;
 }
 
-.button-menu{
+.button-menu {
     -fx-background-color: -bg-color;
     -fx-text-fill: -text-color;
     -fx-background-insets: 0;
@@ -76,15 +74,15 @@
 }
 
 
-.button-menu:hover{
+.button-menu:hover {
     -fx-cursor: hand;
     -fx-background-insets: 0;
     -fx-background-color: -menubutton-color;
     -fx-scale-x: 1.03;
     -fx-scale-y: 1.08;
-} 
+}
 
-.button-settings{
+.button-settings {
     -fx-background-color: -custom-light-blue;
     -fx-text-fill: -text-color;
     -fx-background-insets: 0;
@@ -93,15 +91,15 @@
 }
 
 
-.button-settings:hover{
+.button-settings:hover {
     -fx-cursor: hand;
-    -fx-background-insets: 0;  
+    -fx-background-insets: 0;
     -fx-background-color: -menubutton-color;
     -fx-scale-x: 1.03;
     -fx-scale-y: 1.08;
-} 
+}
 
-.button-signOut{
+.button-signOut {
     -fx-background-color: -signout-red;
     -fx-text-fill: -text-color;
     -fx-background-insets: 0;
@@ -109,13 +107,13 @@
     transition: -fx-scale-x 0.3s ease-in-out, -fx-scale-y 0.3s ease-in-out;
 }
 
-.button-signOut:hover{
+.button-signOut:hover {
     -fx-cursor: hand;
     -fx-background-insets: 0;
     -fx-background-color: -signout-red-hover;
     -fx-scale-x: 1.03;
     -fx-scale-y: 1.08;
-} 
+}
 
 .check-box .box {
     -fx-background-color: transparent;
@@ -143,7 +141,7 @@
     -fx-background-color: transparent;
 }
 
-.scroll-pane > .viewport {
+.scroll-pane>.viewport {
     -fx-background-color: transparent;
 }
 
@@ -151,19 +149,62 @@
     -fx-background-color: transparent;
 }
 
+/* Search Bar Styles */
+.search-bar {
+    -fx-background-color: -menu-blue;
+    -fx-background-radius: 25;
+    -fx-padding: 0 10 0 10;
+}
+
+.search-icon-btn {
+    -fx-background-radius: 25;
+    -fx-cursor: hand;
+    -fx-background-color: transparent;
+    transition: -fx-scale-x 0.2s ease-in-out, -fx-scale-y 0.2s ease-in-out, -fx-background-color 0.2s ease-in-out;
+}
+
+.search-icon-btn:hover {
+    -fx-background-color: rgba(120, 150, 200, 0.15); /* Light, semi-transparent overlay */
+    -fx-scale-x: 1.15;
+    -fx-scale-y: 1.15;
+}
+
+.search-field {
+    -fx-background-color: transparent;
+    -fx-font-size: 16px;
+    -fx-text-fill: -text-color;
+    -fx-padding: 10 15 10 15;
+}
+
+.search-field:focused {
+    -fx-background-color: transparent;
+}
+
+.search-picker {
+    -fx-background-color: transparent;
+    -fx-font-size: 14px;
+    -fx-cursor: hand;
+    -fx-padding: 5 10 5 10;
+}
+
+.search-picker .label {
+    -fx-text-fill: -primary-color;
+    -fx-font-weight: bold;
+}
+
 .root.darkmode {
-    -bg-color: #0F1115; 
-    -text-color: #E1E7EF; 
-    -primary-color: #4B7BEC; 
-    -custom-light-blue: #1A1D24; 
-    -menu-blue: #14171C; 
-    -signout-red: #591414; 
-    -signout-red-hover: #9c2c2c; 
-    -menubutton-color: #232830; 
-    -menubutton-hover-blue: #323A46; 
-    -gray-hue: #2B303B; 
-    -manager-green: #20BF6B; 
-    -card-blue: #1A1D24; 
-    -club-card-blue: #232830; 
-    -dark-blue: #060709; 
+    -bg-color: #0F1115;
+    -text-color: #E1E7EF;
+    -primary-color: #4B7BEC;
+    -custom-light-blue: #1A1D24;
+    -menu-blue: #14171C;
+    -signout-red: #591414;
+    -signout-red-hover: #9c2c2c;
+    -menubutton-color: #232830;
+    -menubutton-hover-blue: #323A46;
+    -gray-hue: #2B303B;
+    -manager-green: #20BF6B;
+    -card-blue: #1A1D24;
+    -club-card-blue: #232830;
+    -dark-blue: #060709;
 }

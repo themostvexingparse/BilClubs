@@ -6,80 +6,115 @@
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1050.0" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bilclubs.controllers.ClubController">
-   <children>
-      <Pane layoutX="26.0" layoutY="22.0" prefHeight="472.0" prefWidth="1002.0" style="-fx-background-color: -menu-blue; -fx-background-radius: 20;">
-         <effect>
-            <DropShadow>
-               <color>
-                  <Color opacity="0.36692014336586" />
-               </color>
-            </DropShadow>
-         </effect>
-         <children>
-            <Label fx:id="clubNameLbl" layoutX="31.0" layoutY="373.0" text="Club Name">
-               <font>
-                  <Font name="Arial Bold" size="31.0" />
-               </font>
-            </Label>
-            <Label fx:id="clubDescLbl" layoutX="31.0" layoutY="442.0" text="&quot;Brief Club Desc&quot;" />
-            <Label layoutX="31.0" layoutY="416.0" text="Member Count">
-               <graphic>
-                  <ImageView fitHeight="21.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../assets/Icon.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Label>
-            <Button fx:id="leaveButton" layoutX="217.0" layoutY="303.0" mnemonicParsing="false" onAction="#leaveClub" prefHeight="48.0" prefWidth="133.0" style="-fx-background-color: -signout-red;" text="Leave Club" />
-            <Button fx:id="joinButton" layoutX="217.0" layoutY="303.0" mnemonicParsing="false" onAction="#joinClub" prefHeight="48.0" prefWidth="133.0" style="-fx-background-color: -dark-blue;" text="Join Club">
-               <font>
-                  <Font name="Arial Bold" size="12.0" />
-               </font>
-            </Button>
-            <Button fx:id="manageButton" disable="true" layoutX="368.0" layoutY="303.0" mnemonicParsing="false" onAction="#joinClub" prefHeight="48.0" prefWidth="133.0" style="-fx-background-color: -manager-green;" text="Manage Club" visible="false">
-               <font>
-                  <Font name="Arial Bold" size="12.0" />
-               </font>
-            </Button>
-         </children>
-      </Pane>
-      <ImageView fx:id="clubBanner" fitHeight="259.0" fitWidth="981.0" layoutX="39.0" layoutY="33.0" pickOnBounds="true">
-         <image>
-            <Image url="@../assets/banner.png" />
-         </image>
-      </ImageView>
-      <Pane layoutX="49.0" layoutY="218.0" prefHeight="162.0" prefWidth="175.0" style="-fx-background-color: -menu-blue; -fx-background-radius: 20;">
-         <children>
-            <ImageView fx:id="clubProfileImage" fitHeight="153.0" fitWidth="153.0" layoutX="11.0" layoutY="5.0" pickOnBounds="true">
-               <image>
-                  <Image url="@../assets/bilclubspfp.jpg" />
-               </image>
-            </ImageView>
-         </children>
-         <effect>
-            <DropShadow>
-               <color>
-                  <Color opacity="0.3700000047683716" />
-               </color>
-            </DropShadow>
-         </effect>
-      </Pane>
-      <ScrollPane layoutX="39.0" layoutY="535.0" prefHeight="153.0" prefWidth="804.0" style="-fx-background-color: -bg-color;">
-         <content>
-            <VBox fx:id="happeningSoonVBox" prefHeight="27.0" prefWidth="40.0" style="-fx-spacing: 15; -fx-padding: 25 25 30 25;" />
-         </content>
-      </ScrollPane>
-      <Label layoutX="44.0" layoutY="509.0" text="Upcoming Events">
-         <font>
-            <Font name="Arial Bold" size="22.0" />
-         </font>
-      </Label>
-   </children>
-</Pane>
+<ScrollPane fitToWidth="true" prefHeight="720.0" prefWidth="1050.0" style="-fx-background-color: transparent;" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bilclubs.controllers.ClubController">
+   <content>
+      <VBox spacing="30.0" style="-fx-padding: 25;">
+         
+         <!-- Club Header Card -->
+         <VBox style="-fx-background-color: -menu-blue; -fx-background-radius: 20;">
+            <effect>
+               <DropShadow>
+                  <color>
+                     <Color opacity="0.3" />
+                  </color>
+               </DropShadow>
+            </effect>
+            <children>
+               <AnchorPane prefHeight="380.0">
+                  <children>
+                     <ImageView fx:id="clubBanner" fitHeight="259.0" fitWidth="950.0" layoutX="25.0" layoutY="20.0" pickOnBounds="true">
+                        <image>
+                           <Image url="@../assets/banner.png" />
+                        </image>
+                     </ImageView>
+                     
+                     <Pane layoutX="40.0" layoutY="200.0" prefHeight="162.0" prefWidth="175.0" style="-fx-background-color: -menu-blue; -fx-background-radius: 20;">
+                        <effect>
+                           <DropShadow>
+                              <color>
+                                 <Color opacity="0.3" />
+                              </color>
+                           </DropShadow>
+                        </effect>
+                        <children>
+                           <ImageView fx:id="clubProfileImage" fitHeight="153.0" fitWidth="153.0" layoutX="11.0" layoutY="5.0" pickOnBounds="true">
+                              <image>
+                                 <Image url="@../assets/bilclubspfp.jpg" />
+                              </image>
+                           </ImageView>
+                        </children>
+                     </Pane>
+                     
+                     <HBox layoutX="230.0" layoutY="295.0" spacing="15.0">
+                        <children>
+                           <Button fx:id="joinButton" mnemonicParsing="false" onAction="#joinClub" prefHeight="48.0" prefWidth="133.0" style="-fx-background-color: -dark-blue; -fx-text-fill: white;" text="Join Club">
+                              <font>
+                                 <Font name="Arial Bold" size="14.0" />
+                              </font>
+                           </Button>
+                           <Button fx:id="leaveButton" mnemonicParsing="false" onAction="#leaveClub" prefHeight="48.0" prefWidth="133.0" style="-fx-background-color: -signout-red; -fx-text-fill: white;" text="Leave Club">
+                              <font>
+                                 <Font name="Arial Bold" size="14.0" />
+                              </font>
+                           </Button>
+                           <Button fx:id="manageButton" disable="true" mnemonicParsing="false" onAction="#joinClub" prefHeight="48.0" prefWidth="133.0" style="-fx-background-color: -manager-green; -fx-text-fill: white;" text="Manage Club" visible="false">
+                              <font>
+                                 <Font name="Arial Bold" size="14.0" />
+                              </font>
+                           </Button>
+                        </children>
+                     </HBox>
+                  </children>
+               </AnchorPane>
+               
+               <VBox spacing="10.0" style="-fx-padding: 0 40 40 40;">
+                  <children>
+                     <Label fx:id="clubNameLbl" text="Club Name">
+                        <font>
+                           <Font name="Arial Bold" size="31.0" />
+                        </font>
+                     </Label>
+                     <Label text="Member Count" style="-fx-text-fill: -primary-color;">
+                        <graphic>
+                           <ImageView fitHeight="21.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                              <image>
+                                 <Image url="@../assets/Icon.png" />
+                              </image>
+                           </ImageView>
+                        </graphic>
+                        <font>
+                           <Font name="Arial" size="14.0" />
+                        </font>
+                     </Label>
+                     <Label fx:id="clubDescLbl" text="&quot;Brief Club Desc&quot;" wrapText="true" style="-fx-text-fill: -text-color;">
+                        <font>
+                           <Font name="Arial" size="16.0" />
+                        </font>
+                     </Label>
+                  </children>
+               </VBox>
+            </children>
+         </VBox>
+         
+         <!-- Upcoming Events Section -->
+         <VBox spacing="15.0">
+            <children>
+               <Label text="Upcoming Events">
+                  <font>
+                     <Font name="Arial Bold" size="24.0" />
+                  </font>
+               </Label>
+               <VBox fx:id="happeningSoonVBox" spacing="15.0" style="-fx-padding: 15; -fx-background-color: -bg-color; -fx-background-radius: 15;" />
+            </children>
+         </VBox>
+         
+      </VBox>
+   </content>
+</ScrollPane>

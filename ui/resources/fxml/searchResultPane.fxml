@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Priority?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.text.Font?>
+
+<fx:root prefWidth="850.0" minHeight="130.0" style="-fx-background-color: -card-blue; -fx-background-radius: 18; -fx-cursor: hand; -fx-padding: 15;" onMouseClicked="#handleCardClick" styleClass="club-card" stylesheets="@../styles/styles.css" type="HBox" spacing="20.0" alignment="CENTER_LEFT" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+   <effect>
+      <DropShadow>
+         <color>
+            <Color opacity="0.25" />
+         </color>
+      </DropShadow>
+   </effect>
+   <children>
+       <Rectangle fx:id="imageRect" width="100.0" height="100.0" arcWidth="20.0" arcHeight="20.0" fill="#a0a0a0" />
+       
+       <VBox prefWidth="680.0" spacing="6.0" alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
+           <children>
+               <HBox alignment="CENTER_LEFT" spacing="10.0">
+                  <children>
+                     <Label fx:id="titleLabel" style="-fx-text-fill: -text-color;" text="Title" wrapText="true">
+                        <font>
+                           <Font name="Arial Bold" size="24.0" />
+                        </font>
+                     </Label>
+                     <Region HBox.hgrow="ALWAYS" />
+                     <Label text="View Details ➔" style="-fx-text-fill: -primary-color; -fx-opacity: 0.8;">
+                        <font>
+                           <Font name="Arial Bold" size="13.0" />
+                        </font>
+                     </Label>
+                  </children>
+               </HBox>
+               
+               <Label fx:id="subtitleLabel" style="-fx-text-fill: -primary-color; -fx-font-weight: bold; -fx-opacity: 0.9; -fx-font-size: 14px;" text="Subtitle" />
+               
+               <Label fx:id="descriptionLabel" alignment="TOP_LEFT" prefWidth="680.0" maxHeight="50.0" style="-fx-text-fill: -text-color; -fx-opacity: 0.75;" text="Description text goes here..." wrapText="true" textOverrun="WORD_ELLIPSIS" VBox.vgrow="ALWAYS">
+                  <font>
+                     <Font name="Arial" size="14.0" />
+                  </font>
+               </Label>
+           </children>
+       </VBox>
+   </children>
+</fx:root>

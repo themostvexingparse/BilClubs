@@ -17,7 +17,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import bilclubs.utils.Response;
-import bilclubs.components.EventPane;
+import bilclubs.components.SearchResultPane;
 import bilclubs.utils.RequestManager;
 
 public class ClubController {
@@ -119,8 +119,7 @@ public class ClubController {
 
         for (Object obj : eventData) {
             JSONObject eventObj = (JSONObject) obj;
-            EventPane event = new EventPane(eventObj.getString("name"), eventObj.getString("clubName"),
-                    ((Integer) eventObj.optInt("points", 0)).toString());
+            SearchResultPane event = new SearchResultPane(eventObj, "Event");
             happeningSoonVBox.getChildren().add(event);
         }
     }
