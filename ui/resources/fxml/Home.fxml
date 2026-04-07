@@ -12,7 +12,7 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1050.0" style="-fx-background-color: -bg-color;" stylesheets="@../../../../javaPrj/trial/src/styles.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bilclubs.controllers.HomePageController">
    <children>
-      <Label layoutX="49.0" layoutY="62.0" style="-fx-text-fill: -text-color;" text="Your Clubs">
+      <Label layoutX="49.0" layoutY="42.0" style="-fx-text-fill: -text-color;" text="Your Clubs">
          <font>
             <Font name="Arial Bold" size="30.0" />
          </font>
@@ -21,7 +21,7 @@
          <children>
             <Pane fx:id="borderPane" style="-fx-background-color: transparent; -fx-border-color: -primary-color; -fx-border-radius: 20;">
                <children>
-                  <ScrollPane layoutY="-14.0" prefHeight="257.0" prefWidth="786.0" styleClass="faded-pane" stylesheets="@../../../../javaPrj/trial/src/styles.css">
+                  <ScrollPane layoutY="-30.0" prefHeight="257.0" prefWidth="786.0" styleClass="faded-pane" stylesheets="@../../../../javaPrj/trial/src/styles.css">
                      <content>
                         <HBox fx:id="yourClubsHBox" style="-fx-spacing: 15; -fx-padding: 10 10 20 10;" />
                      </content>

@@ -2,21 +2,12 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
-<?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
 <fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="227.0" prefWidth="233.0" style="-fx-background-radius: 20; -fx-background-color: -menu-blue;" styleClass="club-card" stylesheets="@../styles/styles.css" type="Pane" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
-   <effect>
-      <DropShadow>
-         <color>
-            <Color opacity="0.550000011920929" />
-         </color>
-      </DropShadow>
-   </effect>
    <children>
       <Button layoutX="21.0" layoutY="190.0" mnemonicParsing="false" onAction="#goToEventPage" prefHeight="23.0" prefWidth="191.0" style="-fx-background-radius: 10; -fx-background-color: -dark-blue;" text="View Details -&gt;">
          <font>

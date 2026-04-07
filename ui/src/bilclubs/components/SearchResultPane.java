@@ -80,7 +80,7 @@ public class SearchResultPane extends HBox {
                 Image defaultImg = new Image(getClass().getResourceAsStream(defaultPath));
                 imageRect.setFill(new ImagePattern(defaultImg));
 
-                if (!imageUrl.isEmpty()) {
+                if (!imageUrl.isEmpty() && !imageUrl.contains("default")) {
                     Image img = new Image(RequestManager.defaultAddress + imageUrl, true);
                     if (img.getProgress() >= 1.0) {
                         if (!img.isError())

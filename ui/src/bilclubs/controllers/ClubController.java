@@ -90,13 +90,13 @@ public class ClubController {
                 String iconFilename = club.optString("iconFilename", "");
                 String coverFilename = club.optString("coverFilename", "");
 
-                if (!iconFilename.isEmpty()) {
+                if (!iconFilename.isEmpty() && !iconFilename.contains("default")) {
                     Image icon = new Image(baseUrl + iconFilename, true); // true = background loading
                     clubProfileImage.setImage(icon);
                     clubProfileImage.setPreserveRatio(true);
                 }
 
-                if (!coverFilename.isEmpty()) {
+                if (!coverFilename.isEmpty() && !coverFilename.contains("default")) {
                     Image cover = new Image(baseUrl + coverFilename, true);
                     clubBanner.setImage(cover);
                     clubBanner.setPreserveRatio(false); // stretch to fill banner area
