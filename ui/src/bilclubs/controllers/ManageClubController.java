@@ -5,11 +5,13 @@ import java.io.IOException;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import bilclubs.components.EventCreationForm;
 import bilclubs.components.EventPane;
 import bilclubs.components.MemberCard;
 import bilclubs.components.SearchResultPane;
 import bilclubs.utils.RequestManager;
 import bilclubs.utils.Response;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.layout.VBox;
 
@@ -49,6 +51,10 @@ public class ManageClubController {
             SearchResultPane aPane = new SearchResultPane(aMember, "event");
             clubEventsVBox.getChildren().add(aPane);
         }
+    }
+
+    public void eventCreate(ActionEvent e) throws IOException{
+        EventCreationForm newForm = new EventCreationForm();
     }
     
 }

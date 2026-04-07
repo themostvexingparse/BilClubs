@@ -19,19 +19,19 @@ import bilclubs.utils.*;
 public class Controller {
 
     public static Integer userId = null;
-    public static String sessionToken = null; 
+    public static String sessionToken = null;
     public static JSONObject userData = null;
     public static Integer currentClubId = null;
     public static String currentClubName = null;
     public static JSONObject currentEventObject = null;
 
-    //instances
+    // instances
     private Stage stage;
     @FXML
     private TextField webmailLoginField;
     @FXML
     private PasswordField webmailPasswordField;
-    @FXML 
+    @FXML
     private Label wrongInfoLabel;
     @FXML
     private TextField signUpMailField;
@@ -53,62 +53,60 @@ public class Controller {
     private Pane signUpPane;
     @FXML
     private Button switchToLogin;
-    
-    //stack of previous scenes
+
+    // stack of previous scenes
     public static ArrayList<Scene> backscenes = new ArrayList<>();
-    //stack of scenes going forward
+    // stack of scenes going forward
     public static ArrayList<Scene> frontscenes = new ArrayList<>();
 
     public static boolean isDarkMode = false;
 
     @FXML
-    public void goToPassword(){
+    public void goToPassword() {
         webmailPasswordField.requestFocus();
     }
 
-    public void goBack(ActionEvent e) throws IOException{
-        stage = (Stage)((Node)e.getSource()).getScene().getWindow();
-        if(backscenes.size() - 1 > 0){
-            stage.setScene(backscenes.get(backscenes.size()-2));
-            frontscenes.add(backscenes.get(backscenes.size()-1));
-            backscenes.remove(backscenes.size()-1);
-        }   
-    }
-
-    public void goFront(ActionEvent e) throws IOException{
-        stage = (Stage)((Node)e.getSource()).getScene().getWindow();
-        if(backscenes.size() - 1 > 0){
-            stage.setScene(frontscenes.get(frontscenes.size()-1));
-            frontscenes.remove(frontscenes.size()-1);
+    public void goBack(ActionEvent e) throws IOException {
+        stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+        if (backscenes.size() - 1 > 0) {
+            stage.setScene(backscenes.get(backscenes.size() - 2));
+            frontscenes.add(backscenes.get(backscenes.size() - 1));
+            backscenes.remove(backscenes.size() - 1);
         }
     }
-    
-    public void switchToLogin(ActionEvent e) throws IOException{
+
+    public void goFront(ActionEvent e) throws IOException {
+        stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+        if (backscenes.size() - 1 > 0) {
+            stage.setScene(frontscenes.get(frontscenes.size() - 1));
+            frontscenes.remove(frontscenes.size() - 1);
+        }
+    }
+
+    public void switchToLogin(ActionEvent e) throws IOException {
         FXMLLoader loginRoot = new FXMLLoader(getClass().getResource("/fxml/loginscenebuilder.fxml"));
 
-        stage = (Stage)((Node)e.getSource()).getScene().getWindow();
+        stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         LoadHelper.safelyLoad(loginRoot, stage);
     }
 
-    public void switchToSignUp(ActionEvent e) throws IOException{
+    public void switchToSignUp(ActionEvent e) throws IOException {
         FXMLLoader signUpRoot = new FXMLLoader(getClass().getResource("/fxml/signupscenebuilder.fxml"));
 
-        //stage i getiriyoruz
-        stage = (Stage)((Node)e.getSource()).getScene().getWindow();
+        // stage i getiriyoruz
+        stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         LoadHelper.safelyLoad(signUpRoot, stage);
     }
 
-
-    public void getMailText(ActionEvent e) throws IOException{
+    public void getMailText(ActionEvent e) throws IOException {
         String mail = webmailLoginField.getText();
         String password = webmailPasswordField.getText();
-        
+
         loginRequest(mail, password);
     }
 
-
-    //helper for getting the sign up information
-    public void getSignUpInfo(ActionEvent e) throws IOException{
+    // helper for getting the sign up information
+    public void getSignUpInfo(ActionEvent e) throws IOException {
         String name = nameField.getText();
         String lastName = lastNameField.getText();
         String department = deptField.getText();
@@ -118,10 +116,11 @@ public class Controller {
 
         signUpRequest(mail, password, name, lastName, department);
 
-    } 
+    }
 
-    public void signUpRequest(String mail, String passWord, String name, String lastname, String dept) throws IOException{
-        backscenes.add((Scene)signUpMailField.getScene());
+    public void signUpRequest(String mail, String passWord, String name, String lastname, String dept)
+            throws IOException {
+        backscenes.add((Scene) signUpMailField.getScene());
 
         JSONObject signUpJson = new JSONObject();
         signUpJson.put("firstName", name);
@@ -130,48 +129,46 @@ public class Controller {
         signUpJson.put("password", passWord);
         signUpJson.put("major", dept);
         signUpJson.put("action", "signup");
-        
+
         Pane targetPane = (signUpPane != null) ? signUpPane : (Pane) signUpMailField.getScene().lookup("#signUpPane");
 
         LoadingSign signFactory = new LoadingSign();
-        try { signFactory.showLoadingIcon(targetPane); }
-        catch (IOException e) { e.printStackTrace(); }
+        try {
+            signFactory.showLoadingIcon(targetPane);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         new Thread(() -> {
             try {
                 Response signUpResponse = RequestManager.sendPostRequest("api/user", signUpJson);
 
                 Platform.runLater(() -> {
-                    try{
-                        if(signUpResponse.isSuccess()){
-                            //EN SON BUNU KOY 
-                            // Parent interestRoot = FXMLLoader.load(getClass().getResource("/fxml/interestpage.fxml"));
-                            // stage = (Stage)signUpMailField.getScene().getWindow();
+                    try {
+                        if (signUpResponse.isSuccess()) {
+                            sessionToken = signUpResponse.getPayload().getString("sessionToken");
+                            userId = signUpResponse.getPayload().getInt("userId");
 
-                            // Scene interestScene = new Scene(interestRoot);
-                            // stage.setScene(interestScene);
-                            // stage.show();
-
-                            FXMLLoader interestLoader = new FXMLLoader(getClass().getResource("/fxml/interestpage.fxml"));
-                            stage = (Stage)signUpMailField.getScene().getWindow();
+                            FXMLLoader interestLoader = new FXMLLoader(
+                                    getClass().getResource("/fxml/interestpage.fxml"));
+                            stage = (Stage) signUpMailField.getScene().getWindow();
                             LoadHelper.safelyLoad(interestLoader, stage);
-                        }
-                        else{
+                        } else {
                             signFactory.removeLoadingIcon(targetPane);
-                            signUpErrorLabel.setText(signUpResponse.getErrorMessage());;
+                            signUpErrorLabel.setText(signUpResponse.getErrorMessage());
+                            ;
                             signUpErrorLabel.setVisible(true);
                         }
-                    }
-                    catch(Exception exception){
+                    } catch (Exception exception) {
                         exception.printStackTrace();
                     }
                 });
-            } catch(Exception e) { e.printStackTrace(); }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }).start();
- 
-    }
 
-    
+    }
 
     private void loginRequest(String username, String passWord) {
         JSONObject responseJson = new JSONObject();
@@ -184,8 +181,11 @@ public class Controller {
         System.out.println("lookup result: " + webmailLoginField.getScene().lookup("#loginPane"));
 
         LoadingSign signFactory = new LoadingSign();
-        try { signFactory.showLoadingIcon(targetPane); }
-        catch (IOException e) { e.printStackTrace(); }
+        try {
+            signFactory.showLoadingIcon(targetPane);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         new Thread(() -> {
             try {
@@ -207,10 +207,11 @@ public class Controller {
                             userData = userInfoResponse.getPayload();
 
                             stage = (Stage) webmailLoginField.getScene().getWindow();
-                            FXMLLoader mainPageFXML = new FXMLLoader(getClass().getResource("/fxml/MenuBarSizedUp.fxml"));
+                            FXMLLoader mainPageFXML = new FXMLLoader(
+                                    getClass().getResource("/fxml/MenuBarSizedUp.fxml"));
                             LoadHelper.safelyLoad(mainPageFXML, stage);
-                        } 
-                        
+                        }
+
                         else {
                             signFactory.removeLoadingIcon(targetPane);
 
@@ -218,24 +219,23 @@ public class Controller {
                             wrongInfoLabel.setVisible(true);
                         }
 
-                    } catch (Exception e) { e.printStackTrace(); }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
 
                 });
 
-            } catch (Exception e) { e.printStackTrace(); } 
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
         }).start();
     }
 
-    public void goHome(ActionEvent e) throws IOException{
+    public void goHome(ActionEvent e) throws IOException {
         stage = (Stage) switchToLogin.getScene().getWindow();
         FXMLLoader mainPageFXML = new FXMLLoader(getClass().getResource("/fxml/MenuBarSizedUp.fxml"));
         LoadHelper.safelyLoad(mainPageFXML, stage);
     }
-
-    
-
-
-    
 
 }
