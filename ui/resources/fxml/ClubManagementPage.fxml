@@ -18,7 +18,7 @@
         <content>
           <AnchorPane fx:id="memberPane" minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0">
                <children>
-                  <VBox fx:id="membersVBox" layoutX="5.0" layoutY="7.0" prefHeight="41.0" prefWidth="23.0" style="-fx-spacing: 15;" />
+                  <VBox fx:id="membersVBox" layoutX="5.0" layoutY="7.0" prefHeight="41.0" prefWidth="23.0" />
                </children></AnchorPane>
         </content>
       </ScrollPane>
@@ -32,7 +32,7 @@
             <Font name="System Bold" size="24.0" />
          </font>
       </Label>
-      <Button layoutX="459.0" layoutY="540.0" mnemonicParsing="false" prefHeight="56.0" prefWidth="194.0" style="-fx-background-color: -manager-green;" text="Create an Event!" textFill="WHITE">
+      <Button fx:id="createEvent" layoutX="459.0" layoutY="540.0" mnemonicParsing="false" onAction="#eventCreate" prefHeight="56.0" prefWidth="194.0" style="-fx-background-color: -manager-green;" text="Create an Event!" textFill="WHITE">
          <font>
             <Font name="Arial Bold" size="16.0" />
          </font>
@@ -55,7 +55,7 @@
          <content>
             <AnchorPane fx:id="eventPane" minHeight="0.0" minWidth="0.0" prefHeight="388.0" prefWidth="577.0">
                <children>
-                  <VBox fx:id="clubEventsVBox" layoutX="10.0" layoutY="7.0" prefHeight="50.0" prefWidth="503.0" style="-fx-spacing: 15;" />
+                  <VBox fx:id="clubEventsVBox" layoutX="10.0" layoutY="7.0" prefHeight="50.0" prefWidth="503.0" />
                </children></AnchorPane>
          </content>
       </ScrollPane>
