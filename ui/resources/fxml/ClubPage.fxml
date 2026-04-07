@@ -60,7 +60,7 @@
                            <Font name="Arial Bold" size="14.0" />
                         </font>
                      </Button>
-                     <Button fx:id="manageButton" disable="true" layoutX="841.0" layoutY="295.0" mnemonicParsing="false" onAction="#joinClub" prefHeight="48.0" prefWidth="133.0" style="-fx-background-color: -manager-green; -fx-text-fill: white;" text="Manage Club" visible="false">
+                     <Button fx:id="manageButton" disable="true" layoutX="841.0" layoutY="295.0" mnemonicParsing="false" onAction="#goToManagement" prefHeight="48.0" prefWidth="133.0" style="-fx-background-color: -manager-green; -fx-text-fill: white;" text="Manage Club" visible="false">
                         <font>
                            <Font name="Arial Bold" size="14.0" />
                         </font>
