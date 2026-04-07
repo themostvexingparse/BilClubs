@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<Pane prefHeight="472.0" prefWidth="427.0" style="-fx-background-color: -bg-color;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bilclubs.controllers.CreateClubController">
+   <children>
+      <Button layoutX="75.0" layoutY="383.0" mnemonicParsing="false" prefHeight="46.0" prefWidth="278.0" style="-fx-background-color: -dark-blue;" text="Create your Club!">
+         <font>
+            <Font name="Arial Bold" size="14.0" />
+         </font>
+      </Button>
+      <Label layoutX="41.0" layoutY="44.0" prefHeight="20.0" prefWidth="129.0" text="Club Name">
+         <font>
+            <Font name="Arial" size="17.0" />
+         </font>
+      </Label>
+      <Label layoutX="43.0" layoutY="141.0" prefHeight="20.0" prefWidth="256.0" text="Description">
+         <font>
+            <Font name="Arial" size="17.0" />
+         </font>
+      </Label>
+      <Label layoutX="43.0" layoutY="151.0" prefHeight="20.0" prefWidth="76.0">
+         <font>
+            <Font name="Arial" size="14.0" />
+         </font>
+      </Label>
+      <TextField fx:id="nameField" layoutX="43.0" layoutY="72.0" prefHeight="46.0" prefWidth="341.0" promptText="Please enter the club name..." style="-fx-border-color: -dark-blue; -fx-border-radius: 5; -fx-background-color: -bg-color;" />
+      <TextArea fx:id="descArea" layoutX="43.0" layoutY="171.0" prefHeight="113.0" prefWidth="341.0" promptText="Enter you clubs' description..." style="-fx-border-color: -dark-blue; -fx-border-radius: 5; -fx-background-color: -bg-color;" />
+      <Button fx:id="uploadBannerButton" layoutX="230.0" layoutY="301.0" mnemonicParsing="false" onAction="#uploadBanner" prefHeight="46.0" prefWidth="154.0" style="-fx-background-color: -dark-blue;" text="Upload Banner">
+         <graphic>
+            <ImageView blendMode="ADD" fitHeight="27.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../assets/Plus.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button fx:id="uploadIconButton" layoutX="42.0" layoutY="301.0" mnemonicParsing="false" onAction="#uploadClubIcon" prefHeight="46.0" prefWidth="154.0" style="-fx-background-color: -dark-blue;" text="Upload Icon">
+         <graphic>
+            <ImageView blendMode="ADD" fitHeight="27.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../assets/Plus.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+   </children>
+   <stylesheets>
+      <URL value="@../../../styles/styles.css" />
+      <URL value="@../styles/styles.css" />
+   </stylesheets>
+</Pane>
