@@ -24,9 +24,9 @@
       </Label>
       <StackPane layoutX="60.0" layoutY="83.0" style="-fx-background-color: -transparent;">
          <children>
-            <Pane fx:id="borderPane" style="-fx-background-color: transparent; -fx-border-radius: 20;" stylesheets="@../styles/styles.css">
+            <Pane fx:id="borderPane" prefWidth="771.0" style="-fx-background-color: transparent; -fx-border-radius: 20;" stylesheets="@../styles/styles.css">
                <children>
-                  <ScrollPane layoutX="-1.0" prefHeight="257.0" prefWidth="771.0" styleClass="faded-pane" stylesheets="@../styles/styles.css">
+                  <ScrollPane layoutX="-1.0" prefHeight="245.0" prefWidth="771.0" styleClass="faded-pane" stylesheets="@../styles/styles.css">
                      <content>
                         <HBox fx:id="yourClubsHBox" style="-fx-spacing: 15; -fx-padding: 10 10 20 10;" />
                      </content>

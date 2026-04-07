@@ -15,7 +15,7 @@
             <Font name="Arial Bold" size="30.0" />
          </font>
       </Label>
-      <StackPane layoutX="58.0" layoutY="77.0" prefHeight="311.0" prefWidth="767.0" style="-fx-background-color: -transparent;">
+      <StackPane layoutX="58.0" layoutY="84.0" prefHeight="304.0" prefWidth="767.0" style="-fx-background-color: -transparent;">
          <children>
             <ScrollPane prefHeight="257.0" prefWidth="755.0" styleClass="faded-pane" stylesheets="@../styles/styles.css">
                <content>

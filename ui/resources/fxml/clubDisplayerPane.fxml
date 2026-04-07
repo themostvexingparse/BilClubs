@@ -15,7 +15,7 @@
             <Font name="Arial Bold" size="12.0" />
          </font>
       </Label>
-      <Label fx:id="descLabel" layoutX="14.0" layoutY="166.0" prefHeight="15.0" prefWidth="149.0" text="Club Description">
+      <Label fx:id="descLabel" layoutX="14.0" layoutY="166.0" prefWidth="149.0" text="Club Description">
          <font>
             <Font name="Arial" size="12.0" />
          </font>
