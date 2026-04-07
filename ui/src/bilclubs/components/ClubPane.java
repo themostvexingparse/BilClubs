@@ -6,12 +6,14 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import bilclubs.utils.LoadHelper;
+import bilclubs.utils.RequestManager;
 import bilclubs.controllers.Controller;
 
 public class ClubPane extends Pane {
@@ -27,6 +29,10 @@ public class ClubPane extends Pane {
     private Integer clubId;
 
     public ClubPane(String clubname, String clubDesc, Integer clubIdVal) throws IOException{
+        this(clubname, clubDesc, clubIdVal, "");
+    }
+
+    public ClubPane(String clubname, String clubDesc, Integer clubIdVal, String iconFilename) throws IOException{
         FXMLLoader backbone = new FXMLLoader(getClass().getResource("/fxml/clubDisplayerPane.fxml"));
         backbone.setRoot(this);
         backbone.setController(this);
@@ -38,6 +44,22 @@ public class ClubPane extends Pane {
         this.name = clubname;
         this.desc = clubDesc;
         this.clubId = clubIdVal;
+
+        // Load club icon from the server, fall back to default
+        Image defaultImg = new Image(getClass().getResourceAsStream("/assets/bilclubs logo 1.png"));
+        clubPic.setImage(defaultImg);
+
+        if (iconFilename != null && !iconFilename.isEmpty()) {
+            Image icon = new Image(RequestManager.defaultAddress + iconFilename, true);
+            icon.progressProperty().addListener((obs, oldVal, newVal) -> {
+                if (newVal.doubleValue() >= 1.0 && !icon.isError()) {
+                    clubPic.setImage(icon);
+                }
+            });
+            if (icon.getProgress() >= 1.0 && !icon.isError()) {
+                clubPic.setImage(icon);
+            }
+        }
     }
 
     public void setName(String aName){
@@ -61,3 +83,4 @@ public class ClubPane extends Pane {
     }
     
 }
+

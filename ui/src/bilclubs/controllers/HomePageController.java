@@ -13,7 +13,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
 import bilclubs.components.ClubPane;
-import bilclubs.components.EventPane;
+import bilclubs.components.SearchResultPane;
 import bilclubs.utils.RequestManager;
 import bilclubs.utils.Response;
 
@@ -76,7 +76,7 @@ public class HomePageController {
             JSONObject club = (JSONObject) obj;
 
             ClubPane userClubPane = new ClubPane(club.getString("name"), club.getString("description").split("\n")[0],
-                    club.getInt("id"));
+                    club.getInt("id"), club.optString("iconFilename", ""));
             yourClubsHBox.getChildren().add(userClubPane);
         }
 
@@ -95,8 +95,7 @@ public class HomePageController {
         for (Object obj : userEvents) {
             JSONObject anEvent = (JSONObject) obj;
             System.out.println(anEvent);
-            EventPane displayEvent = new EventPane(anEvent.getString("name"), anEvent.getString("clubName"),
-                    String.valueOf(anEvent.optInt("points", 0)));
+            SearchResultPane displayEvent = new SearchResultPane(anEvent, "Event");
             happeningSoonVBox.getChildren().add(displayEvent);
         }
 

@@ -17,7 +17,7 @@
             <Font name="Arial Bold" size="16.0" />
          </font>
       </Label>
-      <ScrollPane layoutX="510.0" layoutY="264.0" prefHeight="295.0" prefWidth="260.0">
+      <ScrollPane layoutX="510.0" layoutY="264.0" prefHeight="295.0" prefWidth="260.0" style="-fx-background-color: transparent; -fx-background-radius: 5; -fx-border-color: #D9D9D9; -fx-border-radius: 5;">
          <content>
             <AnchorPane fx:id="interestAnchor" prefHeight="1000.0" prefWidth="265.0" style="-fx-background-color: -bg-color;">
                <children>
@@ -258,7 +258,7 @@
             </AnchorPane>
          </content>
       </ScrollPane>
-      <Button layoutX="607.0" layoutY="222.0" mnemonicParsing="false" onAction="#getInterests" prefHeight="27.0" prefWidth="63.0" text="Submit!" textFill="WHITE" />
+      <Button layoutX="607.0" layoutY="222.0" mnemonicParsing="false" onAction="#getInterests" prefHeight="27.0" prefWidth="63.0" style="-fx-background-color: #385BAE; -fx-background-radius: 5; -fx-cursor: hand;" text="Submit!" textFill="WHITE" />
       <ImageView fitHeight="80.0" fitWidth="80.0" layoutX="599.0" layoutY="115.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../assets/bilclubs%20logo%201.png" />

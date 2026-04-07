@@ -15,7 +15,7 @@
    <children>
       <Pane layoutX="518.0" layoutY="223.0" prefHeight="349.0" prefWidth="245.0" style="-fx-background-color: D9D9D9;">
          <children>
-            <Pane layoutX="3.0" layoutY="3.0" prefHeight="343.0" prefWidth="240.0" style="-fx-background-color: -bg-color;">
+            <Pane fx:id="signUpPane" layoutX="3.0" layoutY="3.0" prefHeight="343.0" prefWidth="240.0" style="-fx-background-color: -bg-color;">
                <children>
                   <TextField fx:id="signUpMailField" layoutX="10.0" layoutY="204.0" prefHeight="30.0" prefWidth="220.0" />
                   <Label layoutX="10.0" layoutY="183.0" text="Bilkent WebMail">

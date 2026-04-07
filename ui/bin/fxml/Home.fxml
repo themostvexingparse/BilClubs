@@ -49,7 +49,7 @@
          <children>
             <ScrollPane prefHeight="283.0" prefWidth="804.0" style="-fx-background-color: -bg-color;">
                <content>
-                  <VBox fx:id="happeningSoonVBox" prefHeight="27.0" prefWidth="40.0" style="-fx-spacing: 15; -fx-padding: 25 25 30 25;" />
+                  <VBox fx:id="happeningSoonVBox" prefWidth="780.0" style="-fx-spacing: 15; -fx-padding: 25 25 30 25;" />
                </content>
             </ScrollPane>
          </children>

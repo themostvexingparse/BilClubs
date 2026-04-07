@@ -49,6 +49,8 @@ public class Controller {
     @FXML
     private Pane loginPane;
     @FXML
+    private Pane signUpPane;
+    @FXML
     private Button switchToLogin;
     
     //stack of previous scenes
@@ -128,39 +130,43 @@ public class Controller {
         signUpJson.put("major", dept);
         signUpJson.put("action", "signup");
         
+        Pane targetPane = (signUpPane != null) ? signUpPane : (Pane) signUpMailField.getScene().lookup("#signUpPane");
 
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run(){
-                try{
-                    
-                    Response signUpResponse = RequestManager.sendPostRequest("api/user", signUpJson);
+        LoadingSign signFactory = new LoadingSign();
+        try { signFactory.showLoadingIcon(targetPane); }
+        catch (IOException e) { e.printStackTrace(); }
 
-                    if(signUpResponse.isSuccess()){
-                        //EN SON BUNU KOY 
-                        // Parent interestRoot = FXMLLoader.load(getClass().getResource("/fxml/interestpage.fxml"));
-                        // stage = (Stage)signUpMailField.getScene().getWindow();
+        new Thread(() -> {
+            try {
+                Response signUpResponse = RequestManager.sendPostRequest("api/user", signUpJson);
 
-                        // Scene interestScene = new Scene(interestRoot);
-                        // stage.setScene(interestScene);
-                        // stage.show();
+                Platform.runLater(() -> {
+                    try{
+                        if(signUpResponse.isSuccess()){
+                            //EN SON BUNU KOY 
+                            // Parent interestRoot = FXMLLoader.load(getClass().getResource("/fxml/interestpage.fxml"));
+                            // stage = (Stage)signUpMailField.getScene().getWindow();
 
-                        FXMLLoader interestLoader = new FXMLLoader(getClass().getResource("/fxml/interestpage.fxml"));
-                        stage = (Stage)signUpMailField.getScene().getWindow();
-                        LoadHelper.safelyLoad(interestLoader, stage);
+                            // Scene interestScene = new Scene(interestRoot);
+                            // stage.setScene(interestScene);
+                            // stage.show();
+
+                            FXMLLoader interestLoader = new FXMLLoader(getClass().getResource("/fxml/interestpage.fxml"));
+                            stage = (Stage)signUpMailField.getScene().getWindow();
+                            LoadHelper.safelyLoad(interestLoader, stage);
+                        }
+                        else{
+                            signFactory.removeLoadingIcon(targetPane);
+                            signUpErrorLabel.setText(signUpResponse.getErrorMessage());;
+                            signUpErrorLabel.setVisible(true);
+                        }
                     }
-
-                    else{
-                        signUpErrorLabel.setText(signUpResponse.getErrorMessage());;
-                        signUpErrorLabel.setVisible(true);
+                    catch(Exception exception){
+                        exception.printStackTrace();
                     }
-                }
-                catch(Exception exception){
-                    exception.printStackTrace();
-                }
-            }
-
-        });
+                });
+            } catch(Exception e) { e.printStackTrace(); }
+        }).start();
  
     }
 
