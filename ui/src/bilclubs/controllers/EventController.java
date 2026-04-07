@@ -67,7 +67,7 @@ public class EventController {
         }
 
         String posterImage = currentEvent.optString("posterImage", "");
-        if (!posterImage.isEmpty()) {
+        if (!posterImage.isEmpty() && !posterImage.contains("default")) {
             Image eventImg = new Image(RequestManager.defaultAddress + posterImage, true);
             eventBanner.setImage(eventImg);
         }

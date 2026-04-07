@@ -7,7 +7,6 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.paint.Color?>
@@ -51,6 +50,7 @@
                            </ImageView>
                         </children>
                      </Pane>
+<<<<<<< HEAD
                      
                      <HBox layoutX="230.0" layoutY="295.0" spacing="15.0">
                         <children>
@@ -71,6 +71,23 @@
                            </Button>
                         </children>
                      </HBox>
+=======
+                     <Button fx:id="leaveButton" layoutX="230.0" layoutY="295.0" mnemonicParsing="false" onAction="#leaveClub" prefHeight="48.0" prefWidth="133.0" style="-fx-background-color: -signout-red; -fx-text-fill: white;" text="Leave Club">
+                        <font>
+                           <Font name="Arial Bold" size="14.0" />
+                        </font>
+                     </Button>
+                     <Button fx:id="joinButton" layoutX="230.0" layoutY="295.0" mnemonicParsing="false" onAction="#joinClub" prefHeight="48.0" prefWidth="133.0" style="-fx-background-color: -dark-blue; -fx-text-fill: white;" text="Join Club">
+                        <font>
+                           <Font name="Arial Bold" size="14.0" />
+                        </font>
+                     </Button>
+                     <Button fx:id="manageButton" disable="true" layoutX="841.0" layoutY="295.0" mnemonicParsing="false" onAction="#joinClub" prefHeight="48.0" prefWidth="133.0" style="-fx-background-color: -manager-green; -fx-text-fill: white;" text="Manage Club" visible="false">
+                        <font>
+                           <Font name="Arial Bold" size="14.0" />
+                        </font>
+                     </Button>
+>>>>>>> 2e388c1133149a828748d760b30a5889e3d46e79
                   </children>
                </AnchorPane>
                
@@ -81,7 +98,11 @@
                            <Font name="Arial Bold" size="31.0" />
                         </font>
                      </Label>
+<<<<<<< HEAD
                      <Label style="-fx-text-fill: -primary-color;" text="Member Count">
+=======
+                     <Label fx:id="memberCountLabel" style="-fx-text-fill: -primary-color;" text="Member Count">
+>>>>>>> 2e388c1133149a828748d760b30a5889e3d46e79
                         <graphic>
                            <ImageView fitHeight="21.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
                               <image>
@@ -93,7 +114,11 @@
                            <Font name="Arial" size="14.0" />
                         </font>
                      </Label>
+<<<<<<< HEAD
                      <Label fx:id="clubDescLbl" style="-fx-text-fill: -text-color;" text="&quot;Brief Club Desc&quot;" wrapText="true">
+=======
+                     <Label fx:id="clubDescLbl" style="-fx-text-fill: -text-color;" wrapText="true">
+>>>>>>> 2e388c1133149a828748d760b30a5889e3d46e79
                         <font>
                            <Font name="Arial" size="16.0" />
                         </font>
@@ -106,7 +131,7 @@
          <!-- Upcoming Events Section -->
          <VBox spacing="15.0">
             <children>
-               <Label text="Upcoming Events">
+               <Label fx:id="upcomingEventsLabel" text="Upcoming Events">
                   <font>
                      <Font name="Arial Bold" size="24.0" />
                   </font>

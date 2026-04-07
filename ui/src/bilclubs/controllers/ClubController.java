@@ -48,9 +48,10 @@ public class ClubController {
     private Button leaveButton;
     @FXML
     private Button manageButton;
-
-    private AnchorPane parentAnchor;
-
+    @FXML
+    private Label memberCountLabel;
+    @FXML
+    private Label upcomingEventsLabel;
 
     @FXML
     public void initialize() throws IOException {
@@ -67,6 +68,7 @@ public class ClubController {
             if (club.getInt("id") == Controller.currentClubId) {
                 clubNameLbl.setText(club.getString("clubName"));
                 clubDescLbl.setText(club.getString("clubDescription").split("\n")[0]);
+                memberCountLabel.setText(club.getInt("memberCount") + " members");
 
                 int clubPrivilege = club.optInt("clubPrivilege", -1);
                 boolean isMember = clubPrivilege != -1 && clubPrivilege != 0; // 0 = not a member or banned
@@ -84,8 +86,8 @@ public class ClubController {
                     joinButton.setVisible(true);
                     joinButton.setDisable(false);
                     
-                }
 
+                }
                 if (isManager) {
                     manageButton.setVisible(true);
                     manageButton.setDisable(false);
@@ -124,6 +126,10 @@ public class ClubController {
 
         Response eventResponse = RequestManager.sendPostRequest("api/user", eventRequest);
         JSONArray eventData = eventResponse.getPayload().getJSONArray("events");
+
+        if (eventData.length() == 0) {
+            upcomingEventsLabel.setText("No upcoming events for now.");
+        }
 
         for (Object obj : eventData) {
             JSONObject eventObj = (JSONObject) obj;
@@ -177,11 +183,12 @@ public class ClubController {
         FXMLLoader root = new FXMLLoader(getClass().getResource("/fxml/ClubManagementPage.fxml"));
         AnchorPane rightAnchor = (AnchorPane) manageButton.getScene().lookup("#rightAnchor");
         LoadHelper.safelyLoad(root, rightAnchor);  
+        LoadHelper.safelyLoad(root, rightAnchor);
     }
 
-    public void setParentAnchor(AnchorPane anchor) {
-        this.parentAnchor = anchor;
-    }
+    // public void setParentAnchor(AnchorPane anchor) {
+    //     this.parentAnchor = anchor;
+    // }
 
 
     public void manageClub(ActionEvent e) throws IOException {

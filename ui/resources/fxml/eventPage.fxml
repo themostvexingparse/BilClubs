@@ -11,21 +11,21 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1050.0" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bilclubs.controllers.EventController">
    <children>
-      <Pane layoutX="50.0" layoutY="47.0" prefHeight="418.0" prefWidth="855.0" style="-fx-background-color: -card-blue; -fx-background-radius: 20;">
+      <Pane layoutX="50.0" layoutY="47.0" prefHeight="418.0" prefWidth="970.0" style="-fx-background-color: -card-blue; -fx-background-radius: 20;">
          <effect>
-            <DropShadow>
+            <DropShadow blurType="ONE_PASS_BOX">
                <color>
                   <Color opacity="0.30000001192092896" />
                </color>
             </DropShadow>
          </effect>
          <children>
-            <ImageView fx:id="eventBanner" fitHeight="298.0" fitWidth="819.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true">
+            <ImageView fx:id="eventBanner" fitHeight="298.0" fitWidth="939.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true">
                <image>
                   <Image url="@../assets/banner.png" />
                </image>
             </ImageView>
-            <Button fx:id="registerButton" layoutX="732.0" layoutY="328.0" mnemonicParsing="false" onAction="#registerEvent" prefHeight="47.0" prefWidth="101.0" style="-fx-background-radius: 20;" text="Register">
+            <Button fx:id="registerButton" layoutX="833.0" layoutY="328.0" mnemonicParsing="false" onAction="#registerEvent" prefHeight="47.0" prefWidth="101.0" style="-fx-background-radius: 20;" text="Register">
                <font>
                   <Font name="Arial" size="17.0" />
                </font>
@@ -37,7 +37,7 @@
                   </DropShadow>
                </effect>
             </Button>
-            <Button fx:id="leaveButton" disable="true" layoutX="732.0" layoutY="328.0" mnemonicParsing="false" onAction="#leaveEvent" prefHeight="47.0" prefWidth="101.0" style="-fx-background-radius: 20; -fx-background-color: -signout-red;" text="Leave" visible="false">
+            <Button fx:id="leaveButton" disable="true" layoutX="833.0" layoutY="328.0" mnemonicParsing="false" onAction="#leaveEvent" prefHeight="47.0" prefWidth="101.0" style="-fx-background-radius: 20; -fx-background-color: -signout-red;" text="Leave" visible="false">
                <font>
                   <Font name="Arial" size="17.0" />
                </font>
@@ -80,48 +80,63 @@
             </Label>
          </children>
       </Pane>
-      <Pane layoutX="50.0" layoutY="509.0" prefHeight="185.0" prefWidth="676.0" style="-fx-background-color: -card-blue; -fx-background-radius: 20;">
+      <Pane layoutX="50.0" layoutY="519.0" prefHeight="178.0" prefWidth="970.0" style="-fx-background-color: -card-blue; -fx-background-radius: 20;">
          <effect>
-            <DropShadow>
+            <DropShadow blurType="ONE_PASS_BOX">
                <color>
                   <Color opacity="0.30000001192092896" />
                </color>
             </DropShadow>
          </effect>
          <children>
-            <Label layoutX="29.0" layoutY="18.0" text="Date:">
+            <Label layoutX="33.0" layoutY="18.0" text="Date:">
                <font>
                   <Font name="Arial Bold" size="18.0" />
                </font>
             </Label>
-            <Label layoutX="30.0" layoutY="52.0" text="Place:">
+            <Label layoutX="34.0" layoutY="46.0" text="Place:">
                <font>
                   <Font name="Arial Bold" size="18.0" />
                </font>
             </Label>
-            <Label layoutX="29.0" layoutY="122.0" text="Details:">
+            <Label layoutX="33.0" layoutY="104.0" text="Details:">
                <font>
                   <Font name="Arial Bold" size="18.0" />
                </font>
             </Label>
-            <Label layoutX="29.0" layoutY="87.0" text="Duration:">
+            <Label layoutX="33.0" layoutY="75.0" text="Duration:">
                <font>
                   <Font name="Arial Bold" size="18.0" />
                </font>
             </Label>
-            <Label fx:id="datelbl" layoutX="90.0" layoutY="20.0" prefHeight="17.0" prefWidth="379.0" text="datelbl" />
-            <Label fx:id="placelbl" layoutX="93.0" layoutY="54.0" prefHeight="17.0" prefWidth="379.0" text="placelbl" />
-            <Label fx:id="durationlbl" layoutX="120.0" layoutY="89.0" prefHeight="17.0" prefWidth="379.0" text="durationlbl" />
-            <Label fx:id="detailslbl" layoutX="102.0" layoutY="124.0" prefHeight="17.0" prefWidth="437.0" text="detailslbl" />
-            <Label layoutX="29.0" layoutY="150.0" text="GE-Points:">
+            <Label fx:id="datelbl" layoutX="87.0" layoutY="16.0" prefHeight="17.0" prefWidth="379.0" text="datelbl">
+               <font>
+                  <Font size="16.0" />
+               </font></Label>
+            <Label fx:id="placelbl" layoutX="98.0" layoutY="44.0" prefHeight="17.0" prefWidth="379.0" text="placelbl">
+               <font>
+                  <Font size="16.0" />
+               </font></Label>
+            <Label fx:id="durationlbl" layoutX="121.0" layoutY="73.0" prefHeight="17.0" prefWidth="379.0" text="durationlbl">
+               <font>
+                  <Font size="16.0" />
+               </font></Label>
+            <Label fx:id="detailslbl" layoutX="106.0" layoutY="102.0" prefHeight="17.0" prefWidth="437.0" text="detailslbl">
+               <font>
+                  <Font size="16.0" />
+               </font></Label>
+            <Label layoutX="34.0" layoutY="134.0" text="GE-Points:">
                <font>
                   <Font name="Arial Bold" size="18.0" />
                </font>
             </Label>
-            <Label fx:id="gelbl" layoutX="135.0" layoutY="152.0" prefHeight="17.0" prefWidth="379.0" text="gelbl" />
+            <Label fx:id="gelbl" layoutX="135.0" layoutY="132.0" prefHeight="17.0" prefWidth="379.0" text="gelbl">
+               <font>
+                  <Font size="16.0" />
+               </font></Label>
          </children>
       </Pane>
-      <Label layoutX="73.0" layoutY="465.0" prefHeight="47.0" prefWidth="181.0" text="Information">
+      <Label layoutX="73.0" layoutY="475.0" prefHeight="47.0" prefWidth="181.0" text="Information">
          <font>
             <Font name="Arial Bold" size="25.0" />
          </font>

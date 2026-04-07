@@ -54,8 +54,13 @@ public class DetailedEventCard extends Pane{
                 date.setText(eventDate);
                 clubnamelbl.setText(eventclub);
                 place.setText(location);
-                Image eventImg = new Image(RequestManager.defaultAddress + posterImage, true);
-                eventBanner.setImage(eventImg);
+                if (posterImage.contains("default")) {
+                    Image defaultImg = new Image(getClass().getResourceAsStream("/assets/bilclubs logo 1.png"));
+                    eventBanner.setImage(defaultImg);
+                } else {
+                    Image eventImg = new Image(RequestManager.defaultAddress + posterImage, true);
+                    eventBanner.setImage(eventImg);
+                }
 
                 Rectangle clip = new Rectangle();
                 clip.setWidth(233);

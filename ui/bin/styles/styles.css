@@ -60,9 +60,28 @@
 
 .scroll-pane .scroll-bar:vertical,
 .scroll-pane .scroll-bar:horizontal {
-    -fx-opacity: 0;
+    -fx-min-width: 0;
     -fx-pref-width: 0;
+    -fx-max-width: 0;
+    -fx-min-height: 0;
     -fx-pref-height: 0;
+    -fx-max-height: 0;
+    -fx-opacity: 0;
+    -fx-padding: 0;
+}
+
+.scroll-pane {
+    -fx-hbar-policy: NEVER;
+    -fx-vbar-policy: NEVER;
+}
+
+
+.scroll-pane .scroll-bar .filler {
+    -fx-background-color: transparent;
+}
+
+.scroll-pane .scroll-bar .corner {
+    -fx-background-color: transparent;
 }
 
 .button-menu {
@@ -164,7 +183,8 @@
 }
 
 .search-icon-btn:hover {
-    -fx-background-color: rgba(120, 150, 200, 0.15); /* Light, semi-transparent overlay */
+    -fx-background-color: rgba(120, 150, 200, 0.15);
+    /* Light, semi-transparent overlay */
     -fx-scale-x: 1.15;
     -fx-scale-y: 1.15;
 }

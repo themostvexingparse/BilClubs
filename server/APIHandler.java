@@ -515,6 +515,7 @@ public class APIHandler {
             JSONObject clubJson = new JSONObject();
             clubJson.put("id", club.getId());
             clubJson.put("clubName", club.getClubName());
+            clubJson.put("memberCount", club.getMembers().size());
             clubJson.put("clubDescription", club.getClubDescription());
             clubJson.put("clubPrivilege", user.getClubPrivileges().get(club.getId()));
             clubJson.put("iconFilename", club.getIconFilename());
