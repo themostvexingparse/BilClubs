@@ -53,8 +53,6 @@ public class ClubController {
     @FXML
     private Label upcomingEventsLabel;
 
-    private AnchorPane parentAnchor;
-
     @FXML
     public void initialize() throws IOException {
         JSONObject request = new JSONObject();
@@ -74,7 +72,7 @@ public class ClubController {
 
                 int clubPrivilege = club.optInt("clubPrivilege", -1);
                 boolean isMember = clubPrivilege != -1 && clubPrivilege != 0; // 0 = not a member or banned
-                boolean isManager = clubPrivilege > 1 && isMember; // manager / admin
+                boolean isManager = clubPrivilege > 1 && isMember;  //manager / admin
 
                 if (isMember) {
                     joinButton.setVisible(false);
@@ -87,9 +85,9 @@ public class ClubController {
                     leaveButton.setDisable(true);
                     joinButton.setVisible(true);
                     joinButton.setDisable(false);
+                    
 
                 }
-
                 if (isManager) {
                     manageButton.setVisible(true);
                     manageButton.setDisable(false);
@@ -184,12 +182,14 @@ public class ClubController {
     public void goToManagement(ActionEvent e) throws IOException {
         FXMLLoader root = new FXMLLoader(getClass().getResource("/fxml/ClubManagementPage.fxml"));
         AnchorPane rightAnchor = (AnchorPane) manageButton.getScene().lookup("#rightAnchor");
+        LoadHelper.safelyLoad(root, rightAnchor);  
         LoadHelper.safelyLoad(root, rightAnchor);
     }
 
-    public void setParentAnchor(AnchorPane anchor) {
-        this.parentAnchor = anchor;
-    }
+    // public void setParentAnchor(AnchorPane anchor) {
+    //     this.parentAnchor = anchor;
+    // }
+
 
     public void manageClub(ActionEvent e) throws IOException {
         // FXMLLoader manageClubPage = new FXMLLoader()
