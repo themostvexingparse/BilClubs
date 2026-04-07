@@ -64,7 +64,7 @@
                                  <Font name="Arial Bold" size="14.0" />
                               </font>
                            </Button>
-                           <Button fx:id="manageButton" disable="true" mnemonicParsing="false" onAction="#joinClub" prefHeight="48.0" prefWidth="133.0" style="-fx-background-color: -manager-green; -fx-text-fill: white;" text="Manage Club" visible="false">
+                           <Button fx:id="manageButton" disable="true" mnemonicParsing="false" onAction="#goToManagement" prefHeight="48.0" prefWidth="133.0" style="-fx-background-color: -manager-green; -fx-text-fill: white;" text="Manage Club" visible="false">
                               <font>
                                  <Font name="Arial Bold" size="14.0" />
                               </font>
@@ -81,7 +81,7 @@
                            <Font name="Arial Bold" size="31.0" />
                         </font>
                      </Label>
-                     <Label text="Member Count" style="-fx-text-fill: -primary-color;">
+                     <Label style="-fx-text-fill: -primary-color;" text="Member Count">
                         <graphic>
                            <ImageView fitHeight="21.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
                               <image>
@@ -93,7 +93,7 @@
                            <Font name="Arial" size="14.0" />
                         </font>
                      </Label>
-                     <Label fx:id="clubDescLbl" text="&quot;Brief Club Desc&quot;" wrapText="true" style="-fx-text-fill: -text-color;">
+                     <Label fx:id="clubDescLbl" style="-fx-text-fill: -text-color;" text="&quot;Brief Club Desc&quot;" wrapText="true">
                         <font>
                            <Font name="Arial" size="16.0" />
                         </font>

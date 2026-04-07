@@ -24,8 +24,7 @@ public class MenuController {
     @FXML Button profile;
     @FXML Button settings;
     @FXML private AnchorPane rightAnchor;
-    @FXML
-    private Button signOutButton;
+    @FXML private Button signOutButton;
 
 
     @FXML
@@ -78,8 +77,17 @@ public class MenuController {
 
     }
 
+    public void loadPageintoAnchor(FXMLLoader root, AnchorPane pane) throws IOException {
+        LoadHelper.safelyLoad(root, pane); 
+    }
+
+
     public AnchorPane getRightAnchor(){
         return this.rightAnchor;
+    }
+
+    public Stage getStage(){
+        return this.stage;
     }
 
 }
