@@ -9,7 +9,7 @@ public class DiscussionManager {
 
 
 /*Checks if the content is valid, finds parent and posts the new comment*/
-public void postComment(String author, String content, int parentId){
+public void postComment(User author, String content, int parentId){
 if(isValid(content)){
 
 Comment parent = null;
@@ -39,11 +39,16 @@ public void addNewComment(Comment c){
     allComments.put(c.getId(), c);
 }
 
-/*Changes the content of the comment to newContent if newContent is valid. */
-public boolean editComment(int id, String newContent){
+/*Changes the content of the comment to newContent if newContent is valid.
+Also checks if the person editting is the author or an admin */
+public boolean editComment(int id, String newContent, User activeUser){
     if(!isValid(newContent)){return false;}
 
     Comment target = findCommentById(id);
+    boolean isAuthor = target.getAuthor().getFullName().equals(activeUser.getFullName());
+    boolean isAdmin = activeUser.isAdmin();
+
+if(isAuthor || isAdmin)
     if(target != null){
         target.setContent(newContent);
         return true;
@@ -52,14 +57,18 @@ return false;
 }
 
 /*Finds the comment to delete by id and deletes current comment 
-and all comments below by calling removeRecursively. */
-public void deleteComment(int id){
+and all comments below by calling removeRecursively.
+Checks if the user is the author or an admin */
+public void deleteComment(int id, User activeUser){
     Comment target = findCommentById(id);
     if(target == null)return;
 
 int parentId = target.getParentId();
 Comment parent = findCommentById(parentId);
+boolean isAuthor = target.getAuthor().getFullName().equals(activeUser.getFullName());
+boolean isAdmin = activeUser.isAdmin();
 
+if(isAuthor || isAdmin)
  if(parent != null){
     parent.getReplies().remove(target);
  }
@@ -81,7 +90,7 @@ public void removeRecursively(Comment current){
 
 
 
-/*Checks whether the content is not empty. */
+/*Checks whether the content is empty. */
 public boolean isValid(String content){
 
     if(content.isBlank()){return false;}

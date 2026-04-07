@@ -8,7 +8,7 @@ public class Comment implements Comparable<Comment>{
     private int id;
     private int parentId; 
     private LocalDateTime time;
-    private String author;
+    private User author;
     private String content;
     private Set<Comment> replies = new TreeSet<>();
     private Comment parent;
@@ -18,7 +18,7 @@ public class Comment implements Comparable<Comment>{
 
 
 
- public Comment(int id, Comment parent, String author, String content){
+ public Comment(int id, Comment parent, User author, String content){
 
     this.id = id;
     this.parent = parent;
@@ -59,7 +59,7 @@ public String getTime(){
 }
 
 // returns the author of the comment
-public String getAuthor(){
+public User getAuthor(){
     return author;
 }
 
@@ -74,9 +74,9 @@ public Set<Comment> getReplies(){
 }
 
 // shows which comment is being replied, returns "" if it is a parent comment
-public String replyingTo(){
+public User replyingTo(){
 
-    if(this.parent == null){return "";}
+    if(this.parent == null){return null;}
 
     return this.parent.getAuthor();
 }
