@@ -26,6 +26,7 @@ public class Event {
     private Integer clubId;
     private String clubName;
     private Integer GE250 = 0;
+    private DiscussionManager discussion;
 
     public Event() {
     }
@@ -41,6 +42,11 @@ public class Event {
         end = argEnd;
         quota = argQuota; // set to null for infinite quota
         registeredUsers = new ArrayList<>();
+        discussion = new DiscussionManager();
+    }
+
+    public DiscussionManager getDiscussion(){
+        return discussion;
     }
 
     public boolean isOpen() {

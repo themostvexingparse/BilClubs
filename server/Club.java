@@ -22,6 +22,7 @@ public class Club {
     private HashMap<Integer, Integer> memberPrivileges = null;
     @ElementCollection(fetch = FetchType.EAGER)
     private ArrayList<Event> events = null;
+    private DiscussionManager discussion;
 
     private String iconFilename = "static/default-club-icon.png";
     private String coverFilename = "static/default-club-cover.jpg";
@@ -44,6 +45,11 @@ public class Club {
         initializeCollections();
         clubName = argClubName.trim();
         clubDescription = argClubDesc.trim();
+        discussion = new DiscussionManager();
+    }
+
+    public DiscussionManager getDiscussion(){
+        return discussion;
     }
 
     public ArrayList<User> getMembers() {
