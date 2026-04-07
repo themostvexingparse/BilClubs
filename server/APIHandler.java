@@ -405,6 +405,7 @@ public class APIHandler {
         data.put("profilePicture", user.getProfilePicture());
         data.put("interests", new JSONArray(user.getInterests()));
         data.put("clubPrivileges", new JSONObject(user.getClubPrivileges()));
+        data.put("privilege", user.getPrivilege());
         return buildResponse(200, data, null);
     }
 
