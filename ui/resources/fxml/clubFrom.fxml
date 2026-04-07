@@ -12,7 +12,7 @@
 
 <Pane prefHeight="472.0" prefWidth="427.0" style="-fx-background-color: -bg-color;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bilclubs.controllers.CreateClubController">
    <children>
-      <Button layoutX="75.0" layoutY="383.0" mnemonicParsing="false" prefHeight="46.0" prefWidth="278.0" style="-fx-background-color: -dark-blue;" text="Create your Club!">
+      <Button fx:id="createButton" layoutX="75.0" layoutY="383.0" mnemonicParsing="false" onAction="#createClub" prefHeight="46.0" prefWidth="278.0" style="-fx-background-color: -dark-blue;" text="Create your Club!">
          <font>
             <Font name="Arial Bold" size="14.0" />
          </font>
@@ -52,6 +52,7 @@
             </ImageView>
          </graphic>
       </Button>
+      <Label fx:id="errorLabel" layoutX="43.0" layoutY="360.0" text="Label" visible="false" />
    </children>
    <stylesheets>
       <URL value="@../../../styles/styles.css" />

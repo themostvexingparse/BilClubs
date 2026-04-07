@@ -78,6 +78,7 @@ public class ClubPane extends Pane {
 
     public void goToClub(ActionEvent e) throws IOException {
         Controller.currentClubId = this.clubId;
+        Controller.currentClubName = this.name;
         System.out.println("Navigating to club: " + this.clubId);
         FXMLLoader clubPage = new FXMLLoader(getClass().getResource("/fxml/ClubPage.fxml"));
         AnchorPane contentPane = (AnchorPane) this.getScene().lookup("#rightAnchor");

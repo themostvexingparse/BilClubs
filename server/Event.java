@@ -9,10 +9,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
-import embeddings.Embeddable;
-
 @Entity
-public class Event implements Embeddable {
+public class Event {
     @Id
     @GeneratedValue
     private Integer id;
@@ -28,8 +26,7 @@ public class Event implements Embeddable {
     private Integer clubId;
     private String clubName;
     private Integer GE250 = 0;
-    
-    private float[] embeddings;
+    private DiscussionManager discussion;
 
     public Event() {
     }
@@ -45,6 +42,11 @@ public class Event implements Embeddable {
         end = argEnd;
         quota = argQuota; // set to null for infinite quota
         registeredUsers = new ArrayList<>();
+        discussion = new DiscussionManager();
+    }
+
+    public DiscussionManager getDiscussion(){
+        return discussion;
     }
 
     public boolean isOpen() {
@@ -180,29 +182,5 @@ public class Event implements Embeddable {
     @Override
     public String toString() {
         return "Event ID: " + id + " named " + name;
-    }
-
-    /*
-     * Embeddings logic
-     */
-
-    @Override
-    public String generateEmbeddingText() {
-        return "Event Name: " + name + "\nEvent Description: " + description + "\nClub Name: " + clubName;
-    }
-
-    @Override
-    public float[] getEmbedding() {
-        return embeddings;
-    }
-
-    @Override
-    public void setEmbedding(float[] embeddings) {
-        this.embeddings = embeddings;
-    }
-
-    @Override
-    public final String getTaskType() {
-        return "RETRIEVAL_DOCUMENT";
     }
 }
