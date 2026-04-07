@@ -8,13 +8,15 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.control.Tooltip;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -36,10 +38,10 @@ public class CalendarController implements Initializable {
     ZonedDateTime today;
 
     @FXML
-    private Text year;
+    private Label year;
 
     @FXML
-    private Text month;
+    private Label month;
 
     @FXML
     private FlowPane calendar;
@@ -71,7 +73,6 @@ public class CalendarController implements Initializable {
 
         double calendarWidth = calendar.getPrefWidth();
         double calendarHeight = calendar.getPrefHeight();
-        double strokeWidth = 1;
         double spacingH = calendar.getHgap();
         double spacingV = calendar.getVgap();
 
@@ -83,106 +84,105 @@ public class CalendarController implements Initializable {
 
         Response eventResponse = RequestManager.sendPostRequest("api/user", eventReq);
         JSONArray userEvents = eventResponse.getPayload().optJSONArray("events");
-        if (userEvents == null) userEvents = new JSONArray();
+        if (userEvents == null)
+            userEvents = new JSONArray();
         Map<Integer, List<JSONObject>> events = getCalendarActivitiesMonth(userEvents);
 
         int monthMaxDate = dateFocus.getMonth().length(java.time.Year.isLeap(dateFocus.getYear()));
-
-        int dateOffset = ZonedDateTime.of(dateFocus.getYear(), dateFocus.getMonthValue(), 1, 0, 0, 0, 0, dateFocus.getZone())
+        int dateOffset = ZonedDateTime
+                .of(dateFocus.getYear(), dateFocus.getMonthValue(), 1, 0, 0, 0, 0, dateFocus.getZone())
                 .getDayOfWeek().getValue() - 1;
+
+        double cellWidth = (calendarWidth / 7) - spacingH;
+        double cellHeight = (calendarHeight / 6) - spacingV;
+        cellWidth = Math.max(cellWidth, 50);
+        cellHeight = Math.max(cellHeight, 50);
 
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 7; j++) {
                 StackPane stackPane = new StackPane();
-                Rectangle rectangle = new Rectangle();
-
-                if (!Controller.isDarkMode) {
-                    rectangle.setFill(Color.TRANSPARENT);
-                } else {
-                    rectangle.setFill(Color.rgb(86, 101, 122));
-                }
-
-                rectangle.setStroke(month.getFill());
-                rectangle.setStrokeWidth(strokeWidth);
-                double rectangleWidth = (calendarWidth / 7) - strokeWidth - spacingH;
-                rectangleWidth = Math.max(rectangleWidth, 50);
-                rectangle.setWidth(rectangleWidth);
-                double rectangleHeight = (calendarHeight / 6) - strokeWidth - spacingV;
-                rectangleHeight = Math.max(rectangleHeight, 50);
-                rectangle.setHeight(rectangleHeight);
-
-                DropShadow rectShadow = new DropShadow();
-                rectShadow.setColor(Color.color(0, 0, 0, 0.3));
-                rectangle.setEffect(rectShadow);
-                rectangle.setArcWidth(20);
-                rectangle.setArcHeight(20);
-                stackPane.getChildren().add(rectangle);
-
-                stackPane.setPrefSize(rectangleWidth, rectangleHeight);
-                stackPane.setMaxSize(rectangleWidth, rectangleHeight);
-                stackPane.setMinSize(rectangleWidth, rectangleHeight);
+                stackPane.setPrefSize(cellWidth, cellHeight);
+                stackPane.getStyleClass().add("cal-cell");
 
                 int calculatedDate = (j + 1) + (7 * i);
                 if (calculatedDate > dateOffset) {
                     int currentDate = calculatedDate - dateOffset;
                     if (currentDate <= monthMaxDate) {
 
-                        Text date = new Text(String.valueOf(currentDate));
-                        StackPane.setAlignment(date, javafx.geometry.Pos.TOP_LEFT);
-                        date.setTranslateX(6);
-                        date.setTranslateY(18);
-                        stackPane.getChildren().add(date);
+                        Label dateLabel = new Label(String.valueOf(currentDate));
+                        dateLabel.getStyleClass().add("cal-date-num");
+                        StackPane.setAlignment(dateLabel, javafx.geometry.Pos.TOP_LEFT);
+                        dateLabel.setTranslateX(6);
+                        dateLabel.setTranslateY(6);
+                        stackPane.getChildren().add(dateLabel);
 
                         List<JSONObject> calendarActivities = events.get(currentDate);
-                        if (calendarActivities != null) {
-                            createCalendarActivity(calendarActivities, rectangleHeight, rectangleWidth, stackPane);
+                        if (calendarActivities != null && !calendarActivities.isEmpty()) {
+                            createCalendarActivity(calendarActivities, cellHeight, cellWidth, stackPane);
                         }
+
+                        if (today.getYear() == dateFocus.getYear() && today.getMonth() == dateFocus.getMonth()
+                                && today.getDayOfMonth() == currentDate) {
+                            stackPane.getStyleClass().add("cal-cell-today");
+                        }
+                    } else {
+                        stackPane.getStyleClass().add("cal-cell-inactive");
                     }
-                    if (today.getYear() == dateFocus.getYear() && today.getMonth() == dateFocus.getMonth() && today.getDayOfMonth() == currentDate) {
-                        rectangle.setStroke(Color.BLUE);
-                    }
+                } else {
+                    stackPane.getStyleClass().add("cal-cell-inactive");
                 }
+
                 calendar.getChildren().add(stackPane);
             }
         }
     }
 
-    private void createCalendarActivity(List<JSONObject> calendarActivities, double rectangleHeight, double rectangleWidth, StackPane stackPane) {
+    private void createCalendarActivity(List<JSONObject> calendarActivities, double rectangleHeight,
+            double rectangleWidth, StackPane stackPane) {
         VBox calendarActivityBox = new VBox();
+        calendarActivityBox.setSpacing(2);
+
         for (int k = 0; k < calendarActivities.size(); k++) {
             if (k >= 2) {
-                Text moreActivities = new Text("...");
+                int remaining = calendarActivities.size() - 2;
+                Label moreActivities = new Label("+" + remaining + " more");
+                moreActivities.getStyleClass().add("cal-overflow");
                 calendarActivityBox.getChildren().add(moreActivities);
-                moreActivities.setOnMouseClicked(mouseEvent -> System.out.println(calendarActivities));
                 break;
             }
-            String name = calendarActivities.get(k).getString("name");
-            String rawDate = calendarActivities.get(k).getString("startDate");
+            JSONObject eventData = calendarActivities.get(k);
+            String name = eventData.getString("name");
+            String rawDate = eventData.getString("startDate");
             String time = LocalDateTime.parse(rawDate.replace(" ", "T")).toLocalTime().toString().substring(0, 5);
-            String displayName = name.length() > 15 ? name.substring(0, 15) + "…" : name;
-            Text text = new Text(displayName + " " + time);
-            text.setStyle("-fx-font-size: 10px;");
-            calendarActivityBox.getChildren().add(text);
-            text.setOnMouseClicked(mouseEvent -> System.out.println(text.getText()));
+            String displayName = name.length() > 10 ? name.substring(0, 10) + "…" : name;
+
+            Label textInfo = new Label(displayName + " " + time);
+            textInfo.getStyleClass().add("cal-event-chip");
+            textInfo.setPrefWidth(rectangleWidth - 16); // padding
+
+            Tooltip tooltip = new Tooltip(name);
+            textInfo.setTooltip(tooltip);
+
+            textInfo.setOnMouseClicked(mouseEvent -> {
+                try {
+                    // Similar to SearchResultPane logic
+                    AnchorPane contentPane = (AnchorPane) textInfo.getScene().lookup("#rightAnchor");
+                    if (contentPane != null) {
+                        eventData.put("eventId", eventData.optInt("id", eventData.optInt("eventId", -1)));
+                        Controller.currentEventObject = eventData;
+                        FXMLLoader eventPage = new FXMLLoader(getClass().getResource("/fxml/eventPage.fxml"));
+                        bilclubs.utils.LoadHelper.safelyLoad(eventPage, contentPane);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+            calendarActivityBox.getChildren().add(textInfo);
         }
 
         StackPane.setAlignment(calendarActivityBox, javafx.geometry.Pos.TOP_LEFT);
-        calendarActivityBox.setTranslateX(4);
-        calendarActivityBox.setTranslateY(28);
-
-        calendarActivityBox.setMaxWidth(rectangleWidth * 0.8);
-        calendarActivityBox.setMaxHeight(rectangleHeight * 0.65);
-
-        calendarActivityBox.setStyle("-fx-background-color:-menu-blue; -fx-background-radius:10;");
-
-        DropShadow textShadow = new DropShadow();
-        textShadow.setColor(Color.color(0, 0, 0, 0.3));
-        calendarActivityBox.setEffect(textShadow);
-
-        Rectangle clip = new Rectangle(rectangleWidth * 0.8, rectangleHeight * 0.65);
-        clip.setArcWidth(10);
-        clip.setArcHeight(10);
-        calendarActivityBox.setClip(clip);
+        calendarActivityBox.setTranslateX(8);
+        calendarActivityBox.setTranslateY(25); // Push down below date number
 
         stackPane.getChildren().add(calendarActivityBox);
     }
@@ -216,7 +216,10 @@ public class CalendarController implements Initializable {
             JSONObject event = events.getJSONObject(i);
             try {
                 String dateStr = event.getString("startDate");
-                calendarActivities.add(event);
+                LocalDate date = LocalDateTime.parse(dateStr.replace(" ", "T")).toLocalDate();
+                if (date.getYear() == dateFocus.getYear() && date.getMonth() == dateFocus.getMonth()) {
+                    calendarActivities.add(event);
+                }
 
             } catch (Exception e) {
                 e.printStackTrace();

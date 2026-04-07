@@ -1,0 +1,52 @@
+------------------------------------------------------------------------------------------------------------------------
+
+[2026-04-08 01:30:33 #1 store] 
+Database 'C:\Users\ozano\Desktop\BilClubs\server\db\bilclubs.odb' has been recovered (tr. 443-443)
+
+[2026-04-08 01:30:33 #2 store] 
+Database 'C:\Users\ozano\Desktop\BilClubs\server\db\bilclubs.odb' is opened by 25008@Ozan
+
+[2026-04-08 01:30:33 #3 store] 
+Configuration path: ?
+
+[2026-04-08 01:30:33 #4 type] 
+Type Club is not enhanced.
+
+[2026-04-08 01:30:33 #5 type] 
+Type Event is not enhanced.
+
+[2026-04-08 01:30:33 #6 type] 
+Type User is not enhanced.
+
+[2026-04-08 01:30:33 #7 type] 
+Type Discussion is not enhanced.
+
+[2026-04-08 01:30:33 #8 type] 
+Type Comment is not enhanced.
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2026-04-08 01:34:08 #1 store] 
+Database 'C:\Users\ozano\Desktop\BilClubs\server\db\bilclubs.odb' has been recovered (tr. 444-444)
+
+[2026-04-08 01:34:08 #2 store] 
+Database 'C:\Users\ozano\Desktop\BilClubs\server\db\bilclubs.odb' is opened by 24184@Ozan
+
+[2026-04-08 01:34:08 #3 store] 
+Configuration path: ?
+
+[2026-04-08 01:34:08 #4 type] 
+Type Club is not enhanced.
+
+[2026-04-08 01:34:08 #5 type] 
+Type Event is not enhanced.
+
+[2026-04-08 01:34:08 #6 type] 
+Type User is not enhanced.
+
+[2026-04-08 01:34:08 #7 type] 
+Type Discussion is not enhanced.
+
+[2026-04-08 01:34:08 #8 type] 
+Type Comment is not enhanced.
+

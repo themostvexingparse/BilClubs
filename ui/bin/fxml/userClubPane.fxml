@@ -2,19 +2,27 @@
 
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.effect.DropShadow?>
-<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
+<?import javafx.geometry.Insets?>
 
-<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="60.0" prefWidth="250.0" style="-fx-background-radius: 20; -fx-background-color: -menu-blue;" styleClass="club-card" stylesheets="@../styles/styles.css" type="Pane" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="250.0" style="-fx-background-radius: 12; -fx-background-color: -menu-blue;" styleClass="club-card" stylesheets="@../styles/styles.css" type="Pane" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <ImageView fx:id="clubImage" fitHeight="50.0" fitWidth="50.0" layoutX="8.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true" />
-      <Label fx:id="namelbl" layoutX="58.0" layoutY="13.0" prefHeight="15.0" prefWidth="169.0" text="Club Name">
-         <font>
-            <Font name="Arial Bold" size="12.0" />
-         </font>
-      </Label>
-      <Label fx:id="desclbl" layoutX="58.0" layoutY="29.0" prefHeight="17.0" prefWidth="169.0" text="Club Description" />
+      <HBox alignment="CENTER_LEFT" spacing="10" layoutX="0" layoutY="0" prefHeight="50.0" prefWidth="250.0">
+         <padding>
+            <Insets left="8" top="5" bottom="5" right="8" />
+         </padding>
+         <children>
+            <Rectangle fx:id="clubIcon" arcHeight="10.0" arcWidth="10.0" height="36.0" width="36.0" />
+            <Label fx:id="namelbl" text="Club Name" wrapText="true" maxWidth="180.0">
+               <font>
+                  <Font name="Arial Bold" size="12.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
    </children>
    <effect>
       <DropShadow height="10.0" radius="4.5" width="10.0" />
