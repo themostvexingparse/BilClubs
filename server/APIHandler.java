@@ -135,6 +135,9 @@ public class APIHandler {
             case "setInterests":
             case "generateEmbeddings":
             case "listClubs":
+            case "banUser":
+            case "banEvent":
+            case "banClub":
             case "upload": {
                 AuthResult authResult = authenticate(requestBody);
                 if (authResult.errorResponse != null)
@@ -182,6 +185,12 @@ public class APIHandler {
                 return generateEmbeddings(user, requestBody);
             case "listClubs":
                 return listClubs(user, requestBody);
+            case "banUser":
+                return banUser(user, requestBody);
+            case "banEvent":
+                return banEvent(user, requestBody);
+            case "banClub":
+                return banClub(user, requestBody);
             default:
                 return buildResponse(400, null, "Unsupported user action.");
         }
@@ -794,8 +803,58 @@ public class APIHandler {
                 return leaveEvent(authResult.user, requestBody);
             case "search":
                 return searchEvents(requestBody);
+            case "ban":
+                return banEvent(authResult.user, requestBody);
             default:
                 return buildResponse(400, null, "Unsupported event action.");
+        }
+    }
+
+    private static JSONObject banUser(User admin, JSONObject requestBody) {
+        if (!admin.hasGeneralPrivilege(Privileges.ADMIN)) {
+            return buildResponse(401, null, "Not authorized to ban users.");
+        }
+        Integer targetUserId = requestBody.optInt("targetUserId", -1);
+        if (targetUserId == -1) {
+            return buildResponse(400, null, "targetUserId cannot be empty.");
+        }
+        if (targetUserId.equals(admin.getId())) {
+            return buildResponse(400, null, "Cannot ban yourself.");
+        }
+        if (manager.deleteUser(targetUserId)) {
+            return buildResponse(200, null, null);
+        } else {
+            return buildResponse(500, null, "Failed to ban the user.");
+        }
+    }
+
+    private static JSONObject banEvent(User admin, JSONObject requestBody) {
+        if (!admin.hasGeneralPrivilege(Privileges.ADMIN)) {
+            return buildResponse(401, null, "Not authorized to ban events.");
+        }
+        Integer eventId = requestBody.optInt("eventId", -1);
+        if (eventId == -1) {
+            return buildResponse(400, null, "eventId cannot be empty.");
+        }
+        if (manager.deleteEvent(eventId)) {
+            return buildResponse(200, null, null);
+        } else {
+            return buildResponse(500, null, "Failed to ban the event.");
+        }
+    }
+
+    private static JSONObject banClub(User admin, JSONObject requestBody) {
+        if (!admin.hasGeneralPrivilege(Privileges.ADMIN)) {
+            return buildResponse(401, null, "Not authorized to ban clubs.");
+        }
+        Integer clubId = requestBody.optInt("clubId", -1);
+        if (clubId == -1) {
+            return buildResponse(400, null, "clubId cannot be empty.");
+        }
+        if (manager.deleteClub(clubId)) {
+            return buildResponse(200, null, null);
+        } else {
+            return buildResponse(500, null, "Failed to ban the club.");
         }
     }
 

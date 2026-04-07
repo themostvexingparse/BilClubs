@@ -89,6 +89,12 @@ public class Club implements Embeddable {
         return events;
     }
 
+    public void clearMembersAndEvents() {
+        initializeCollections();
+        memberUsers.clear();
+        events.clear();
+    }
+
     // Getters and Setters
     public Integer getId() {
         return id;

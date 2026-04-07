@@ -73,6 +73,10 @@ public class Event implements Embeddable {
         registeredUsers.remove(user);
     }
 
+    public void clearUsers() {
+        if (registeredUsers != null) registeredUsers.clear();
+    }
+
     public void setPoster(String poster) {
         this.poster = poster;
     }

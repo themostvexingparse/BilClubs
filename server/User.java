@@ -212,6 +212,13 @@ public class User implements Embeddable {
         clubPrivileges.remove(club.getId());
     }
 
+    public void clearEventsAndClubs() {
+        initializeCollections();
+        registeredEvents.clear();
+        clubPrivileges.clear();
+        followedUsers.clear();
+    }
+
     public boolean isAdmin() {
         return (privileges & Privileges.ADMIN) != 0;
     }
@@ -314,6 +321,11 @@ public class User implements Embeddable {
 
     public void leaveEvent(Event event) {
         registeredEvents.remove(event);
+    }
+
+    public ArrayList<Event> getRegisteredEvents() {
+        initializeCollections();
+        return new ArrayList<>(registeredEvents);
     }
 
     public String getToken() {
