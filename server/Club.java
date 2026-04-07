@@ -24,7 +24,7 @@ public class Club implements Embeddable {
     private HashMap<Integer, Integer> memberPrivileges = null;
     @ElementCollection(fetch = FetchType.EAGER)
     private ArrayList<Event> events = null;
-    private DiscussionManager discussion;
+    private Discussion discussion;
 
     private String iconFilename = "static/default-club-icon.png";
     private String coverFilename = "static/default-club-cover.jpg";
@@ -49,10 +49,10 @@ public class Club implements Embeddable {
         initializeCollections();
         clubName = argClubName.trim();
         clubDescription = argClubDesc.trim();
-        discussion = new DiscussionManager();
+        discussion = new Discussion();
     }
 
-    public DiscussionManager getDiscussion(){
+    public Discussion getDiscussion(){
         return discussion;
     }
 
