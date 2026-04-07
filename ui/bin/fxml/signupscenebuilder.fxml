@@ -13,9 +13,9 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bilclubs.controllers.Controller">
    <children>
-      <Pane layoutX="518.0" layoutY="223.0" prefHeight="349.0" prefWidth="245.0" style="-fx-background-color: D9D9D9;">
+      <Pane layoutX="518.0" layoutY="223.0" prefHeight="364.0" prefWidth="245.0" style="-fx-background-color: D9D9D9;">
          <children>
-            <Pane fx:id="signUpPane" layoutX="3.0" layoutY="3.0" prefHeight="343.0" prefWidth="240.0" style="-fx-background-color: -bg-color;">
+            <Pane fx:id="signUpPane" layoutX="3.0" layoutY="3.0" prefHeight="356.0" prefWidth="240.0" style="-fx-background-color: -bg-color;">
                <children>
                   <TextField fx:id="signUpMailField" layoutX="10.0" layoutY="204.0" prefHeight="30.0" prefWidth="220.0" />
                   <Label layoutX="10.0" layoutY="183.0" text="Bilkent WebMail">
@@ -28,7 +28,7 @@
                         <Font name="Arial" size="12.0" />
                      </font>
                   </Label>
-                  <Button layoutX="10.0" layoutY="299.0" mnemonicParsing="false" onAction="#getSignUpInfo" prefHeight="30.0" prefWidth="220.0" text="Sign Up With Your WebMail" textFill="WHITE">
+                  <Button layoutX="10.0" layoutY="319.0" mnemonicParsing="false" onAction="#getSignUpInfo" prefHeight="30.0" prefWidth="220.0" text="Sign Up With Your WebMail" textFill="WHITE">
                      <effect>
                         <DropShadow>
                            <color>
@@ -51,15 +51,15 @@
                         <Font name="Arial" size="12.0" />
                      </font>
                   </Label>
-                  <Label fx:id="signUpErrorLabel" layoutX="11.0" layoutY="264.0" text="Cannot sign up." textFill="#a90e0e" visible="false">
-                     <font>
-                        <Font name="Arial" size="10.0" />
-                     </font>
-                  </Label>
                   <TextField fx:id="deptField" layoutX="10.0" layoutY="148.0" prefHeight="30.0" prefWidth="220.0" />
                   <Label layoutX="10.0" layoutY="129.0" text="Department">
                      <font>
                         <Font name="Arial" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="signUpErrorLabel" layoutX="11.0" layoutY="300.0" text="Cannot sign up." textFill="#a90e0e" visible="false">
+                     <font>
+                        <Font name="Arial" size="10.0" />
                      </font>
                   </Label>
                </children>

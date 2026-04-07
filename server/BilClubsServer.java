@@ -45,6 +45,7 @@ public class BilClubsServer {
     public static void main(String[] args) throws Exception {
 
         APIHandler.initializeDB();
+        APIHandler.generateMissingEmbeddings();
 
         HttpServer httpServer = HttpServer.create(new InetSocketAddress(5000), 0);
         httpServer.setExecutor(Executors.newCachedThreadPool());

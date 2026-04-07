@@ -21,8 +21,8 @@ public class EmbeddingsTask implements Runnable {
         if (embeddableObject == null) return;
         if (!(
             embeddableObject instanceof User ||
-            embeddableObject instanceof Club
-            // TODO: add events here when implemented
+            embeddableObject instanceof Club ||
+            embeddableObject instanceof Event
         )) return;
         System.out.println("--------------------");
         String embeddingsText = embeddableObject.generateEmbeddingText();
@@ -37,7 +37,10 @@ public class EmbeddingsTask implements Runnable {
         } else if (embeddableObject instanceof Club) {
             Club updateClub = (Club) embeddableObject;
             APIHandler.manager.updateClub(updateClub);
-        } // TODO: add events here when implemented
+        } else if (embeddableObject instanceof Event) {
+            Event updateEvent = (Event) embeddableObject;
+            APIHandler.manager.updateEvent(updateEvent);
+        }
         System.out.println("--------------------");
     }
     

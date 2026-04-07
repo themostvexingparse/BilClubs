@@ -142,6 +142,8 @@ public class SyntheticDatabaseTest {
                 createdClubNames.add(clubName);
                 created++;
                 log("  ✓ Created club: " + clubName + " (id=" + clubId + ")");
+                log("  (Sleeping 0.5s to avoid embedding rate limit)");
+                Thread.sleep(500);
             } else {
                 log("  ✗ Failed to create club: " + clubName +
                         (resp != null ? " — " + resp.getErrorMessage() : ""));
@@ -259,6 +261,8 @@ public class SyntheticDatabaseTest {
                 int eventId = resp.getPayload().getInt("eventId");
                 eventsCreated++;
                 log("  ✓ Created event: " + eventName + " (id=" + eventId + ") under " + matchedClubName);
+                log("  (Sleeping .5s to avoid embedding rate limit)");
+                Thread.sleep(500);
             } else {
                 log("  ✗ Failed to create event: " + eventName +
                         (resp != null ? " — " + resp.getErrorMessage() : ""));

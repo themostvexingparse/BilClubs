@@ -38,6 +38,34 @@ public class APIHandler {
         manager.initialize("db");
     }
 
+    public static void generateMissingEmbeddings() {
+        concurrentExecutor.submit(() -> {
+            try {
+                System.out.println("[Embeddings] Checking for missing embeddings...");
+
+                for (Club club : manager.queryClubs(new Filter())) {
+                    if (club.getEmbedding() == null) {
+                        System.out.println("[Embeddings] Generating for Club: " + club.getClubName());
+                        new EmbeddingsTask(club).run();
+                        Thread.sleep(2000);
+                    }
+                }
+
+                for (Event event : manager.queryEvents(new Filter())) {
+                    if (event.getEmbedding() == null) {
+                        System.out.println("[Embeddings] Generating for Event: " + event.getEventName());
+                        new EmbeddingsTask(event).run();
+                        Thread.sleep(2000);
+                    }
+                }
+
+                System.out.println("[Embeddings] Finished generating missing embeddings.");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
     private static JSONObject buildResponse(int code, JSONObject data, String errorMessage) {
         JSONObject response = new JSONObject();
         response.put("responseCode", code);
@@ -171,6 +199,8 @@ public class APIHandler {
                 return getMembersOfClub(requestBody);
             case "search":
                 return searchClubs(requestBody);
+            case "recommend":
+                return recommendClubs(authResult.user, requestBody);
             default:
                 return buildResponse(400, null, "Unsupported club action.");
         }
@@ -210,6 +240,8 @@ public class APIHandler {
         if (major != null)
             newUser.setMajor(major);
 
+        newUser.generateToken();
+
         if (!manager.addUserUnsafe(newUser)) {
             return buildResponse(500, null, "Unknown database error.");
         }
@@ -226,6 +258,8 @@ public class APIHandler {
         JSONObject data = new JSONObject();
         data.put("email", email);
         data.put("fullName", firstName + " " + lastName);
+        data.put("sessionToken", newUser.getToken());
+        data.put("userId", newUser.getId());
         return buildResponse(200, data, null);
     }
 
@@ -581,6 +615,9 @@ public class APIHandler {
             return buildResponse(500, null, "Club was created but membership information could not be persisted.");
         }
 
+        EmbeddingsTask embeddingsTask = new EmbeddingsTask(newClub);
+        concurrentExecutor.submit(embeddingsTask);
+
         JSONObject data = new JSONObject();
         data.put("clubId", newClub.getId());
         data.put("clubName", newClub.getClubName());
@@ -641,6 +678,43 @@ public class APIHandler {
             item.put("name", club.getClubName());
             item.put("description", club.getClubDescription());
             item.put("iconFilename", club.getIconFilename());
+            results.put(item);
+        }
+
+        JSONObject data = new JSONObject();
+        data.put("results", results);
+        data.put("count", results.length());
+        return buildResponse(200, data, null);
+    }
+
+    private static JSONObject recommendClubs(User user, JSONObject requestBody) {
+        int number = requestBody.optInt("number", 5);
+        if (user.getEmbedding() == null) {
+            return buildResponse(400, null, "User has no generated embeddings to base recommendations on.");
+        }
+
+        List<Club> clubs = manager.queryClubs(new Filter());
+        List<Map.Entry<Club, Double>> scored = new ArrayList<>();
+
+        for (Club club : clubs) {
+            if (club.getEmbedding() != null) {
+                double sim = embeddings.CosineSimilarity.compute(user, club);
+                scored.add(Map.entry(club, sim));
+            }
+        }
+
+        scored.sort(Collections.reverseOrder(Map.Entry.comparingByValue()));
+
+        JSONArray results = new JSONArray();
+        for (int i = 0; i < Math.min(number, scored.size()); i++) {
+            Club club = scored.get(i).getKey();
+            JSONObject item = new JSONObject();
+            item.put("rank", i + 1);
+            item.put("id", club.getId());
+            item.put("name", club.getClubName());
+            item.put("description", club.getClubDescription());
+            item.put("iconFilename", club.getIconFilename());
+            item.put("similarity", scored.get(i).getValue());
             results.put(item);
         }
 
@@ -784,6 +858,9 @@ public class APIHandler {
         if (!manager.updateClub(club)) {
             return buildResponse(500, null, "Event was created but could not be linked to the club.");
         }
+
+        EmbeddingsTask embeddingsTask = new EmbeddingsTask(newEvent);
+        concurrentExecutor.submit(embeddingsTask);
 
         // loop through all members of the club and send emails
         for (User member : club.getMembers()) {
@@ -1049,6 +1126,52 @@ public class APIHandler {
         return buildResponse(200, data, null);
     }
 
+    private static JSONObject recommendEvents(User user, JSONObject requestBody) {
+        int number = requestBody.optInt("number", 5);
+        if (user.getEmbedding() == null) {
+            return buildResponse(400, null, "User has no generated embeddings to base recommendations on.");
+        }
+
+        Long epochNow = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC);
+        Filter eventFilter = new Filter();
+        eventFilter.addFilter("startDate", epochNow);
+        List<Event> events = manager.queryEvents(eventFilter);
+        List<Map.Entry<Event, Double>> scored = new ArrayList<>();
+
+        for (Event event : events) {
+            if (event.getEmbedding() != null) {
+                double sim = embeddings.CosineSimilarity.compute(user, event);
+                scored.add(Map.entry(event, sim));
+            }
+        }
+
+        scored.sort(Collections.reverseOrder(Map.Entry.comparingByValue()));
+
+        JSONArray results = new JSONArray();
+        for (int i = 0; i < Math.min(number, scored.size()); i++) {
+            Event event = scored.get(i).getKey();
+            Filter cf = new Filter();
+            cf.addFilter("id", event.getClubId());
+            Club owningClub = manager.queryClub(cf);
+            JSONObject item = new JSONObject();
+            item.put("rank", i + 1);
+            item.put("id", event.getId());
+            item.put("name", event.getEventName());
+            item.put("description", event.getDescription());
+            item.put("location", event.getLocation());
+            item.put("startDate", event.getStart().toString());
+            item.put("clubId", event.getClubId());
+            item.put("clubName", owningClub != null ? owningClub.getClubName() : "");
+            item.put("similarity", scored.get(i).getValue());
+            results.put(item);
+        }
+
+        JSONObject data = new JSONObject();
+        data.put("results", results);
+        data.put("count", results.length());
+        return buildResponse(200, data, null);
+    }
+
     public static JSONObject handle(HttpExchange httpExchange) {
         String remoteAddress = httpExchange.getRemoteAddress().toString() + "/";
         String path = httpExchange.getRequestURI().getRawPath();
@@ -1100,7 +1223,25 @@ public class APIHandler {
             }
 
             if (endpoint.equals("event")) {
-                return handleEventAction(action, requestBody);
+                AuthResult authResult = authenticate(requestBody);
+                if (authResult.errorResponse != null)
+                    return authResult.errorResponse;
+
+                String eventAction = requestBody.optString("action", "").trim();
+                switch (eventAction) {
+                    case "create":
+                        return createEvent(authResult.user, requestBody);
+                    case "register":
+                        return registerEvent(authResult.user, requestBody);
+                    case "leave":
+                        return leaveEvent(authResult.user, requestBody);
+                    case "search":
+                        return searchEvents(requestBody);
+                    case "recommend":
+                        return recommendEvents(authResult.user, requestBody);
+                    default:
+                        return buildResponse(400, null, "Unsupported event action.");
+                }
             }
 
             return buildResponse(404, null,
