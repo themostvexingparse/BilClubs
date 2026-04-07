@@ -12,30 +12,28 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
-public class MemberCard extends Pane {
+public class BanClubCard extends Pane{
+    @FXML Label clublbl;
+    @FXML ImageView pfp;
 
-    @FXML
-    Label namelbl;
-    @FXML
-    ImageView pfp;
 
-    @FXML
-    public void initialise() throws IOException {
-        FXMLLoader backbone = new FXMLLoader(getClass().getResource("/fxml/memberCard.fxml"));
+    @FXML 
+    public void initialise() throws IOException{
+        FXMLLoader backbone = new FXMLLoader(getClass().getResource("/fxml/banclubcard.fxml"));
         backbone.setRoot(this);
         backbone.setController(this);
         backbone.load();
     }
 
-    public MemberCard(JSONObject memberObject) throws IOException {
+    public BanClubCard(JSONObject eventObject) throws IOException{
         initialise();
 
-        String name = memberObject.getString("name");
-        namelbl.setText(name);
+        String name = eventObject.getString("clubName");
+        clublbl.setText(name);
 
-        String profilePicture = memberObject.optString("profilePicture", "");
+        String profilePicture = eventObject.optString("iconFileName", "");
         Image profileImage = new Image(RequestManager.defaultAddress + profilePicture, true);
         pfp.setImage(profileImage);
-
+        
     }
 }

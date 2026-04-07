@@ -1,6 +1,8 @@
 package bilclubs.controllers;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -169,6 +171,11 @@ public class ProfileController {
         }
     }
 
-    
-
+    public void manageAsAdmin(ActionEvent event) throws IOException {
+        javafx.scene.layout.AnchorPane contentPane = (javafx.scene.layout.AnchorPane) profileImage.getScene().lookup("#rightAnchor");
+        if (contentPane != null) {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/adminManagePage.fxml"));
+            bilclubs.utils.LoadHelper.safelyLoad(loader, contentPane);
+        }
+    }
 }

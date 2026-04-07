@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1050.0" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bilclubs.controllers.AdminManageController">
+   <children>
+      <ScrollPane layoutX="99.0" layoutY="107.0" prefHeight="263.0" prefWidth="400.0">
+         <content>
+            <VBox fx:id="clubVBox" prefHeight="68.0" prefWidth="29.0" style="-fx-spacing: 15; -fx-padding: 8;" />
+         </content>
+      </ScrollPane>
+      <ScrollPane layoutX="577.0" layoutY="101.0" prefHeight="245.0" prefWidth="371.0">
+         <content>
+            <VBox fx:id="memberVBox" prefHeight="72.0" prefWidth="39.0" style="-fx-spacing: 15; -fx-padding: 8;" />
+         </content>
+      </ScrollPane>
+      <ScrollPane layoutX="325.0" layoutY="442.0" prefHeight="263.0" prefWidth="400.0">
+         <content>
+            <VBox fx:id="eventVBox" prefHeight="27.0" prefWidth="87.0" style="-fx-padding: 8; -fx-spacing: 15;" />
+         </content>
+      </ScrollPane>
+      <Text layoutX="384.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Manage As Administrator" wrappingWidth="281.44921875">
+         <font>
+            <Font name="Arial" size="24.0" />
+         </font>
+      </Text>
+      <Text layoutX="224.0" layoutY="88.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Clubs">
+         <font>
+            <Font name="Arial" size="24.0" />
+         </font>
+      </Text>
+      <Text layoutX="697.0" layoutY="87.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Members">
+         <font>
+            <Font name="Arial" size="24.0" />
+         </font>
+      </Text>
+      <Text layoutX="488.0" layoutY="426.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Events">
+         <font>
+            <Font name="Arial" size="24.0" />
+         </font>
+      </Text>
+   </children>
+</Pane>
