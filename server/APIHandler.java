@@ -326,8 +326,24 @@ public class APIHandler {
         }
         club.removeMember(user);
         user.leaveClub(club);
+        ArrayList<Event> events = club.getEvents();
+        for (Event event : events) {
+            if (event.getRegisteredUserIds().contains(user.getId())) {
+                event.removeUser(user);
+                user.leaveEvent(event);
+                manager.updateEvent(event);
+            } else {
+                events.remove(event);
+            }
+        }
         manager.updateUser(user);
         manager.updateClub(club);
+        for (Event event : events) {
+            event.registerUser(user);
+            user.registerToEvent(event);
+            manager.updateEvent(event);
+        }
+        manager.updateUser(user);
         if (user.wantToRecieveMails()) {
             HashMap<String, String> formatMap = new HashMap<>();
             formatMap.put("name", user.getFullName());

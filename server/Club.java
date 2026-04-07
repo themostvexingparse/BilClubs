@@ -75,6 +75,10 @@ public class Club {
         events.add(event);
     }
 
+    public ArrayList<Event> getEvents() {
+        return events;
+    }
+
     // Getters and Setters
     public Integer getId() {
         return id;

@@ -50,7 +50,7 @@ public class ClubPane extends Pane {
         this.clubId = clubIdVal;
 
         // Load club icon from the server, fall back to default
-        Image defaultImg = new Image(getClass().getResourceAsStream("/assets/bilclubs logo 1.png"));
+        Image defaultImg = new Image(getClass().getResourceAsStream("/assets/default-club-icon.png"));
         clubPic.setFill(new ImagePattern(defaultImg));
 
         if (iconFilename != null && !iconFilename.isEmpty() && !iconFilename.contains("default")) {

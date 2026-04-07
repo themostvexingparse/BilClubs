@@ -126,6 +126,23 @@ public class DBManager {
         return true;
     }
 
+    public boolean removeUserFromClubDirect(int userId, int clubId) {
+        if (!initialized)
+            return false;
+        EntityManager em = coreFactory.createEntityManager();
+        em.getTransaction().begin();
+        User managed = em.find(User.class, userId);
+        if (managed == null) {
+            em.getTransaction().rollback();
+            em.close();
+            return false;
+        }
+        managed.getClubPrivileges().remove(clubId);
+        em.getTransaction().commit();
+        em.close();
+        return true;
+    }
+
     public boolean updateUser(User user) {
         if (user == null || user.getId() == null || !initialized)
             return false;
