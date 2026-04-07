@@ -75,7 +75,7 @@
                            <Font name="Arial Bold" size="31.0" />
                         </font>
                      </Label>
-                     <Label style="-fx-text-fill: -primary-color;" text="Member Count">
+                     <Label fx:id="memberCountLabel" style="-fx-text-fill: -primary-color;" text="Member Count">
                         <graphic>
                            <ImageView fitHeight="21.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
                               <image>
@@ -100,7 +100,7 @@
          <!-- Upcoming Events Section -->
          <VBox spacing="15.0">
             <children>
-               <Label text="Upcoming Events">
+               <Label fx:id="upcomingEventsLabel" text="Upcoming Events">
                   <font>
                      <Font name="Arial Bold" size="24.0" />
                   </font>

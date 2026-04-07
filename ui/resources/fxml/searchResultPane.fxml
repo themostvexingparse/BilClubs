@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
@@ -39,4 +40,7 @@
            </children>
        </VBox>
    </children>
+   <effect>
+      <DropShadow height="10.0" radius="4.5" width="10.0" />
+   </effect>
 </fx:root>

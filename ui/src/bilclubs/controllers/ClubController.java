@@ -13,12 +13,16 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Menu;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import bilclubs.utils.Response;
 import bilclubs.components.SearchResultPane;
+import bilclubs.utils.LoadHelper;
 import bilclubs.utils.RequestManager;
+import bilclubs.controllers.MenuController;
 
 public class ClubController {
 
@@ -44,6 +48,12 @@ public class ClubController {
     private Button leaveButton;
     @FXML
     private Button manageButton;
+    @FXML
+    private Label memberCountLabel;
+    @FXML
+    private Label upcomingEventsLabel;
+
+    private AnchorPane parentAnchor;
 
     @FXML
     public void initialize() throws IOException {
@@ -60,25 +70,27 @@ public class ClubController {
             if (club.getInt("id") == Controller.currentClubId) {
                 clubNameLbl.setText(club.getString("clubName"));
                 clubDescLbl.setText(club.getString("clubDescription").split("\n")[0]);
+                memberCountLabel.setText(club.getInt("memberCount") + " members");
 
-                // clubPrivilege is null (JSONObject.NULL) when the user is not a member,
-                // so use optInt with a default of 0 to avoid a JSONException crash.
-                int clubPrivilege = club.optInt("clubPrivilege", 0);
-                boolean isMember = clubPrivilege > 0; // 0 = not a member or banned
+                int clubPrivilege = club.optInt("clubPrivilege", -1);
+                boolean isMember = clubPrivilege != -1 && clubPrivilege != 0; // 0 = not a member or banned
+                boolean isManager = clubPrivilege > 1 && isMember; // manager / admin
 
                 if (isMember) {
                     joinButton.setVisible(false);
                     joinButton.setDisable(true);
                     leaveButton.setVisible(true);
                     leaveButton.setDisable(false);
+
                 } else {
                     leaveButton.setVisible(false);
                     leaveButton.setDisable(true);
                     joinButton.setVisible(true);
                     joinButton.setDisable(false);
+
                 }
 
-                if (clubPrivilege > 1) {
+                if (isManager) {
                     manageButton.setVisible(true);
                     manageButton.setDisable(false);
                 }
@@ -90,13 +102,13 @@ public class ClubController {
                 String iconFilename = club.optString("iconFilename", "");
                 String coverFilename = club.optString("coverFilename", "");
 
-                if (!iconFilename.isEmpty() && !iconFilename.contains("default")) {
+                if (!iconFilename.isEmpty()) {
                     Image icon = new Image(baseUrl + iconFilename, true); // true = background loading
                     clubProfileImage.setImage(icon);
                     clubProfileImage.setPreserveRatio(true);
                 }
 
-                if (!coverFilename.isEmpty() && !coverFilename.contains("default")) {
+                if (!coverFilename.isEmpty()) {
                     Image cover = new Image(baseUrl + coverFilename, true);
                     clubBanner.setImage(cover);
                     clubBanner.setPreserveRatio(false); // stretch to fill banner area
@@ -116,6 +128,10 @@ public class ClubController {
 
         Response eventResponse = RequestManager.sendPostRequest("api/user", eventRequest);
         JSONArray eventData = eventResponse.getPayload().getJSONArray("events");
+
+        if (eventData.length() == 0) {
+            upcomingEventsLabel.setText("No upcoming events for now.");
+        }
 
         for (Object obj : eventData) {
             JSONObject eventObj = (JSONObject) obj;
@@ -159,7 +175,20 @@ public class ClubController {
 
             joinButton.setVisible(true);
             joinButton.setDisable(false);
+
+            manageButton.setVisible(false);
+            manageButton.setDisable(true);
         }
+    }
+
+    public void goToManagement(ActionEvent e) throws IOException {
+        FXMLLoader root = new FXMLLoader(getClass().getResource("/fxml/ClubManagementPage.fxml"));
+        AnchorPane rightAnchor = (AnchorPane) manageButton.getScene().lookup("#rightAnchor");
+        LoadHelper.safelyLoad(root, rightAnchor);
+    }
+
+    public void setParentAnchor(AnchorPane anchor) {
+        this.parentAnchor = anchor;
     }
 
     public void manageClub(ActionEvent e) throws IOException {

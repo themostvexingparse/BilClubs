@@ -21,7 +21,7 @@
          <children>
             <Pane fx:id="borderPane" style="-fx-background-color: transparent; -fx-border-color: -primary-color; -fx-border-radius: 20;">
                <children>
-                  <ScrollPane layoutY="-30.0" prefHeight="257.0" prefWidth="786.0" styleClass="faded-pane" stylesheets="@../../../../javaPrj/trial/src/styles.css">
+                  <ScrollPane layoutY="-30.0" prefHeight="257.0" prefWidth="764.0" styleClass="faded-pane" stylesheets="@../../../../javaPrj/trial/src/styles.css">
                      <content>
                         <HBox fx:id="yourClubsHBox" style="-fx-spacing: 15; -fx-padding: 10 10 20 10;" />
                      </content>

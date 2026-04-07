@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
@@ -15,4 +16,7 @@
       </Label>
       <Label fx:id="desclbl" layoutX="58.0" layoutY="29.0" prefHeight="17.0" prefWidth="169.0" text="Club Description" />
    </children>
+   <effect>
+      <DropShadow height="10.0" radius="4.5" width="10.0" />
+   </effect>
 </fx:root>

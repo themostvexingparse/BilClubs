@@ -109,7 +109,7 @@ public class SearchResultPane extends HBox {
                 FXMLLoader clubPage = new FXMLLoader(getClass().getResource("/fxml/ClubPage.fxml"));
                 LoadHelper.safelyLoad(clubPage, contentPane);
             } else {
-                data.put("eventId", data.optInt("id", -1));
+                data.put("eventId", data.optInt("id", data.optInt("eventId", -1)));
                 Controller.currentEventObject = data;
                 FXMLLoader eventPage = new FXMLLoader(getClass().getResource("/fxml/eventPage.fxml"));
                 LoadHelper.safelyLoad(eventPage, contentPane);

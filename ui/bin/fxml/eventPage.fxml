@@ -37,7 +37,7 @@
                   </DropShadow>
                </effect>
             </Button>
-            <Button fx:id="leaveButton" disable="true" layoutX="732.0" layoutY="328.0" mnemonicParsing="false" onAction="#leaveEvent" prefHeight="47.0" prefWidth="101.0" style="-fx-background-radius: 20; -fx-background-color: -signout-red;" text="Leave" visible="false">
+            <Button fx:id="leaveButton" disable="true" layoutX="833.0" layoutY="328.0" mnemonicParsing="false" onAction="#leaveEvent" prefHeight="47.0" prefWidth="101.0" style="-fx-background-radius: 20; -fx-background-color: -signout-red;" text="Leave" visible="false">
                <font>
                   <Font name="Arial" size="17.0" />
                </font>
