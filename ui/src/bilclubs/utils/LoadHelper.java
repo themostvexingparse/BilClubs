@@ -34,8 +34,8 @@ public class LoadHelper {
                 fade.setToValue(1);
                 fade.play();
             }
-        });
 
+        });
         
     }
 

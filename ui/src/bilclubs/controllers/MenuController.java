@@ -9,6 +9,8 @@ import javafx.stage.*;
 import javafx.scene.control.*;
 
 import java.io.IOException;
+
+import bilclubs.components.ClubCreationForm;
 import bilclubs.utils.LoadHelper;
 
 
@@ -57,6 +59,10 @@ public class MenuController {
     }
     public void goToSettings(ActionEvent e) throws IOException {
         LoadHelper.safelyLoad(new FXMLLoader(getClass().getResource("/fxml/Settings.fxml")), rightAnchor);
+    }
+
+    public void clubCreate(ActionEvent e) throws IOException{
+        ClubCreationForm newForm = new ClubCreationForm();
     }
 
     //sesssiontoken userid
