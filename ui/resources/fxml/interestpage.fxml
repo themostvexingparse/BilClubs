@@ -4,270 +4,92 @@
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bilclubs.controllers.InterestController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: -bg-color;" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bilclubs.controllers.InterestController">
    <children>
-      <Label layoutX="566.0" layoutY="195.0" text="Pick your Interests!">
-         <font>
-            <Font name="Arial Bold" size="16.0" />
-         </font>
-      </Label>
-      <ScrollPane layoutX="510.0" layoutY="264.0" prefHeight="295.0" prefWidth="260.0" style="-fx-background-color: transparent; -fx-background-radius: 5; -fx-border-color: #D9D9D9; -fx-border-radius: 5;">
-         <content>
-            <AnchorPane fx:id="interestAnchor" prefHeight="1000.0" prefWidth="265.0" style="-fx-background-color: -bg-color;">
-               <children>
-                  <Label layoutX="14.0" layoutY="14.0" mouseTransparent="true" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: -custom-light-blue;" />
-                  <CheckBox fx:id="archeology" layoutX="15.0" layoutY="18.0" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue;" text="Archeology">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </CheckBox>
-                  <Label layoutX="14.0" layoutY="59.0" mouseTransparent="true" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: -custom-light-blue;" />
-                  <CheckBox fx:id="art" layoutX="15.0" layoutY="63.0" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue;" text="Art">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </CheckBox>
-                  <Label layoutX="141.0" layoutY="14.0" mouseTransparent="true" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: -custom-light-blue;" />
-                  <CheckBox fx:id="astronomy" layoutX="142.0" layoutY="18.0" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue;" text="Astronomy">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </CheckBox>
-                  <CheckBox fx:id="coding" layoutX="142.0" layoutY="63.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="101.0" style="-fx-background-color: -custom-light-blue;" text="Coding">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </CheckBox>
-                  <Label layoutX="14.0" layoutY="104.0" mouseTransparent="true" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: -custom-light-blue;" />
-                  <CheckBox fx:id="scifi" layoutX="15.0" layoutY="108.0" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue;" text="Sci-Fi">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </CheckBox>
-                  <Label layoutX="141.0" layoutY="104.0" mouseTransparent="true" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: -custom-light-blue;" />
-                  <CheckBox fx:id="plants" layoutX="142.0" layoutY="108.0" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue;" text="Plants">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </CheckBox>
-                  <Label layoutX="14.0" layoutY="149.0" mouseTransparent="true" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: -custom-light-blue;" />
-                  <CheckBox fx:id="language" layoutX="15.0" layoutY="153.0" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue;" text="Language">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </CheckBox>
-                  <Label layoutX="141.0" layoutY="149.0" mouseTransparent="true" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: -custom-light-blue;" />
-                  <CheckBox fx:id="environment" layoutX="142.0" layoutY="153.0" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue;" text="Environment">
-                     <font>
-                        <Font size="13.0" />
-                     </font>
-                  </CheckBox>
-                  <Label layoutX="14.0" layoutY="194.0" mouseTransparent="true" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: -custom-light-blue;" />
-                  <CheckBox fx:id="animation" layoutX="15.0" layoutY="198.0" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue;" text="Animation">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </CheckBox>
-                  <Label layoutX="141.0" layoutY="194.0" mouseTransparent="true" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: -custom-light-blue;" />
-                  <CheckBox fx:id="dance" layoutX="142.0" layoutY="198.0" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue;" text="Dance">
-                     <font>
-                        <Font size="13.0" />
-                     </font>
-                  </CheckBox>
-                  <Label layoutX="14.0" layoutY="239.0" mouseTransparent="true" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: -custom-light-blue;" />
-                  <CheckBox fx:id="games" layoutX="15.0" layoutY="243.0" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue;" text="Games">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </CheckBox>
-                  <Label layoutX="141.0" layoutY="239.0" mouseTransparent="true" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: -custom-light-blue;" />
-                  <CheckBox fx:id="counselling" layoutX="142.0" layoutY="243.0" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue;" text="Counseling">
-                     <font>
-                        <Font size="13.0" />
-                     </font>
-                  </CheckBox>
-                  <Label layoutX="14.0" layoutY="284.0" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: -custom-light-blue;" />
-                  <CheckBox fx:id="sports" layoutX="15.0" layoutY="288.0" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue;" text="Sports">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </CheckBox>
-                  <Label layoutX="141.0" layoutY="284.0" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: -custom-light-blue;" />
-                  <CheckBox fx:id="literature" layoutX="142.0" layoutY="288.0" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue;" text="Literature">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </CheckBox>
-                  <Label layoutX="14.0" layoutY="324.0" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: -custom-light-blue;" />
-                  <CheckBox fx:id="leadership" layoutX="15.0" layoutY="328.0" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue;" text="Leadership">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </CheckBox>
-                  <Label layoutX="141.0" layoutY="324.0" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: -custom-light-blue;" />
-                  <CheckBox fx:id="space" layoutX="142.0" layoutY="328.0" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue;" text="Space">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </CheckBox>
-                  <Label layoutX="14.0" layoutY="364.0" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: -custom-light-blue;" />
-                  <CheckBox fx:id="culture" layoutX="15.0" layoutY="368.0" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue;" text="Culture">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </CheckBox>
-                  <Label layoutX="141.0" layoutY="364.0" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: -custom-light-blue;" />
-                  <CheckBox fx:id="chemistry" layoutX="142.0" layoutY="368.0" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue;" text="Chemistry">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </CheckBox>
-                  <Label layoutX="141.0" layoutY="404.0" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: -custom-light-blue;" />
-                  <CheckBox fx:id="economics" layoutX="142.0" layoutY="408.0" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue;" text="Economics">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </CheckBox>
-                  <Label layoutX="14.0" layoutY="404.0" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: -custom-light-blue;" />
-                  <CheckBox fx:id="management" layoutX="15.0" layoutY="408.0" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue;" text="Management">
-                     <font>
-                        <Font size="13.0" />
-                     </font>
-                  </CheckBox>
-                  <Label layoutX="14.0" layoutY="444.0" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: -custom-light-blue;" />
-                  <CheckBox fx:id="innovation" layoutX="15.0" layoutY="448.0" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue;" text="Innovation">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </CheckBox>
-                  <Label layoutX="14.0" layoutY="484.0" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: -custom-light-blue;" />
-                  <CheckBox fx:id="cooking" layoutX="15.0" layoutY="488.0" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue;" text="Cooking">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </CheckBox>
-                  <Label layoutX="141.0" layoutY="484.0" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: -custom-light-blue;" />
-                  <CheckBox fx:id="debate" layoutX="142.0" layoutY="488.0" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue;" text="Debate">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </CheckBox>
-                  <Label layoutX="141.0" layoutY="524.0" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: -custom-light-blue;" />
-                  <CheckBox fx:id="music" layoutX="142.0" layoutY="528.0" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue;" text="Music">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </CheckBox>
-                  <Label layoutX="14.0" layoutY="524.0" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: -custom-light-blue;" />
-                  <CheckBox fx:id="knitting" layoutX="15.0" layoutY="528.0" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue;" text="Knitting">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </CheckBox>
-                  <Label layoutX="14.0" layoutY="564.0" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: -custom-light-blue;" />
-                  <CheckBox fx:id="fashion" layoutX="15.0" layoutY="568.0" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue;" text="Fashion">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </CheckBox>
-                  <Label layoutX="141.0" layoutY="564.0" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: -custom-light-blue;" />
-                  <CheckBox fx:id="media" layoutX="142.0" layoutY="568.0" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue;" text="Media">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </CheckBox>
-                  <Label layoutX="14.0" layoutY="604.0" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: -custom-light-blue;" />
-                  <CheckBox fx:id="engineering" layoutX="15.0" layoutY="608.0" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue;" text="Engineering">
-                     <font>
-                        <Font size="13.0" />
-                     </font>
-                  </CheckBox>
-                  <Label layoutX="141.0" layoutY="604.0" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: -custom-light-blue;" />
-                  <CheckBox fx:id="history" layoutX="142.0" layoutY="608.0" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue;" text="History">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </CheckBox>
-                  <Label layoutX="14.0" layoutY="644.0" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: -custom-light-blue;" />
-                  <CheckBox fx:id="psychology" layoutX="15.0" layoutY="648.0" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue;" text="Psychology">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </CheckBox>
-                  <Label layoutX="141.0" layoutY="644.0" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: -custom-light-blue;" />
-                  <CheckBox fx:id="genetics" layoutX="142.0" layoutY="648.0" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue;" text="Genetics">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </CheckBox>
-                  <Label layoutX="14.0" layoutY="684.0" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: -custom-light-blue;" />
-                  <CheckBox fx:id="animals" layoutX="15.0" layoutY="688.0" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue;" text="Animals">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </CheckBox>
-                  <Label layoutX="141.0" layoutY="684.0" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: -custom-light-blue;" />
-                  <CheckBox fx:id="law" layoutX="142.0" layoutY="688.0" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue;" text="Law">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </CheckBox>
-                  <Label layoutX="14.0" layoutY="724.0" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: -custom-light-blue;" />
-                  <CheckBox fx:id="philosophy" layoutX="15.0" layoutY="728.0" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue;" text="Philosophy">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </CheckBox>
-                  <Label layoutX="141.0" layoutY="724.0" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: -custom-light-blue;" />
-                  <CheckBox fx:id="physics" layoutX="142.0" layoutY="728.0" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue;" text="Physics">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </CheckBox>
-                  <Label layoutX="14.0" layoutY="764.0" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: -custom-light-blue;" />
-                  <CheckBox fx:id="investment" layoutX="15.0" layoutY="768.0" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue;" text="Investment">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </CheckBox>
-                  <Label layoutX="141.0" layoutY="764.0" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: -custom-light-blue;" />
-                  <CheckBox fx:id="photography" layoutX="142.0" layoutY="768.0" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue;" text="Photography">
-                     <font>
-                        <Font size="13.0" />
-                     </font>
-                  </CheckBox>
-                  <Label layoutX="14.0" layoutY="804.0" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: -custom-light-blue;" />
-                  <CheckBox fx:id="journalism" layoutX="15.0" layoutY="808.0" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue;" text="Journalism">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </CheckBox>
-                  <Label layoutX="141.0" layoutY="449.0" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: -custom-light-blue;" />
-                  <CheckBox layoutX="142.0" layoutY="453.0" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue;" text="Politics">
-                     <font>
-                        <Font size="13.0" />
-                     </font>
-                  </CheckBox>
-               </children>
-            </AnchorPane>
-         </content>
-      </ScrollPane>
-      <Button layoutX="607.0" layoutY="222.0" mnemonicParsing="false" onAction="#getInterests" prefHeight="27.0" prefWidth="63.0" style="-fx-background-color: #385BAE; -fx-background-radius: 5; -fx-cursor: hand;" text="Submit!" textFill="WHITE" />
-      <ImageView fitHeight="80.0" fitWidth="80.0" layoutX="599.0" layoutY="115.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../assets/bilclubs%20logo%201.png" />
-         </image>
-      </ImageView>
-      <Label layoutX="597.0" layoutY="84.0" text="Bil'Clubs">
-         <font>
-            <Font name="Arial Bold" size="20.0" />
-         </font>
-      </Label>
+      <VBox alignment="CENTER" layoutX="340.0" layoutY="60.0" prefHeight="600.0" prefWidth="600.0" spacing="20.0" style="-fx-background-color: white; -fx-background-radius: 20; -fx-padding: 40; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 20, 0, 0, 10);">
+         <children>
+            <ImageView fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../assets/bilclubs%20logo%201.png" />
+               </image>
+            </ImageView>
+            <Label text="Bil'Clubs">
+               <font>
+                  <Font name="Arial Bold" size="20.0" />
+               </font>
+            </Label>
+            <Label text="Pick your Interests!" textFill="#385bae">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+            <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="320.0" style="-fx-background-color: transparent; -fx-background: transparent; -fx-border-width: 0;">
+               <content>
+                  <FlowPane fx:id="interestAnchor" alignment="CENTER" hgap="10.0" vgap="12.0" style="-fx-background-color: white; -fx-padding: 10;">
+                     <children>
+                        <CheckBox fx:id="archeology" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue; -fx-background-radius: 20; -fx-padding: 8 15 8 12; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #385BAE; -fx-cursor: hand;" text="Archeology" />
+                        <CheckBox fx:id="astronomy" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue; -fx-background-radius: 20; -fx-padding: 8 15 8 12; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #385BAE; -fx-cursor: hand;" text="Astronomy" />
+                        <CheckBox fx:id="art" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue; -fx-background-radius: 20; -fx-padding: 8 15 8 12; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #385BAE; -fx-cursor: hand;" text="Art" />
+                        <CheckBox fx:id="coding" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue; -fx-background-radius: 20; -fx-padding: 8 15 8 12; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #385BAE; -fx-cursor: hand;" text="Coding" />
+                        <CheckBox fx:id="scifi" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue; -fx-background-radius: 20; -fx-padding: 8 15 8 12; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #385BAE; -fx-cursor: hand;" text="Sci-Fi" />
+                        <CheckBox fx:id="plants" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue; -fx-background-radius: 20; -fx-padding: 8 15 8 12; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #385BAE; -fx-cursor: hand;" text="Plants" />
+                        <CheckBox fx:id="language" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue; -fx-background-radius: 20; -fx-padding: 8 15 8 12; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #385BAE; -fx-cursor: hand;" text="Language" />
+                        <CheckBox fx:id="environment" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue; -fx-background-radius: 20; -fx-padding: 8 15 8 12; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #385BAE; -fx-cursor: hand;" text="Environment" />
+                        <CheckBox fx:id="animation" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue; -fx-background-radius: 20; -fx-padding: 8 15 8 12; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #385BAE; -fx-cursor: hand;" text="Animation" />
+                        <CheckBox fx:id="dance" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue; -fx-background-radius: 20; -fx-padding: 8 15 8 12; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #385BAE; -fx-cursor: hand;" text="Dance" />
+                        <CheckBox fx:id="games" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue; -fx-background-radius: 20; -fx-padding: 8 15 8 12; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #385BAE; -fx-cursor: hand;" text="Games" />
+                        <CheckBox fx:id="counseling" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue; -fx-background-radius: 20; -fx-padding: 8 15 8 12; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #385BAE; -fx-cursor: hand;" text="Counseling" />
+                        <CheckBox fx:id="sports" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue; -fx-background-radius: 20; -fx-padding: 8 15 8 12; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #385BAE; -fx-cursor: hand;" text="Sports" />
+                        <CheckBox fx:id="literature" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue; -fx-background-radius: 20; -fx-padding: 8 15 8 12; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #385BAE; -fx-cursor: hand;" text="Literature" />
+                        <CheckBox fx:id="leadership" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue; -fx-background-radius: 20; -fx-padding: 8 15 8 12; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #385BAE; -fx-cursor: hand;" text="Leadership" />
+                        <CheckBox fx:id="space" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue; -fx-background-radius: 20; -fx-padding: 8 15 8 12; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #385BAE; -fx-cursor: hand;" text="Space" />
+                        <CheckBox fx:id="culture" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue; -fx-background-radius: 20; -fx-padding: 8 15 8 12; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #385BAE; -fx-cursor: hand;" text="Culture" />
+                        <CheckBox fx:id="chemistry" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue; -fx-background-radius: 20; -fx-padding: 8 15 8 12; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #385BAE; -fx-cursor: hand;" text="Chemistry" />
+                        <CheckBox fx:id="economics" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue; -fx-background-radius: 20; -fx-padding: 8 15 8 12; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #385BAE; -fx-cursor: hand;" text="Economics" />
+                        <CheckBox fx:id="management" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue; -fx-background-radius: 20; -fx-padding: 8 15 8 12; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #385BAE; -fx-cursor: hand;" text="Management" />
+                        <CheckBox fx:id="innovation" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue; -fx-background-radius: 20; -fx-padding: 8 15 8 12; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #385BAE; -fx-cursor: hand;" text="Innovation" />
+                        <CheckBox fx:id="cooking" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue; -fx-background-radius: 20; -fx-padding: 8 15 8 12; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #385BAE; -fx-cursor: hand;" text="Cooking" />
+                        <CheckBox fx:id="debate" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue; -fx-background-radius: 20; -fx-padding: 8 15 8 12; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #385BAE; -fx-cursor: hand;" text="Debate" />
+                        <CheckBox fx:id="music" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue; -fx-background-radius: 20; -fx-padding: 8 15 8 12; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #385BAE; -fx-cursor: hand;" text="Music" />
+                        <CheckBox fx:id="knitting" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue; -fx-background-radius: 20; -fx-padding: 8 15 8 12; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #385BAE; -fx-cursor: hand;" text="Knitting" />
+                        <CheckBox fx:id="fashion" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue; -fx-background-radius: 20; -fx-padding: 8 15 8 12; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #385BAE; -fx-cursor: hand;" text="Fashion" />
+                        <CheckBox fx:id="media" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue; -fx-background-radius: 20; -fx-padding: 8 15 8 12; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #385BAE; -fx-cursor: hand;" text="Media" />
+                        <CheckBox fx:id="engineering" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue; -fx-background-radius: 20; -fx-padding: 8 15 8 12; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #385BAE; -fx-cursor: hand;" text="Engineering" />
+                        <CheckBox fx:id="history" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue; -fx-background-radius: 20; -fx-padding: 8 15 8 12; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #385BAE; -fx-cursor: hand;" text="History" />
+                        <CheckBox fx:id="psychology" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue; -fx-background-radius: 20; -fx-padding: 8 15 8 12; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #385BAE; -fx-cursor: hand;" text="Psychology" />
+                        <CheckBox fx:id="genetics" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue; -fx-background-radius: 20; -fx-padding: 8 15 8 12; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #385BAE; -fx-cursor: hand;" text="Genetics" />
+                        <CheckBox fx:id="animals" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue; -fx-background-radius: 20; -fx-padding: 8 15 8 12; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #385BAE; -fx-cursor: hand;" text="Animals" />
+                        <CheckBox fx:id="law" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue; -fx-background-radius: 20; -fx-padding: 8 15 8 12; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #385BAE; -fx-cursor: hand;" text="Law" />
+                        <CheckBox fx:id="philosophy" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue; -fx-background-radius: 20; -fx-padding: 8 15 8 12; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #385BAE; -fx-cursor: hand;" text="Philosophy" />
+                        <CheckBox fx:id="physics" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue; -fx-background-radius: 20; -fx-padding: 8 15 8 12; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #385BAE; -fx-cursor: hand;" text="Physics" />
+                        <CheckBox fx:id="investment" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue; -fx-background-radius: 20; -fx-padding: 8 15 8 12; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #385BAE; -fx-cursor: hand;" text="Investment" />
+                        <CheckBox fx:id="photography" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue; -fx-background-radius: 20; -fx-padding: 8 15 8 12; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #385BAE; -fx-cursor: hand;" text="Photography" />
+                        <CheckBox fx:id="journalism" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue; -fx-background-radius: 20; -fx-padding: 8 15 8 12; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #385BAE; -fx-cursor: hand;" text="Journalism" />
+                        <CheckBox fx:id="politics" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue; -fx-background-radius: 20; -fx-padding: 8 15 8 12; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #385BAE; -fx-cursor: hand;" text="Politics" />
+                     </children>
+                  </FlowPane>
+               </content>
+            </ScrollPane>
+            <Button mnemonicParsing="false" onAction="#getInterests" prefHeight="45.0" prefWidth="520.0" style="-fx-background-radius: 10; -fx-background-color: #385BAE; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16px; -fx-cursor: hand;" styleClass="button-settings" text="Submit!">
+               <effect>
+                  <DropShadow>
+                     <color>
+                        <Color opacity="0.30" />
+                     </color>
+                  </DropShadow>
+               </effect>
+            </Button>
+         </children>
+      </VBox>
    </children>
 </Pane>
+

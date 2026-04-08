@@ -28,8 +28,7 @@ public class SettingsController {
     Button darkModeToggle;
     @FXML
     Button clubEventToggle;
-    @FXML
-    Button replyAlertsToggle;
+
     @FXML
     Button emailAlertsToggle;
 
@@ -52,7 +51,7 @@ public class SettingsController {
     javafx.scene.control.Label saveStatusLabel;
 
     private boolean clubEventState = true;
-    private boolean replyAlertsState = true;
+
     private boolean emailAlertsState = true;
 
     @FXML
@@ -83,11 +82,11 @@ public class SettingsController {
                         majorField.setText(data.optString("major", ""));
 
                         clubEventState = data.optBoolean("wantToRecieveClubAndEventAlerts", true);
-                        replyAlertsState = data.optBoolean("wantToRecieveGeneralNotifications", true);
+
                         emailAlertsState = data.optBoolean("wantToRecieveMails", true);
 
                         setTogglePosition(clubEventToggle, clubEventState);
-                        setTogglePosition(replyAlertsToggle, replyAlertsState);
+
                         setTogglePosition(emailAlertsToggle, emailAlertsState);
                         setTogglePosition(darkModeToggle, Controller.isDarkMode);
                     });
@@ -165,13 +164,6 @@ public class SettingsController {
         clubEventState = !clubEventState;
         animateToggle(clubEventToggle, clubEventState);
         updateProfileField("wantToRecieveClubAndEventAlerts", clubEventState);
-    }
-
-    @FXML
-    public void toggleReplyAlerts(ActionEvent e) {
-        replyAlertsState = !replyAlertsState;
-        animateToggle(replyAlertsToggle, replyAlertsState);
-        updateProfileField("wantToRecieveGeneralNotifications", replyAlertsState);
     }
 
     @FXML
