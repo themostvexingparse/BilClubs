@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.control.Button;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -36,6 +37,7 @@ public class ProfileController {
     @FXML private Label namelbl;
     @FXML private Label deptlbl;
     @FXML private Label privlbl;
+    @FXML private Button manageButton;
 
     @FXML
     public void initialize() throws IOException{
@@ -50,6 +52,12 @@ public class ProfileController {
         Response userProfile = RequestManager.sendPostRequest("api/user", request);
 
         JSONObject userData = userProfile.getPayload();
+
+        Integer privilege = userData.optIntegerObject("privilege", 1);
+
+        boolean isAdmin = (privilege & 15) == 15;
+
+        manageButton.setVisible(isAdmin);
 
         Image image = new Image(RequestManager.defaultAddress + userData.getString("profilePicture"), true);
         System.out.println(RequestManager.defaultAddress + userData.getString("profilePicture"));
