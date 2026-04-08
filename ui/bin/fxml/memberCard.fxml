@@ -37,7 +37,7 @@
          </font>
       </Label>
       <Label fx:id="majorlbl" layoutX="87.0" layoutY="34.0" prefHeight="17.0" prefWidth="169.0" text="Major" />
-      <Button layoutX="269.0" layoutY="23.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="50.0" style="-fx-background-color: -signout-red;" text="Ban" />
+      <Button fx:id="banBtn" layoutX="269.0" layoutY="23.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="50.0" style="-fx-background-color: -signout-red;" text="Ban" />
    </children>
    <styleClass>
       <String fx:value="button" />

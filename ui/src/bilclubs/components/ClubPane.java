@@ -43,7 +43,22 @@ public class ClubPane extends Pane {
         backbone.load();
 
         nameLabel.setText(clubname);
-        descLabel.setText(clubDesc);
+
+        String truncatedDesc = clubDesc;
+        if (truncatedDesc != null && !truncatedDesc.isEmpty()) {
+            String[] words = truncatedDesc.split("\\s+");
+            if (words.length > 8) {
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < 8; i++) {
+                    sb.append(words[i]);
+                    if (i < 7) sb.append(" ");
+                }
+                truncatedDesc = sb.toString() + "...";
+            }
+        }
+        
+        descLabel.setText(truncatedDesc);
+        descLabel.setWrapText(false);
 
         this.name = clubname;
         this.desc = clubDesc;

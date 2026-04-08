@@ -1,4 +1,5 @@
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -523,8 +524,9 @@ public class DBManager {
         return true;
     }
 
-    public boolean createClub(User admin, User firstManager, String name, String description){
-        if (firstManager.isBanned() || admin.hasGeneralPrivilege(Privileges.ADMIN)) return false;
+    public boolean createClub(User admin, User firstManager, String name, String description) {
+        if (firstManager.isBanned() || admin.hasGeneralPrivilege(Privileges.ADMIN))
+            return false;
         Club club = new Club(name, description);
         firstManager.joinClub(club);
         firstManager.setClubPrivilege(club, Privileges.MANAGER | Privileges.NORMAL_USER);
@@ -590,25 +592,29 @@ public class DBManager {
         return true;
     }
 
-    public boolean postComment(Comment parent, User author, String content, Discussion discussion){
-        if (author.isBanned() || content.isEmpty()) return false;
+    public boolean postComment(Comment parent, User author, String content, Discussion discussion) {
+        if (author.isBanned() || content.isEmpty())
+            return false;
         Comment comment = new Comment(parent, author, content, discussion);
         discussion.addNewComment(comment);
         addComment(comment);
-        if (parent != null) updateComment(parent);
+        if (parent != null)
+            updateComment(parent);
         updateDiscussion(discussion);
         return true;
     }
 
-    public boolean editComment(Comment comment, User author, String newContent){
-        if (author != comment.getAuthor() || author.isBanned() || newContent.isEmpty()) return false;
+    public boolean editComment(Comment comment, User author, String newContent) {
+        if (author != comment.getAuthor() || author.isBanned() || newContent.isEmpty())
+            return false;
         comment.setContent(newContent);
         updateComment(comment);
         return true;
     }
 
-    public boolean deleteComment(Comment comment, User author){
-        if (author != comment.getAuthor() || author.isBanned()) return false;
+    public boolean deleteComment(Comment comment, User author) {
+        if (author != comment.getAuthor() || author.isBanned())
+            return false;
         comment.getDiscussion().deleteComment(comment.getId());
         updateDiscussion(comment.getDiscussion());
         // FIXME: After deleting a comment the comment will still be stored within
@@ -688,5 +694,173 @@ public class DBManager {
             return null;
         }
         return files.get(0);
+    }
+
+    public boolean deleteEvent(Integer eventId) {
+        if (eventId == null || !initialized)
+            return false;
+        EntityManager em = coreFactory.createEntityManager();
+        em.getTransaction().begin();
+        Event managedEvent = em.find(Event.class, eventId);
+        if (managedEvent == null) {
+            em.close();
+            return false;
+        }
+
+        // 1. Remove from club
+        Club club = em.find(Club.class, managedEvent.getClubId());
+        if (club != null) {
+            club.getEvents().remove(managedEvent);
+            em.merge(club);
+        }
+
+        // 2. Remove from all registered users
+        for (Integer uId : managedEvent.getRegisteredUserIds()) {
+            User u = em.find(User.class, uId);
+            if (u != null) {
+                u.leaveEvent(managedEvent);
+                em.merge(u);
+            }
+        }
+        managedEvent.clearUsers();
+
+        // 3. Delete Discussion
+        Discussion discussion = managedEvent.getDiscussion();
+        if (discussion != null) {
+            List<Comment> comments = em.createQuery("SELECT c FROM Comment c WHERE c.discussion = :d", Comment.class)
+                    .setParameter("d", discussion).getResultList();
+            for (Comment c : comments)
+                em.remove(c);
+            em.remove(discussion);
+        }
+
+        em.remove(managedEvent);
+        em.getTransaction().commit();
+        em.close();
+        return true;
+    }
+
+    public boolean deleteClub(Integer clubId) {
+        if (clubId == null || !initialized)
+            return false;
+
+        EntityManager em = coreFactory.createEntityManager();
+        em.getTransaction().begin();
+        Club managedClub = em.find(Club.class, clubId);
+        if (managedClub == null) {
+            em.close();
+            return false;
+        }
+        em.getTransaction().commit();
+        em.close();
+
+        // 1. Delete all associated events forcefully
+        ArrayList<Event> eventsToKill = new ArrayList<>(managedClub.getEvents());
+        for (Event event : eventsToKill) {
+            deleteEvent(event.getId());
+        }
+
+        em = coreFactory.createEntityManager();
+        em.getTransaction().begin();
+        managedClub = em.find(Club.class, clubId);
+        if (managedClub == null) {
+            em.close();
+            return true;
+        }
+
+        // 2. Remove from all members' clubPrivileges
+        for (User member : managedClub.getMembers()) {
+            User u = em.find(User.class, member.getId());
+            if (u != null) {
+                u.leaveClub(managedClub);
+                em.merge(u);
+            }
+        }
+        managedClub.clearMembersAndEvents();
+
+        // 3. Delete Discussion
+        Discussion discussion = managedClub.getDiscussion();
+        if (discussion != null) {
+            List<Comment> comments = em.createQuery("SELECT c FROM Comment c WHERE c.discussion = :d", Comment.class)
+                    .setParameter("d", discussion).getResultList();
+            for (Comment c : comments)
+                em.remove(c);
+            em.remove(discussion);
+        }
+
+        em.remove(managedClub);
+        em.getTransaction().commit();
+        em.close();
+        return true;
+    }
+
+    public boolean deleteUser(Integer userId) {
+        if (userId == null || !initialized)
+            return false;
+        EntityManager em = coreFactory.createEntityManager();
+        em.getTransaction().begin();
+        User managedUser = em.find(User.class, userId);
+        if (managedUser == null) {
+            em.close();
+            return false;
+        }
+
+        // 1. Remove from all clubs
+        ArrayList<Integer> clubIds = new ArrayList<>(managedUser.getClubIds());
+        for (Integer cId : clubIds) {
+            Club c = em.find(Club.class, cId);
+            if (c != null) {
+                c.removeMember(managedUser);
+                em.merge(c);
+            }
+        }
+
+        em.getTransaction().commit();
+        em.close();
+
+        // 2. Remove from all events
+        List<Event> allEvents = queryEvents(new Filter());
+        for (Event event : allEvents) {
+            if (event.getRegisteredUserIds().contains(userId)) {
+                EntityManager innerEm = coreFactory.createEntityManager();
+                innerEm.getTransaction().begin();
+                Event e = innerEm.find(Event.class, event.getId());
+                User uRef = innerEm.find(User.class, userId);
+                if (e != null && uRef != null) {
+                    e.removeUser(uRef);
+                    innerEm.merge(e);
+                }
+                innerEm.getTransaction().commit();
+                innerEm.close();
+            }
+        }
+
+        // Now remove the user
+        em = coreFactory.createEntityManager();
+        em.getTransaction().begin();
+        managedUser = em.find(User.class, userId);
+        if (managedUser == null) {
+            em.close();
+            return false;
+        }
+        managedUser.clearEventsAndClubs();
+
+        // 3. Remove authored comments (optional, but good for cleanup)
+        List<Comment> authoredComments = em.createQuery("SELECT c FROM Comment c WHERE c.author = :u", Comment.class)
+                .setParameter("u", managedUser).getResultList();
+        for (Comment c : authoredComments) {
+            Discussion d = c.getDiscussion();
+            if (d != null) {
+                d.deleteComment(c.getId());
+                em.merge(d);
+            }
+            em.remove(c);
+        }
+
+        em.remove(managedUser);
+        em.getTransaction().commit();
+        em.close();
+
+        return true;
     }
 }

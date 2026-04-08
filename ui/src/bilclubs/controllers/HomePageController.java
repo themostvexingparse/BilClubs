@@ -16,6 +16,8 @@ import bilclubs.components.ClubPane;
 import bilclubs.components.SearchResultPane;
 import bilclubs.utils.RequestManager;
 import bilclubs.utils.Response;
+import bilclubs.utils.LoadingSign;
+import javafx.application.Platform;
 
 public class HomePageController {
 
@@ -39,97 +41,94 @@ public class HomePageController {
     @FXML
     public void initialize() throws IOException {
 
-        // ClubPane club1 = new ClubPane("", "");
-        // ClubPane club2 = new ClubPane("", "");
-        // ClubPane club3 = new ClubPane("", "");
-        // ClubPane club4 = new ClubPane("", "");
-        // ClubPane club5 = new ClubPane("", "");
-        // ClubPane club6 = new ClubPane("", "");
-        // ClubPane club7 = new ClubPane("", "");
+        LoadingSign loadClubs = new LoadingSign();
+        LoadingSign loadEvents = new LoadingSign();
+        
+        loadClubs.showLoadingIcon(borderPane);
+        loadEvents.showLoadingIcon(borderPane1);
 
-        JSONObject clubReq = new JSONObject();
-        clubReq.put("userId", Controller.userId);
-        clubReq.put("sessionToken", Controller.sessionToken);
-        clubReq.put("targetUserId", Controller.userId);
-        clubReq.put("action", "getForeignProfileClubs");
+        new Thread(() -> {
+            try {
+                JSONObject clubReq = new JSONObject();
+                clubReq.put("userId", Controller.userId);
+                clubReq.put("sessionToken", Controller.sessionToken);
+                clubReq.put("targetUserId", Controller.userId);
+                clubReq.put("action", "getForeignProfileClubs");
 
-        Response clubResponse = RequestManager.sendPostRequest("api/user", clubReq);
-        JSONArray clubData = clubResponse.getPayload().optJSONArray("clubs");
-        if (clubData == null)
-            clubData = new JSONArray();
+                Response clubResponse = RequestManager.sendPostRequest("api/user", clubReq);
+                JSONArray clubData = clubResponse.getPayload().optJSONArray("clubs");
+                if (clubData == null) clubData = new JSONArray();
 
-        if (clubData.length() == 0) {
-            sleepingIcon.setVisible(true);
-            noClubText.setVisible(true);
-        }
+                final JSONArray finalClubData = clubData;
 
-        else {
-            sleepingIcon.setVisible(false);
-            noClubText.setVisible(false);
-            borderPane.setStyle("-fx-border-color: transparent;");
-        }
+                JSONArray clubIds = new JSONArray();
+                for (Object obj : finalClubData) {
+                    JSONObject aClub = (JSONObject) obj;
+                    clubIds.put(aClub.getInt("id"));
+                }
+                if (clubIds.length() == 0) clubIds.put(-1);
 
-        JSONArray clubIds = new JSONArray();
-        for (Object obj : clubData) {
-            JSONObject aClub = (JSONObject) obj;
-            clubIds.put(aClub.getInt("id"));
-        }
+                JSONObject eventReq = new JSONObject();
+                eventReq.put("action", "getUpcomingEvents");
+                eventReq.put("clubIds", clubIds);
+                eventReq.put("userId", Controller.userId);
+                eventReq.put("userSpecific", false);
+                eventReq.put("sessionToken", Controller.sessionToken);
 
-        if (clubIds.length() == 0)
-            clubIds.put(-1);
+                Response eventResponse = RequestManager.sendPostRequest("api/user", eventReq);
+                JSONArray userEvents = eventResponse.getPayload().optJSONArray("events");
+                if (userEvents == null) userEvents = new JSONArray();
+                
+                final JSONArray finalUserEvents = userEvents;
 
-        for (Object obj : clubData) {
-            JSONObject club = (JSONObject) obj;
+                Platform.runLater(() -> {
+                    try {
+                        loadClubs.removeLoadingIcon(borderPane);
+                        loadEvents.removeLoadingIcon(borderPane1);
 
-            ClubPane userClubPane = new ClubPane(club.getString("name"), club.getString("description").split("\n")[0],
-                    club.getInt("id"), club.optString("iconFilename", ""));
-            yourClubsHBox.getChildren().add(userClubPane);
-        }
+                        if (finalClubData.length() == 0) {
+                            sleepingIcon.setVisible(true);
+                            noClubText.setVisible(true);
+                        } else {
+                            sleepingIcon.setVisible(false);
+                            noClubText.setVisible(false);
+                            borderPane.setStyle("-fx-border-color: transparent;");
+                        }
 
-        JSONObject eventReq = new JSONObject();
-        eventReq.put("action", "getUpcomingEvents");
-        eventReq.put("clubIds", clubIds);
-        eventReq.put("userId", Controller.userId);
-        eventReq.put("userSpecific", false);
-        eventReq.put("sessionToken", Controller.sessionToken);
+                        for (Object obj : finalClubData) {
+                            JSONObject club = (JSONObject) obj;
+                            try {
+                                ClubPane userClubPane = new ClubPane(club.getString("name"), club.getString("description").split("\n")[0],
+                                        club.getInt("id"), club.optString("iconFilename", ""));
+                                yourClubsHBox.getChildren().add(userClubPane);
+                            } catch (Exception e) { e.printStackTrace(); }
+                        }
 
-        Response eventResponse = RequestManager.sendPostRequest("api/user", eventReq);
-        JSONArray userEvents = eventResponse.getPayload().optJSONArray("events");
-        if (userEvents == null)
-            userEvents = new JSONArray();
+                        if (finalUserEvents.length() == 0) {
+                            sleepingIcon1.setVisible(true);
+                            noClubText1.setVisible(true);
+                        } else {
+                            sleepingIcon1.setVisible(false);
+                            noClubText1.setVisible(false);
+                            borderPane1.setStyle("-fx-border-color: transparent;");
+                        }
 
-        if (userEvents.length() == 0) {
-            sleepingIcon1.setVisible(true);
-            noClubText1.setVisible(true);
-        }
+                        for (Object obj : finalUserEvents) {
+                            JSONObject anEvent = (JSONObject) obj;
+                            try {
+                                SearchResultPane displayEvent = new SearchResultPane(anEvent, "Event");
+                                happeningSoonVBox.getChildren().add(displayEvent);
+                            } catch (Exception e) { e.printStackTrace(); }
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
 
-        else {
-            sleepingIcon1.setVisible(false);
-            noClubText1.setVisible(false);
-            borderPane1.setStyle("-fx-border-color: transparent;");
-        }
-
-        for (Object obj : userEvents) {
-            JSONObject anEvent = (JSONObject) obj;
-            System.out.println(anEvent);
-            SearchResultPane displayEvent = new SearchResultPane(anEvent, "Event");
-            happeningSoonVBox.getChildren().add(displayEvent);
-        }
-
-        // EventPane event1 = new EventPane("Knitting", "Atölye Bilkent", "50");
-        // EventPane event2 = new EventPane("C++ workshop", "ACM Bilkent", "30");
-        // EventPane event3 = new EventPane("Knitting", "Atölye Bilkent", "50");
-        // EventPane event4 = new EventPane("Knitting", "Atölye Bilkent", "50");
-
-        // yourClubsHBox.getChildren().addAll(club1, club2, club3, club4, club5, club6,
-        // club7);
-        // happeningSoonVBox.getChildren().addAll(event1, event2, event3, event4);
-
-        // user display için json aç, getprofile action. sessiontoken userid
-        // Başka profili görüntüleme: getForeignProfile sessiontoken userid targetUserId
-
-        // JSONObject userJSON = new JSONObject();
-        // userJSON.put()
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }).start();
 
     }
 }
