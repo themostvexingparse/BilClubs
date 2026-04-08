@@ -153,7 +153,7 @@ public class ClubController {
             leaveButton.setVisible(true);
             leaveButton.setDisable(false);
 
-            NotificationCard joinNotification = new NotificationCard(NotificationCard.joinMessage, "You joined " + Controller.currentClubName);
+            NotificationCard joinNotification = new NotificationCard(NotificationCard.joinMessage, "Check your webmail for further details.");
             AlertsController.allNotifs.add(joinNotification);
         }
     }

@@ -1,26 +1,23 @@
 ------------------------------------------------------------------------------------------------------------------------
 
-[2026-04-08 04:26:14 #1 store] 
-Database 'C:\Users\nazli\Desktop\BilClubs\server\db\bilclubs.odb' has been recovered (tr. 375-379)
+[2026-04-08 05:23:18 #1 store] 
+Database 'C:\Users\nazli\Desktop\BilClubs\server\db\bilclubs.odb' is opened by 37356@LAPTOP-2FMELNRI
 
-[2026-04-08 04:26:14 #2 store] 
-Database 'C:\Users\nazli\Desktop\BilClubs\server\db\bilclubs.odb' is opened by 24140@LAPTOP-2FMELNRI
-
-[2026-04-08 04:26:14 #3 store] 
+[2026-04-08 05:23:18 #2 store] 
 Configuration path: ?
 
-[2026-04-08 04:26:14 #4 type] 
+[2026-04-08 05:23:19 #3 type] 
 Type Club is not enhanced.
 
-[2026-04-08 04:26:14 #5 type] 
-Type Discussion is not enhanced.
-
-[2026-04-08 04:26:14 #6 type] 
+[2026-04-08 05:23:19 #4 type] 
 Type Event is not enhanced.
 
-[2026-04-08 04:26:14 #7 type] 
+[2026-04-08 05:23:19 #5 type] 
 Type User is not enhanced.
 
-[2026-04-08 04:26:14 #8 type] 
+[2026-04-08 05:23:19 #6 type] 
+Type Discussion is not enhanced.
+
+[2026-04-08 05:23:19 #7 type] 
 Type Comment is not enhanced.
 
