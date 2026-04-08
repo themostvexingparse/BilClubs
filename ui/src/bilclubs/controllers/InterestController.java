@@ -19,6 +19,11 @@ import bilclubs.utils.LoadHelper;
 public class InterestController {
 
     private Stage stage;
+    private Stage popupModeStage = null;
+
+    public void setPopupMode(Stage s) {
+        this.popupModeStage = s;
+    }
 
     @FXML
     private CheckBox archeology;
@@ -125,6 +130,28 @@ public class InterestController {
             }
         }
 
+        if (popupModeStage != null) {
+            try {
+                org.json.JSONObject req = new org.json.JSONObject();
+                req.put("action", "setInterests");
+                req.put("userId", Controller.userId);
+                req.put("sessionToken", Controller.sessionToken);
+                req.put("interests", new org.json.JSONArray(interestList));
+                bilclubs.utils.RequestManager.sendPostRequest("api/user", req);
+
+                org.json.JSONObject embedReq = new org.json.JSONObject();
+                embedReq.put("action", "generateEmbeddings");
+                embedReq.put("userId", Controller.userId);
+                embedReq.put("sessionToken", Controller.sessionToken);
+                bilclubs.utils.RequestManager.sendPostRequest("api/user", embedReq);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            interestList.clear();
+            popupModeStage.close();
+            return;
+        }
+
         FXMLLoader mainPageFXML = new FXMLLoader(getClass().getResource("/fxml/interestKeywords.fxml"));
         stage = (Stage) archeology.getScene().getWindow();
 
@@ -154,6 +181,28 @@ public class InterestController {
             interestList.clear();
         } catch (Exception ex) {
             ex.printStackTrace();
+        }
+
+        if (popupModeStage != null) {
+            try {
+                org.json.JSONObject req = new org.json.JSONObject();
+                req.put("action", "setInterests");
+                req.put("userId", Controller.userId);
+                req.put("sessionToken", Controller.sessionToken);
+                req.put("interests", new org.json.JSONArray(interestList));
+                bilclubs.utils.RequestManager.sendPostRequest("api/user", req);
+
+                org.json.JSONObject embedReq = new org.json.JSONObject();
+                embedReq.put("action", "generateEmbeddings");
+                embedReq.put("userId", Controller.userId);
+                embedReq.put("sessionToken", Controller.sessionToken);
+                bilclubs.utils.RequestManager.sendPostRequest("api/user", embedReq);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            interestList.clear();
+            popupModeStage.close();
+            return;
         }
 
         stage = (Stage) submitButton.getScene().getWindow();

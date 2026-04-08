@@ -418,6 +418,11 @@ public class APIHandler {
         data.put("interests", new JSONArray(user.getInterests()));
         data.put("clubPrivileges", new JSONObject(user.getClubPrivileges()));
         data.put("privilege", user.getPrivilege());
+        
+        data.put("wantToRecieveMails", user.wantToRecieveMails());
+        data.put("wantToRecieveClubAndEventAlerts", user.wantToRecieveClubAndEventAlerts());
+        data.put("wantToRecieveGeneralNotifications", user.wantToRecieveGeneralNotifications());
+        
         return buildResponse(200, data, null);
     }
 
@@ -548,6 +553,16 @@ public class APIHandler {
             if (profilePicture.isEmpty())
                 return buildResponse(400, null, "profilePicture cannot be empty.");
             user.setProfilePicture("static/" + profilePicture);
+        }
+
+        if (requestBody.has("wantToRecieveMails")) {
+            user.setWantToRecieveMails(requestBody.getBoolean("wantToRecieveMails"));
+        }
+        if (requestBody.has("wantToRecieveClubAndEventAlerts")) {
+            user.setWantToRecieveClubAndEventAlerts(requestBody.getBoolean("wantToRecieveClubAndEventAlerts"));
+        }
+        if (requestBody.has("wantToRecieveGeneralNotifications")) {
+            user.setWantToRecieveGeneralNotifications(requestBody.getBoolean("wantToRecieveGeneralNotifications"));
         }
 
         manager.updateUser(user);
