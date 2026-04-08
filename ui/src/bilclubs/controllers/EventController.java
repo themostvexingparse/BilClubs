@@ -7,6 +7,7 @@ import org.json.JSONObject;
 
 import com.objectdb.o.NME.i;
 
+import bilclubs.components.NotificationCard;
 import bilclubs.utils.RequestManager;
 import bilclubs.utils.Response;
 import javafx.event.ActionEvent;
@@ -45,7 +46,7 @@ public class EventController {
     private int currentEventId;
 
     @FXML
-    public void initialize() {
+    public void initialize() throws IOException{
         currentEvent = Controller.currentEventObject;
         currentEventId = currentEvent.getInt("eventId");
 
@@ -78,7 +79,7 @@ public class EventController {
         checkRegistrationState();
     }
 
-    private void checkRegistrationState() {
+    private void checkRegistrationState() throws IOException{
         JSONObject req = new JSONObject();
         req.put("action", "getUpcomingEvents");
         req.put("userId", Controller.userId);
@@ -126,6 +127,7 @@ public class EventController {
         if (!response.isSuccess())
             return;
 
+
         JSONArray events = response.getPayload().optJSONArray("events");
         if (events == null)
             return;
@@ -156,8 +158,7 @@ public class EventController {
         }
     }
 
-    /** Handles the Register button click. Sends action:"register" to /api/event. */
-    public void registerEvent(ActionEvent e) {
+    public void registerEvent(ActionEvent e) throws IOException{
         JSONObject req = new JSONObject();
         req.put("action", "register");
         req.put("eventId", currentEventId);
@@ -168,12 +169,14 @@ public class EventController {
         System.out.println("registerEvent: " + response);
 
         if (response.isSuccess()) {
+            NotificationCard eventCard = new NotificationCard(NotificationCard.joinEventMessage, "Check your webmail for further details.");
+            AlertsController.allNotifs.add(eventCard);
             setRegisteredState(true);
         }
     }
 
     /** Handles the Leave button click. Sends action:"leave" to /api/event. */
-    public void leaveEvent(ActionEvent e) {
+    public void leaveEvent(ActionEvent e) throws IOException{
         JSONObject req = new JSONObject();
         req.put("action", "leave");
         req.put("eventId", currentEventId);
@@ -184,6 +187,8 @@ public class EventController {
         System.out.println("leaveEvent: " + response);
 
         if (response.isSuccess()) {
+            NotificationCard leaveCard = new NotificationCard(NotificationCard.leaveEventMessage, "Check your webmail for further details.");
+            AlertsController.allNotifs.add(leaveCard);
             setRegisteredState(false);
         }
     }

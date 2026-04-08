@@ -66,6 +66,5 @@
             <Image url="@../assets/bilclubs%20logo%201.png" />
          </image>
       </ImageView>
-      <Button layoutX="45.0" layoutY="51.0" mnemonicParsing="false" onAction="#goHome" text="HOME" />
    </children>
 </Pane>

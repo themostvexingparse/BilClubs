@@ -13,6 +13,8 @@ public class NotificationCard extends Pane {
     //default messages that'll be displayed
     public static String joinMessage = "You joined a club!";
     public static String leaveMessage = "You left a club.";
+    public static String joinEventMessage = "You joined an event!";
+    public static String leaveEventMessage = "You left an event.";
     public static String banMessage = "You have been banned.";
 
     @FXML private Label mainMessageLabel;
