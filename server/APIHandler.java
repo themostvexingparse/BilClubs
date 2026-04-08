@@ -135,6 +135,7 @@ public class APIHandler {
             case "setInterests":
             case "generateEmbeddings":
             case "listClubs":
+            case "listUsers":
             case "banUser":
             case "banEvent":
             case "banClub":
@@ -185,6 +186,8 @@ public class APIHandler {
                 return generateEmbeddings(user, requestBody);
             case "listClubs":
                 return listClubs(user, requestBody);
+            case "listUsers":
+                return listUsers(user, requestBody);
             case "banUser":
                 return banUser(user, requestBody);
             case "banEvent":
@@ -566,6 +569,29 @@ public class APIHandler {
         EmbeddingsTask embeddingsTask = new EmbeddingsTask(user);
         concurrentExecutor.submit(embeddingsTask);
         return buildResponse(200, null, null);
+    }
+
+    private static JSONObject listUsers(User user, JSONObject requestBody) {
+        if (!user.hasGeneralPrivilege(Privileges.ADMIN)) {
+            return buildResponse(401, null, "Not authorized to list all users.");
+        }
+        JSONArray userArray = new JSONArray();
+        List<User> users = manager.queryUsers(new Filter());
+        for (User u : users) {
+            if (u.getPrivilege() == Privileges.BANNED_USER)
+                continue; // don't list banned
+            JSONObject userJson = new JSONObject();
+            userJson.put("id", u.getId());
+            userJson.put("name", u.getFullName());
+            userJson.put("email", u.getEmail());
+            userJson.put("major", u.getMajor());
+            userJson.put("profilePicture", u.getProfilePicture());
+            userJson.put("privilege", u.getPrivilege());
+            userArray.put(userJson);
+        }
+        JSONObject data = new JSONObject();
+        data.put("users", userArray);
+        return buildResponse(200, data, null);
     }
 
     private static JSONObject listClubs(User user, JSONObject requestBody) {

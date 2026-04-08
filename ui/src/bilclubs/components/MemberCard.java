@@ -21,6 +21,8 @@ public class MemberCard extends Pane {
     @FXML
     Label namelbl;
     @FXML
+    Label majorlbl;
+    @FXML
     ImageView pfp;
     @FXML
     Button banBtn;
@@ -39,6 +41,11 @@ public class MemberCard extends Pane {
         String name = memberObject.getString("name");
         namelbl.setText(name);
 
+        String major = memberObject.optString("major", "Unspecified Major");
+        if (majorlbl != null) {
+            majorlbl.setText(major);
+        }
+
         String profilePicture = memberObject.optString("profilePicture", "");
         Image profileImage = new Image(RequestManager.defaultAddress + profilePicture, true);
         pfp.setImage(profileImage);
@@ -52,7 +59,7 @@ public class MemberCard extends Pane {
                     request.put("userId", Controller.userId);
                     request.put("sessionToken", Controller.sessionToken);
                     request.put("targetUserId", memberObject.getInt("id"));
-                    
+
                     Response res = RequestManager.sendPostRequest("api/user", request);
                     if (res.getCode() == 200) {
                         Platform.runLater(() -> {
@@ -69,7 +76,6 @@ public class MemberCard extends Pane {
                 }
             }).start();
         });
-
 
     }
 }

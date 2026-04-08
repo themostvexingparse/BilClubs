@@ -36,7 +36,7 @@ public class BanClubCard extends Pane{
         String name = eventObject.getString("clubName");
         clublbl.setText(name);
 
-        String profilePicture = eventObject.optString("iconFileName", "");
+        String profilePicture = eventObject.optString("iconFilename", "");
         Image profileImage = new Image(RequestManager.defaultAddress + profilePicture, true);
         pfp.setImage(profileImage);
         
