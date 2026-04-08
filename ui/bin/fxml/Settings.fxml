@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
@@ -42,7 +43,10 @@
                         </Label>
                         <TextField fx:id="firstNameField" prefHeight="30.0" prefWidth="250.0" style="-fx-background-color: white; -fx-border-color: #dcdde1; -fx-border-radius: 5; -fx-background-radius: 5; -fx-padding: 5;" />
                         <Pane HBox.hgrow="ALWAYS" />
-                        <Button mnemonicParsing="false" onAction="#saveFirstName" prefHeight="30.0" prefWidth="80.0" style="-fx-background-color: #385BAE; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 5; -fx-cursor: hand;" text="Save" />
+                        <Button mnemonicParsing="false" onAction="#saveFirstName" prefHeight="30.0" prefWidth="80.0" style="-fx-background-color: #385BAE; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 5; -fx-cursor: hand;" text="Save">
+                           <HBox.margin>
+                              <Insets bottom="2.0" left="3.0" right="-15.0" top="2.0" />
+                           </HBox.margin></Button>
                      </children>
                      <effect>
                         <DropShadow>
@@ -58,7 +62,10 @@
                         </Label>
                         <TextField fx:id="lastNameField" prefHeight="30.0" prefWidth="250.0" style="-fx-background-color: white; -fx-border-color: #dcdde1; -fx-border-radius: 5; -fx-background-radius: 5; -fx-padding: 5;" />
                         <Pane HBox.hgrow="ALWAYS" />
-                        <Button mnemonicParsing="false" onAction="#saveLastName" prefHeight="30.0" prefWidth="80.0" style="-fx-background-color: #385BAE; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 5; -fx-cursor: hand;" text="Save" />
+                        <Button mnemonicParsing="false" onAction="#saveLastName" prefHeight="30.0" prefWidth="80.0" style="-fx-background-color: #385BAE; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 5; -fx-cursor: hand;" text="Save">
+                           <HBox.margin>
+                              <Insets bottom="2.0" left="3.0" right="-15.0" top="2.0" />
+                           </HBox.margin></Button>
                      </children>
                      <effect>
                         <DropShadow>
@@ -74,7 +81,10 @@
                         </Label>
                         <TextField fx:id="majorField" prefHeight="30.0" prefWidth="250.0" style="-fx-background-color: white; -fx-border-color: #dcdde1; -fx-border-radius: 5; -fx-background-radius: 5; -fx-padding: 5;" />
                         <Pane HBox.hgrow="ALWAYS" />
-                        <Button mnemonicParsing="false" onAction="#saveMajor" prefHeight="30.0" prefWidth="80.0" style="-fx-background-color: #385BAE; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 5; -fx-cursor: hand;" text="Save" />
+                        <Button mnemonicParsing="false" onAction="#saveMajor" prefHeight="30.0" prefWidth="80.0" style="-fx-background-color: #385BAE; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 5; -fx-cursor: hand;" text="Save">
+                           <HBox.margin>
+                              <Insets bottom="2.0" left="3.0" right="-15.0" top="2.0" />
+                           </HBox.margin></Button>
                      </children>
                      <effect>
                         <DropShadow>
@@ -83,7 +93,7 @@
                      </effect>
                   </HBox>
                   <Label />
-                  <Label fx:id="saveStatusLabel" visible="false" managed="false" alignment="CENTER" prefWidth="920.0" text="Saved!" style="-fx-text-fill: #2ecc71; -fx-font-weight: bold; -fx-font-size: 16px;" />
+                  <Label fx:id="saveStatusLabel" alignment="CENTER" managed="false" prefWidth="920.0" style="-fx-text-fill: #2ecc71; -fx-font-weight: bold; -fx-font-size: 16px;" text="Saved!" visible="false" />
                   <Button fx:id="interestsBtn" mnemonicParsing="false" onAction="#changeInterests" prefHeight="45.0" prefWidth="920.0" style="-fx-background-radius: 10; -fx-background-color: #385BAE; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14px; -fx-cursor: hand;" styleClass="button-settings" text="Change Your Extracurricular Interests">
                      <effect>
                         <DropShadow>
@@ -125,58 +135,46 @@
                            <font><Font name="System Bold" size="14.0" /></font>
                         </Label>
                         <Pane HBox.hgrow="ALWAYS" />
-                        <Pane prefHeight="29.0" prefWidth="62.0" style="-fx-background-color: -bg-color; -fx-background-radius: 20;">
+                        <Pane prefHeight="11.0" prefWidth="62.0" style="-fx-background-color: -bg-color; -fx-background-radius: 20;">
                            <children>
-                              <Button fx:id="clubEventToggle" layoutX="4.0" layoutY="2.0" mnemonicParsing="false" onAction="#toggleClubEvent" prefHeight="25.0" prefWidth="25.0" style="-fx-background-radius: 20; -fx-background-color: -dark-blue; -fx-cursor: hand;" />
+                              <Button fx:id="clubEventToggle" layoutX="6.0" layoutY="2.0" maxHeight="25.0" maxWidth="25.0" minHeight="25.0" minWidth="25.0" mnemonicParsing="false" onAction="#toggleClubEvent" prefHeight="25.0" prefWidth="25.0" style="-fx-background-radius: 20; -fx-background-color: -dark-blue; -fx-cursor: hand; -fx-padding: 0;" />
                            </children>
                            <effect>
                               <DropShadow><color><Color opacity="0.12" /></color></DropShadow>
                            </effect>
+                           <HBox.margin>
+                              <Insets bottom="8.0" top="8.0" />
+                           </HBox.margin>
                         </Pane>
                      </children>
                      <effect>
                         <DropShadow><color><Color opacity="0.15" /></color></DropShadow>
                      </effect>
                   </HBox>
-                  <HBox alignment="CENTER_LEFT" prefHeight="45.0" prefWidth="816.0" style="-fx-background-radius: 10; -fx-padding: 0 20;" styleClass="button-settings">
-                     <children>
-                        <Label text="Reply Alerts:">
-                           <font><Font name="System Bold" size="14.0" /></font>
-                        </Label>
-                        <Pane HBox.hgrow="ALWAYS" />
-                        <Pane prefHeight="29.0" prefWidth="62.0" style="-fx-background-color: -bg-color; -fx-background-radius: 20;">
-                           <children>
-                              <Button fx:id="replyAlertsToggle" layoutX="4.0" layoutY="2.0" mnemonicParsing="false" onAction="#toggleReplyAlerts" prefHeight="25.0" prefWidth="25.0" style="-fx-background-radius: 20; -fx-background-color: -dark-blue; -fx-cursor: hand;" />
-                           </children>
-                           <effect>
-                              <DropShadow><color><Color opacity="0.12" /></color></DropShadow>
-                           </effect>
-                        </Pane>
-                     </children>
-                     <effect>
-                        <DropShadow><color><Color opacity="0.15" /></color></DropShadow>
-                     </effect>
-                  </HBox>
+
                   <HBox alignment="CENTER_LEFT" prefHeight="45.0" prefWidth="816.0" style="-fx-background-radius: 10; -fx-padding: 0 20;" styleClass="button-settings">
                      <children>
                         <Label text="Receive Alerts in Email:">
                            <font><Font name="System Bold" size="14.0" /></font>
                         </Label>
                         <Pane HBox.hgrow="ALWAYS" />
-                        <Pane prefHeight="29.0" prefWidth="62.0" style="-fx-background-color: -bg-color; -fx-background-radius: 20;">
+                        <Pane prefHeight="23.0" prefWidth="62.0" style="-fx-background-color: -bg-color; -fx-background-radius: 20;">
                            <children>
-                              <Button fx:id="emailAlertsToggle" layoutX="4.0" layoutY="2.0" mnemonicParsing="false" onAction="#toggleEmailAlerts" prefHeight="25.0" prefWidth="25.0" style="-fx-background-radius: 20; -fx-background-color: -dark-blue; -fx-cursor: hand;" />
+                              <Button fx:id="emailAlertsToggle" layoutX="6.0" layoutY="2.0" maxHeight="25.0" maxWidth="25.0" minHeight="25.0" minWidth="25.0" mnemonicParsing="false" onAction="#toggleEmailAlerts" prefHeight="25.0" prefWidth="25.0" style="-fx-background-radius: 20; -fx-background-color: -dark-blue; -fx-cursor: hand; -fx-padding: 0;" />
                            </children>
                            <effect>
                               <DropShadow><color><Color opacity="0.12" /></color></DropShadow>
                            </effect>
+                           <HBox.margin>
+                              <Insets bottom="8.0" top="8.0" />
+                           </HBox.margin>
                         </Pane>
                      </children>
                      <effect>
                         <DropShadow><color><Color opacity="0.15" /></color></DropShadow>
                      </effect>
                   </HBox>
-                  <Button disable="true" visible="false" managed="false" />
+                  <Button disable="true" managed="false" visible="false" />
                </children>
             </VBox>
             <Label />
@@ -197,7 +195,7 @@
                   </ImageView>
                   <Pane layoutX="740.0" layoutY="5.0" prefHeight="29.0" prefWidth="62.0" style="-fx-background-color: -bg-color; -fx-background-radius: 20;">
                      <children>
-                        <Button fx:id="darkModeToggle" layoutX="4.0" layoutY="2.0" mnemonicParsing="false" onAction="#toggle" prefHeight="3.0" prefWidth="30.0" style="-fx-background-radius: 20; -fx-background-color: -dark-blue;" />
+                        <Button fx:id="darkModeToggle" layoutX="4.0" layoutY="2.0" maxHeight="25.0" maxWidth="25.0" minHeight="25.0" minWidth="25.0" mnemonicParsing="false" onAction="#toggle" prefHeight="25.0" prefWidth="25.0" style="-fx-background-radius: 20; -fx-background-color: -dark-blue; -fx-padding: 0;" />
                      </children>
                      <effect>
                         <DropShadow>

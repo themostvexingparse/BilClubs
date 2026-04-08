@@ -47,7 +47,7 @@
             </AnchorPane>
         </content>
       </ScrollPane>
-      <ScrollPane fitToWidth="true" layoutX="548.0" layoutY="421.0" prefHeight="239.0" prefWidth="332.0" style="-fx-background-color: -bg-color; -fx-padding: 3 3 3 3;" stylesheets="@../styles/styles.css">
+      <ScrollPane fitToWidth="true" layoutX="548.0" layoutY="421.0" prefHeight="203.0" prefWidth="332.0" style="-fx-background-color: -bg-color; -fx-padding: 3 3 3 3;" stylesheets="@../styles/styles.css">
          <content>
             <AnchorPane minHeight="0.0" minWidth="0.0" style="-fx-background-color: -bg-color;" stylesheets="@../styles/styles.css">
                <children>

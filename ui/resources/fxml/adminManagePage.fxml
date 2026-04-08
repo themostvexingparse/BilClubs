@@ -23,17 +23,17 @@
             <VBox fx:id="eventVBox" prefHeight="27.0" prefWidth="87.0" style="-fx-padding: 8; -fx-spacing: 15;" />
          </content>
       </ScrollPane>
-      <Text layoutX="384.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Manage As Administrator" wrappingWidth="281.44921875">
+      <Text layoutX="384.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Manage As Administrator" wrappingWidth="281.44921875">
          <font>
             <Font name="Arial" size="24.0" />
          </font>
       </Text>
-      <Text layoutX="224.0" layoutY="88.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Clubs">
+      <Text layoutX="263.0" layoutY="100.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Clubs">
          <font>
             <Font name="Arial" size="24.0" />
          </font>
       </Text>
-      <Text layoutX="697.0" layoutY="87.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Members">
+      <Text layoutX="698.0" layoutY="99.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Members">
          <font>
             <Font name="Arial" size="24.0" />
          </font>
