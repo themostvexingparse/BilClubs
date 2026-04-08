@@ -44,36 +44,35 @@ public class EventCreateController {
     private JSONObject clubJSON;
 
     @FXML
-    public void createClubEvent(ActionEvent e)throws IOException{
+    public void createClubEvent(ActionEvent e) throws IOException {
         handleSubmit(e);
-        try {
-            uploadBanner(e);
-        } catch (Exception a) {
-            a.printStackTrace();
-        }
-        LocalDateTime start= convert(startDate, startTime);
-        System.out.print(start);
-        LocalDateTime end= convert(endDate, endTime);
-        System.out.print(end);
 
-        clubJSON=new JSONObject();
+        if (name == null || name.isEmpty() || description == null || description.isEmpty()) return;
+        if (bannerName == null) return; // banner not uploaded yet
+
+        LocalDateTime start = convert(startDate, startTime);
+        LocalDateTime end = convert(endDate, endTime);
+
+        clubJSON = new JSONObject();
         clubJSON.put("action", "create");
         clubJSON.put("userId", Controller.userId);
         clubJSON.put("clubId", Controller.currentClubId);
         clubJSON.put("sessionToken", Controller.sessionToken);
         clubJSON.put("name", name);
-        clubJSON.put("description",description);
-        clubJSON.put("location",place);
-        clubJSON.put("posterFilename",bannerName);
-        clubJSON.put("quota",quota);
+        clubJSON.put("description", description);
+        clubJSON.put("location", place);
+        clubJSON.put("posterFilename","static/" + bannerName);
+        clubJSON.put("quota", quota);
         clubJSON.put("startEpoch", start.toEpochSecond(java.time.ZoneOffset.UTC));
         clubJSON.put("endEpoch", end.toEpochSecond(java.time.ZoneOffset.UTC));
-        Response createEvent=RequestManager.sendPostRequest("api/event",clubJSON);
-        
+
+        Response createEvent = RequestManager.sendPostRequest("api/event", clubJSON);
+
         if (!createEvent.isSuccess()) {
             System.out.println(createEvent.toString());
-        } 
+        }
 
+        ((Stage) nameField.getScene().getWindow()).close(); // ← stays here since there's no success/fail label
     }
 
     public void handleSubmit(ActionEvent e) {
@@ -133,21 +132,28 @@ public class EventCreateController {
             descArea.requestFocus();
             return;
         }
-        ((Stage) nameField.getScene().getWindow()).close();
     
     }
 
-    public void uploadBanner(ActionEvent e) throws IOException{
-
+    @FXML
+    public void uploadBanner(ActionEvent e) {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Choose your Profile");
-        Stage stage = (Stage)((Stage) nameField.getScene().getWindow());
+        fileChooser.setTitle("Choose Event Banner");
+        Stage stage = (Stage) nameField.getScene().getWindow(); // ← fixed cast
         File selectedFile = fileChooser.showOpenDialog(stage);
-        String fileName=selectedFile.getName();
-        this.bannerName=fileName;
+        if (selectedFile == null) return; // ← null check
 
+        JSONObject auth = new JSONObject();
+        auth.put("action", "upload");
+        auth.put("userId", Controller.userId);
+        auth.put("sessionToken", Controller.sessionToken);
+
+        Response uploadResponse = RequestManager.uploadFile(auth, selectedFile);
+        this.bannerName = uploadResponse.getPayload().getJSONObject("fileMap").getString(selectedFile.getName());
+        System.out.println("Banner uploaded: " + bannerName);
         uploadBannerButton.setText("Re-upload");
     }
+
     public LocalDateTime convert(String date,String time){
         String dateTime=date+" "+time;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");

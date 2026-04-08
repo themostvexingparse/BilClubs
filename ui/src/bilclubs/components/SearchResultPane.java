@@ -75,7 +75,6 @@ public class SearchResultPane extends HBox {
                 if (imageUrl == null || imageUrl.isEmpty()) {
                     imageUrl = data.optString("iconFilename", ""); // fallback
                 }
-
                 String defaultPath = type.equals("Club") ? "/assets/default-club-icon.png"
                         : "/assets/default-event-poster.jpg";
                 Image defaultImg = new Image(getClass().getResourceAsStream(defaultPath));

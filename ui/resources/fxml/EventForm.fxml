@@ -71,7 +71,7 @@
             <Font name="Arial" size="14.0" />
          </font>
       </Label>
-      <Button fx:id="uploadBannerButton" layoutX="144.0" layoutY="538.0" mnemonicParsing="false" prefHeight="7.0" prefWidth="124.0" style="-fx-background-color: -manager-green;" text="Upload Banner">
+      <Button fx:id="uploadBannerButton" layoutX="144.0" layoutY="538.0" mnemonicParsing="false" onAction="#uploadBanner" prefHeight="7.0" prefWidth="124.0" style="-fx-background-color: -manager-green;" text="Upload Banner">
          <font>
             <Font name="Arial Bold" size="14.0" />
          </font>
