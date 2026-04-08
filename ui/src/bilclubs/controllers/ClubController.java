@@ -94,9 +94,6 @@ public class ClubController {
                     manageButton.setDisable(false);
                 }
 
-                // Load club icon (profile image) and banner (cover) from the server.
-                // The filenames already contain the "static/" prefix, so we just
-                // append them to the server base address.
                 String baseUrl = bilclubs.utils.RequestManager.defaultAddress;
                 String iconFilename = club.optString("iconFilename", "");
                 String coverFilename = club.optString("coverFilename", "");

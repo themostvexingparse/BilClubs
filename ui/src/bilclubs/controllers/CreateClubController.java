@@ -21,7 +21,7 @@ import javafx.scene.control.Label;
 
 public class CreateClubController {
     private String name;
-    private String desc;
+    private String desc;    
     private String iconName;
     private String bannerName;
     @FXML TextField nameField;
@@ -35,13 +35,9 @@ public class CreateClubController {
 
     @FXML
     public void createClub(ActionEvent e){
+
         handleSubmit(e);
-        try {
-            uploadClubIcon(e);
-            uploadBanner(e);
-        } catch (Exception a) {
-            a.printStackTrace();
-        }
+
         clubJSON=new JSONObject();
         clubJSON.put("action", "create");
         clubJSON.put("userId", Controller.userId);
@@ -49,8 +45,9 @@ public class CreateClubController {
         clubJSON.put("sessionToken", Controller.sessionToken);
         clubJSON.put("clubName", name);
         clubJSON.put("clubDescription",desc);
-        clubJSON.put("iconFilename",iconName);
-        clubJSON.put("coverFilename",bannerName);
+        clubJSON.put("iconFilename", "static/" + iconName);
+        clubJSON.put("coverFilename", "static/" + bannerName);
+
         Response createClub=RequestManager.sendPostRequest("api/club",clubJSON);
         System.out.println(createClub.getPayload().toString());
         System.out.println(createClub.getErrorMessage());
@@ -63,6 +60,9 @@ public class CreateClubController {
              errorLabel.setText("Club created");
             errorLabel.setVisible(true);
         }
+
+        ((Stage) nameField.getScene().getWindow()).close();
+
     }
 
     public void handleSubmit(ActionEvent e) {
@@ -81,31 +81,48 @@ public class CreateClubController {
             return;
         }
     
-        ((Stage) nameField.getScene().getWindow()).close();
     }
 
-    public void uploadClubIcon(ActionEvent e) throws IOException{
-
+    @FXML
+    public void uploadClubIcon(ActionEvent e) {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Choose your Profile");
-        Stage stage = (Stage)((Stage) nameField.getScene().getWindow());
+        fileChooser.setTitle("Choose Club Icon");
+        Stage stage = (Stage) nameField.getScene().getWindow();
         File selectedFile = fileChooser.showOpenDialog(stage);
-        String fileName=selectedFile.getName();
-        this.iconName=fileName;
+        if (selectedFile == null) return;
 
+        JSONObject auth = new JSONObject();
+        auth.put("action", "upload");
+        auth.put("userId", Controller.userId);
+        auth.put("sessionToken", Controller.sessionToken);
+
+        Response uploadResponse = RequestManager.uploadFile(auth, selectedFile);
+        this.iconName = uploadResponse.getPayload().getJSONObject("fileMap").getString(selectedFile.getName());
+        System.out.println("Icon uploaded: " + iconName);
+
+        System.out.println("FULL RESPONSE: " + uploadResponse.getPayload().toString());
+        System.out.println("IS SUCCESS: " + uploadResponse.isSuccess());
+        System.out.println("ERROR: " + uploadResponse.getErrorMessage());
         uploadIconButton.setText("Re-upload");
     }
 
-    public void uploadBanner(ActionEvent e) throws IOException{
+    @FXML
+    public void uploadBanner(ActionEvent e) {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Choose your Profile");
-        Stage stage = (Stage)((Stage) nameField.getScene().getWindow());
+        fileChooser.setTitle("Choose Club Banner");
+        Stage stage = (Stage) nameField.getScene().getWindow();
         File selectedFile = fileChooser.showOpenDialog(stage);
-        String fileName=selectedFile.getName();
-        this.bannerName=fileName;
+        if (selectedFile == null) return;
 
+        JSONObject auth = new JSONObject();
+        auth.put("action", "upload");
+        auth.put("userId", Controller.userId);
+        auth.put("sessionToken", Controller.sessionToken);
+
+        Response uploadResponse = RequestManager.uploadFile(auth, selectedFile);
+        this.bannerName = uploadResponse.getPayload().getJSONObject("fileMap").getString(selectedFile.getName());
+        System.out.println("Banner uploaded: " + bannerName);
         uploadBannerButton.setText("Re-upload");
     }
-
 
 }

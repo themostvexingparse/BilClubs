@@ -5,6 +5,8 @@ import java.io.IOException;
 
 import org.json.JSONObject;
 
+import com.objectdb.o.NME.i;
+
 import bilclubs.utils.RequestManager;
 import bilclubs.utils.Response;
 import javafx.event.ActionEvent;
@@ -65,11 +67,12 @@ public class EventController {
             int quota = currentEvent.getInt("quota");
             detailslbl.setText(registreeCount + " / " + quota + " registered");
         }
-
+        
+        String baseURL = bilclubs.utils.RequestManager.defaultAddress;
         String posterImage = currentEvent.optString("posterImage", "");
         if (!posterImage.isEmpty() && !posterImage.contains("default")) {
-            Image eventImg = new Image(RequestManager.defaultAddress + posterImage, true);
-            eventBanner.setImage(eventImg);
+            Image icon = new Image(baseURL + posterImage, true); // true = background loading
+            eventBanner.setImage(icon);
         }
 
         checkRegistrationState();
