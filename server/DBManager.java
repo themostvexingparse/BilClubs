@@ -525,7 +525,7 @@ public class DBManager {
     }
 
     public boolean createClub(User admin, User firstManager, String name, String description) {
-        if (firstManager.isBanned() || admin.hasGeneralPrivilege(Privileges.ADMIN))
+        if (firstManager.isBanned() || !admin.hasGeneralPrivilege(Privileges.ADMIN))
             return false;
         Club club = new Club(name, description);
         firstManager.joinClub(club);

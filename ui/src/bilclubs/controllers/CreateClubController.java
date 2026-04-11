@@ -10,6 +10,7 @@ import bilclubs.utils.RequestManager;
 import bilclubs.utils.Response;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -53,6 +54,12 @@ public class CreateClubController {
         System.out.println(createClub.getErrorMessage());
         System.out.println(name);
         if(!createClub.isSuccess()){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Club could not be created");
+            alert.setHeaderText(null);
+            alert.setContentText(createClub.getErrorMessage());
+            alert.showAndWait();
+
             errorLabel.setText("Please Enter Right Information!");
             errorLabel.setVisible(true);
         }
