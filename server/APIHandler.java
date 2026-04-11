@@ -238,12 +238,20 @@ public class APIHandler {
             return buildResponse(400, null, "Email must belong to Bilkent University.");
         }
 
-        if (firstName.length() < 3 || lastName.length() < 3) {
-            return buildResponse(400, null, "First name and last name must be at least 3 characters long.");
+        if (firstName.length() < 3) {
+            return buildResponse(400, null, "First name must be at least 3 characters long.");
         }
 
-        if (!firstName.matches("^[a-zA-Z]+$") || !lastName.matches("^[a-zA-Z]+$")) {
-            return buildResponse(400, null, "First name and last name must contain only letters.");
+        if (lastName.length() < 3) {
+            return buildResponse(400, null, "Last name must be at least 3 characters long.");
+        }
+
+        if (!firstName.matches("^[a-zA-ZçğıöşüÇĞİÖŞÜ]+$")) {
+            return buildResponse(400, null, "First name must contain only letters.");
+        }
+
+        if (!lastName.matches("^[a-zA-ZçğıöşüÇĞİÖŞÜ]+$")) {
+            return buildResponse(400, null, "Last name must contain only letters.");
         }
 
         if (email == null || password == null || firstName == null || lastName == null) {
@@ -548,7 +556,7 @@ public class APIHandler {
             String firstName = requestBody.optString("firstName", "").trim();
             if (firstName.length() < 3)
                 return buildResponse(400, null, "firstName must be at least 3 characters long.");
-            if (!firstName.matches("^[a-zA-Z]+$"))
+            if (!firstName.matches("^[a-zA-ZçğıöşüÇĞİÖŞÜ]+$"))
                 return buildResponse(400, null, "firstName must contain only letters.");
             user.setFirstName(firstName);
         }
@@ -556,7 +564,7 @@ public class APIHandler {
             String lastName = requestBody.optString("lastName", "").trim();
             if (lastName.length() < 3)
                 return buildResponse(400, null, "lastName must be at least 3 characters long.");
-            if (!lastName.matches("^[a-zA-Z]+$"))
+            if (!lastName.matches("^[a-zA-ZçğıöşüÇĞİÖŞÜ]+$"))
                 return buildResponse(400, null, "lastName must contain only letters.");
             user.setLastName(lastName);
         }

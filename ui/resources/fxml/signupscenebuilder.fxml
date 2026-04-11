@@ -83,8 +83,10 @@
             <Image url="@../assets/bilclubs%20logo%201.png" />
          </image>
       </ImageView>
-      <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#goBack" prefHeight="27.0" prefWidth="25.0" style="-fx-background-color: #385BAE;" text="&lt;" textFill="WHITE" />
-      <Button layoutX="50.0" layoutY="14.0" mnemonicParsing="false" onAction="#goFront" prefHeight="27.0" prefWidth="25.0" style="-fx-background-color: #385BAE;" text="&gt;" textFill="WHITE" />
+      <Button layoutX="14.0" layoutY="14.0" minHeight="32.0" minWidth="32.0" mnemonicParsing="false" onAction="#goBack" prefHeight="36.0" prefWidth="36.0" style="-fx-background-color: #385BAE;" text="◀" textFill="WHITE">
+         <font>
+            <Font size="18.0" />
+         </font></Button>
       <Label layoutX="605.0" layoutY="186.0" text="Sign Up">
          <font>
             <Font name="Arial Bold" size="20.0" />
