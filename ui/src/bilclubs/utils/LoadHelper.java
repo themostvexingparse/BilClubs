@@ -24,7 +24,9 @@ public class LoadHelper {
                 Scene page = new Scene(root);
 
                 if(Controller.isDarkMode){
-                    page.getRoot().getStyleClass().add("darkmode");
+                    if(!page.getRoot().getStyleClass().contains("darkmode")) {
+                        page.getRoot().getStyleClass().add("darkmode");
+                    }
                 }
 
                 stage.setScene(page);
@@ -47,7 +49,9 @@ public class LoadHelper {
             pane.getChildren().setAll(root);
 
             if (Controller.isDarkMode) {
-                pane.getScene().getRoot().getStyleClass().add("darkmode");
+                if(!pane.getScene().getRoot().getStyleClass().contains("darkmode")) {
+                    pane.getScene().getRoot().getStyleClass().add("darkmode");
+                }
             }
 
             FadeTransition fade = new FadeTransition(Duration.millis(300), root);

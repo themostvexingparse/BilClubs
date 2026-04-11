@@ -53,15 +53,14 @@ public class SettingsController {
     private org.json.JSONArray cachedInterests = new org.json.JSONArray();
     private String cachedBio = "";
 
-
     private boolean clubEventState = true;
 
     private boolean emailAlertsState = true;
 
     @FXML
     public void initialize() throws IOException {
-        accountBox.setVisible(true);
-        accountBox.setManaged(true);
+        accountBox.setVisible(false);
+        accountBox.setManaged(false);
         alertBox.setVisible(false);
         alertBox.setManaged(false);
 
@@ -88,7 +87,8 @@ public class SettingsController {
                         cachedBio = data.optString("biography", "");
 
                         cachedInterests = data.optJSONArray("interests");
-                        if (cachedInterests == null) cachedInterests = new org.json.JSONArray();
+                        if (cachedInterests == null)
+                            cachedInterests = new org.json.JSONArray();
 
                         clubEventState = data.optBoolean("wantToRecieveClubAndEventAlerts", true);
 
