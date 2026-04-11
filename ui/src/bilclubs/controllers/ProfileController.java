@@ -32,7 +32,7 @@ public class ProfileController {
     @FXML private Label namelbl;
     @FXML private Label deptlbl;
     @FXML private Label privlbl;
-    @FXML private Button adminButton;
+    @FXML private Button manageButton;
 
     @FXML
     public void initialize() throws IOException{
@@ -58,8 +58,8 @@ public class ProfileController {
         // }
 
         if((privilege & 15) == 15){
-            adminButton.setDisable(false);
-            adminButton.setVisible(true);
+            manageButton.setDisable(false);
+            manageButton.setVisible(true);
         }
 
         image.errorProperty().addListener((obs, oldVal, isError) -> {
