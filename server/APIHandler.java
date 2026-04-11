@@ -226,6 +226,35 @@ public class APIHandler {
         String major = requestBody.optString("major", null);
 
         if (email == null || password == null || firstName == null || lastName == null) {
+            return buildResponse(400, null, "Missing required fields: email, password, firstName or lastName");
+        }
+
+        firstName = firstName.trim();
+        lastName = lastName.trim();
+        email = email.trim();
+        major = major.trim();
+
+        if (!(email.endsWith("bilkent.edu.tr") || email.endsWith(".bilkent.edu.tr"))) {
+            return buildResponse(400, null, "Email must belong to Bilkent University.");
+        }
+
+        if (firstName.length() < 3) {
+            return buildResponse(400, null, "First name must be at least 3 characters long.");
+        }
+
+        if (lastName.length() < 3) {
+            return buildResponse(400, null, "Last name must be at least 3 characters long.");
+        }
+
+        if (!firstName.matches("^[a-zA-ZçğıöşüÇĞİÖŞÜ]+$")) {
+            return buildResponse(400, null, "First name must contain only letters.");
+        }
+
+        if (!lastName.matches("^[a-zA-ZçğıöşüÇĞİÖŞÜ]+$")) {
+            return buildResponse(400, null, "Last name must contain only letters.");
+        }
+
+        if (email == null || password == null || firstName == null || lastName == null) {
             return buildResponse(400, null, "Missing required fields: email, password, firstName, or lastName");
         }
 
@@ -282,6 +311,8 @@ public class APIHandler {
         if (email == null || password == null) {
             return buildResponse(400, null, "Missing required fields: email or password");
         }
+
+        email = email.trim();
 
         Filter emailFilter = new Filter();
         emailFilter.addFilter("email", email);
@@ -418,11 +449,11 @@ public class APIHandler {
         data.put("interests", new JSONArray(user.getInterests()));
         data.put("clubPrivileges", new JSONObject(user.getClubPrivileges()));
         data.put("privilege", user.getPrivilege());
-        
+
         data.put("wantToRecieveMails", user.wantToRecieveMails());
         data.put("wantToRecieveClubAndEventAlerts", user.wantToRecieveClubAndEventAlerts());
         data.put("wantToRecieveGeneralNotifications", user.wantToRecieveGeneralNotifications());
-        
+
         return buildResponse(200, data, null);
     }
 
@@ -523,14 +554,18 @@ public class APIHandler {
     private static JSONObject updateProfile(User user, JSONObject requestBody) {
         if (requestBody.has("firstName")) {
             String firstName = requestBody.optString("firstName", "").trim();
-            if (firstName.isEmpty())
-                return buildResponse(400, null, "firstName cannot be empty.");
+            if (firstName.length() < 3)
+                return buildResponse(400, null, "firstName must be at least 3 characters long.");
+            if (!firstName.matches("^[a-zA-ZçğıöşüÇĞİÖŞÜ]+$"))
+                return buildResponse(400, null, "firstName must contain only letters.");
             user.setFirstName(firstName);
         }
         if (requestBody.has("lastName")) {
             String lastName = requestBody.optString("lastName", "").trim();
-            if (lastName.isEmpty())
-                return buildResponse(400, null, "lastName cannot be empty.");
+            if (lastName.length() < 3)
+                return buildResponse(400, null, "lastName must be at least 3 characters long.");
+            if (!lastName.matches("^[a-zA-ZçğıöşüÇĞİÖŞÜ]+$"))
+                return buildResponse(400, null, "lastName must contain only letters.");
             user.setLastName(lastName);
         }
         if (requestBody.has("major")) {
@@ -638,6 +673,17 @@ public class APIHandler {
         String clubDescription = requestBody.optString("clubDescription", null);
         if (clubName == null || clubDescription == null) {
             return buildResponse(400, null, "Malformed JSON request body.");
+        }
+
+        clubName = clubName.trim();
+        clubDescription = clubDescription.trim();
+
+        if (clubName.length() < 3) {
+            return buildResponse(400, null, "Club name must be at least 3 characters long.");
+        }
+
+        if (clubDescription.length() < 20) {
+            return buildResponse(400, null, "Club description must be at least 20 characters long.");
         }
 
         Club newClub = new Club(clubName, clubDescription);
@@ -923,6 +969,26 @@ public class APIHandler {
         Long startEpoch = requestBody.has("startEpoch") ? requestBody.getLong("startEpoch") : null;
         Long endEpoch = requestBody.has("endEpoch") ? requestBody.getLong("endEpoch") : null;
 
+        eventName = eventName.trim();
+        description = description.trim();
+        location = location.trim();
+
+        if (eventName.length() < 3) {
+            return buildResponse(400, null, "Event name must be at least 3 characters long.");
+        }
+
+        if (description.length() < 20) {
+            return buildResponse(400, null, "Event description must be at least 20 characters long.");
+        }
+
+        if (location.length() < 3) {
+            return buildResponse(400, null, "Event location must be at least 3 characters long.");
+        }
+
+        if (GE250 != null && GE250 < 0) {
+            return buildResponse(400, null, "GE250 must be a non-negative integer.");
+        }
+
         if (eventName == null || description == null || location == null || startEpoch == null || endEpoch == null) {
             return buildResponse(400, null,
                     "Missing required fields: name, description, location, startEpoch, endEpoch.");
@@ -1020,20 +1086,20 @@ public class APIHandler {
         // partial updates, only modify fields that are present in the request
         if (requestBody.has("name")) {
             String name = requestBody.optString("name", "").trim();
-            if (name.isEmpty())
-                return buildResponse(400, null, "name cannot be empty.");
+            if (name.length() < 3)
+                return buildResponse(400, null, "name must be at least 3 characters long.");
             event.setName(name);
         }
         if (requestBody.has("description")) {
             String description = requestBody.optString("description", "").trim();
-            if (description.isEmpty())
-                return buildResponse(400, null, "description cannot be empty.");
+            if (description.length() < 20)
+                return buildResponse(400, null, "description must be at least 20 characters long.");
             event.setDescription(description);
         }
         if (requestBody.has("location")) {
             String location = requestBody.optString("location", "").trim();
-            if (location.isEmpty())
-                return buildResponse(400, null, "location cannot be empty.");
+            if (location.length() < 3)
+                return buildResponse(400, null, "location must be at least 3 characters long.");
             event.setLocation(location);
         }
         if (requestBody.has("startEpoch") && requestBody.has("endEpoch")) {
@@ -1055,6 +1121,8 @@ public class APIHandler {
         }
         if (requestBody.has("GE250")) {
             int GE250 = requestBody.getInt("GE250");
+            if (GE250 < 0)
+                return buildResponse(400, null, "GE250 must be a non-negative integer.");
             event.setGE250(GE250);
         }
         if (requestBody.has("posterFilename")) {

@@ -68,9 +68,9 @@ public class Controller {
 
     public void goBack(ActionEvent e) throws IOException {
         stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
-        if (backscenes.size() - 1 > 0) {
-            stage.setScene(backscenes.get(backscenes.size() - 2));
-            frontscenes.add(backscenes.get(backscenes.size() - 1));
+        if (backscenes.size() > 0) {
+            frontscenes.add(stage.getScene());
+            stage.setScene(backscenes.get(backscenes.size() - 1));
             backscenes.remove(backscenes.size() - 1);
         }
     }
@@ -87,6 +87,7 @@ public class Controller {
         FXMLLoader loginRoot = new FXMLLoader(getClass().getResource("/fxml/loginscenebuilder.fxml"));
 
         stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+        backscenes.add(stage.getScene());
         LoadHelper.safelyLoad(loginRoot, stage);
     }
 
@@ -95,6 +96,7 @@ public class Controller {
 
         // stage i getiriyoruz
         stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+        backscenes.add(stage.getScene());
         LoadHelper.safelyLoad(signUpRoot, stage);
     }
 
