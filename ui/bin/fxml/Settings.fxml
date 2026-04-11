@@ -102,6 +102,18 @@
                            </color>
                         </DropShadow>
                      </effect>
+                     <VBox.margin>
+                        <Insets bottom="15.0" />
+                     </VBox.margin>
+                  </Button>
+                  <Button fx:id="bioBtn" mnemonicParsing="false" onAction="#changeBiography" prefHeight="45.0" prefWidth="920.0" style="-fx-background-radius: 10; -fx-background-color: #385BAE; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14px; -fx-cursor: hand;" styleClass="button-settings" text="Update Your Biography">
+                     <effect>
+                        <DropShadow>
+                           <color>
+                              <Color opacity="0.30" />
+                           </color>
+                        </DropShadow>
+                     </effect>
                   </Button>
                </children>
             </VBox>

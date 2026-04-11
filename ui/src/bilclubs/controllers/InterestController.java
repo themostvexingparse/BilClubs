@@ -26,6 +26,27 @@ public class InterestController {
         this.popupModeStage = s;
     }
 
+    public void setPreloadedInterests(org.json.JSONArray arr) {
+        if (arr == null) return;
+        List<String> userInterests = new ArrayList<>();
+        for (int i = 0; i < arr.length(); i++) userInterests.add(arr.optString(i));
+
+        for (Node node : interestAnchor.getChildren()) {
+            if (node instanceof CheckBox) {
+                CheckBox check = (CheckBox) node;
+                if (userInterests.contains(check.getText())) {
+                    check.setSelected(true);
+                }
+            }
+        }
+    }
+
+    public void setPreloadedBio(String bio) {
+        if (bioArea != null) {
+            bioArea.setText(bio);
+        }
+    }
+
     @FXML
     private CheckBox archeology;
     @FXML
@@ -162,16 +183,24 @@ public class InterestController {
 
     public void goToHomePage(ActionEvent e) throws IOException {
         try {
-            org.json.JSONObject req = new org.json.JSONObject();
-            req.put("action", "setInterests");
-            req.put("userId", Controller.userId);
-            req.put("sessionToken", Controller.sessionToken);
             String bio = bioArea.getText();
-            if (bio != null && !bio.trim().isEmpty()) {
-                interestList.add("Biography: " + bio.trim());
+            if (bio != null) {
+                org.json.JSONObject bioReq = new org.json.JSONObject();
+                bioReq.put("action", "updateProfile");
+                bioReq.put("userId", Controller.userId);
+                bioReq.put("sessionToken", Controller.sessionToken);
+                bioReq.put("biography", bio.trim());
+                bilclubs.utils.RequestManager.sendPostRequest("api/user", bioReq);
             }
-            req.put("interests", new org.json.JSONArray(interestList));
-            bilclubs.utils.RequestManager.sendPostRequest("api/user", req);
+            
+            if (popupModeStage == null) {
+                org.json.JSONObject req = new org.json.JSONObject();
+                req.put("action", "setInterests");
+                req.put("userId", Controller.userId);
+                req.put("sessionToken", Controller.sessionToken);
+                req.put("interests", new org.json.JSONArray(interestList));
+                bilclubs.utils.RequestManager.sendPostRequest("api/user", req);
+            }
 
             org.json.JSONObject embedReq = new org.json.JSONObject();
             embedReq.put("action", "generateEmbeddings");
@@ -179,29 +208,14 @@ public class InterestController {
             embedReq.put("sessionToken", Controller.sessionToken);
             bilclubs.utils.RequestManager.sendPostRequest("api/user", embedReq);
 
-            interestList.clear();
+            if (popupModeStage == null) {
+                interestList.clear();
+            }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
 
         if (popupModeStage != null) {
-            try {
-                org.json.JSONObject req = new org.json.JSONObject();
-                req.put("action", "setInterests");
-                req.put("userId", Controller.userId);
-                req.put("sessionToken", Controller.sessionToken);
-                req.put("interests", new org.json.JSONArray(interestList));
-                bilclubs.utils.RequestManager.sendPostRequest("api/user", req);
-
-                org.json.JSONObject embedReq = new org.json.JSONObject();
-                embedReq.put("action", "generateEmbeddings");
-                embedReq.put("userId", Controller.userId);
-                embedReq.put("sessionToken", Controller.sessionToken);
-                bilclubs.utils.RequestManager.sendPostRequest("api/user", embedReq);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-            interestList.clear();
             popupModeStage.close();
             return;
         }

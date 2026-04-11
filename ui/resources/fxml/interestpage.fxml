@@ -36,45 +36,45 @@
                <content>
                   <FlowPane fx:id="interestAnchor" alignment="CENTER" hgap="10.0" vgap="12.0" style="-fx-background-color: white; -fx-padding: 10;">
                      <children>
-                        <CheckBox fx:id="archeology" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue; -fx-background-radius: 20; -fx-padding: 8 15 8 12; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #385BAE; -fx-cursor: hand;" text="Archeology" />
-                        <CheckBox fx:id="astronomy" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue; -fx-background-radius: 20; -fx-padding: 8 15 8 12; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #385BAE; -fx-cursor: hand;" text="Astronomy" />
-                        <CheckBox fx:id="art" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue; -fx-background-radius: 20; -fx-padding: 8 15 8 12; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #385BAE; -fx-cursor: hand;" text="Art" />
-                        <CheckBox fx:id="coding" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue; -fx-background-radius: 20; -fx-padding: 8 15 8 12; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #385BAE; -fx-cursor: hand;" text="Coding" />
-                        <CheckBox fx:id="scifi" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue; -fx-background-radius: 20; -fx-padding: 8 15 8 12; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #385BAE; -fx-cursor: hand;" text="Sci-Fi" />
-                        <CheckBox fx:id="plants" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue; -fx-background-radius: 20; -fx-padding: 8 15 8 12; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #385BAE; -fx-cursor: hand;" text="Plants" />
-                        <CheckBox fx:id="language" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue; -fx-background-radius: 20; -fx-padding: 8 15 8 12; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #385BAE; -fx-cursor: hand;" text="Language" />
-                        <CheckBox fx:id="environment" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue; -fx-background-radius: 20; -fx-padding: 8 15 8 12; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #385BAE; -fx-cursor: hand;" text="Environment" />
-                        <CheckBox fx:id="animation" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue; -fx-background-radius: 20; -fx-padding: 8 15 8 12; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #385BAE; -fx-cursor: hand;" text="Animation" />
-                        <CheckBox fx:id="dance" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue; -fx-background-radius: 20; -fx-padding: 8 15 8 12; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #385BAE; -fx-cursor: hand;" text="Dance" />
-                        <CheckBox fx:id="games" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue; -fx-background-radius: 20; -fx-padding: 8 15 8 12; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #385BAE; -fx-cursor: hand;" text="Games" />
-                        <CheckBox fx:id="counseling" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue; -fx-background-radius: 20; -fx-padding: 8 15 8 12; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #385BAE; -fx-cursor: hand;" text="Counseling" />
-                        <CheckBox fx:id="sports" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue; -fx-background-radius: 20; -fx-padding: 8 15 8 12; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #385BAE; -fx-cursor: hand;" text="Sports" />
-                        <CheckBox fx:id="literature" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue; -fx-background-radius: 20; -fx-padding: 8 15 8 12; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #385BAE; -fx-cursor: hand;" text="Literature" />
-                        <CheckBox fx:id="leadership" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue; -fx-background-radius: 20; -fx-padding: 8 15 8 12; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #385BAE; -fx-cursor: hand;" text="Leadership" />
-                        <CheckBox fx:id="space" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue; -fx-background-radius: 20; -fx-padding: 8 15 8 12; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #385BAE; -fx-cursor: hand;" text="Space" />
-                        <CheckBox fx:id="culture" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue; -fx-background-radius: 20; -fx-padding: 8 15 8 12; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #385BAE; -fx-cursor: hand;" text="Culture" />
-                        <CheckBox fx:id="chemistry" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue; -fx-background-radius: 20; -fx-padding: 8 15 8 12; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #385BAE; -fx-cursor: hand;" text="Chemistry" />
-                        <CheckBox fx:id="economics" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue; -fx-background-radius: 20; -fx-padding: 8 15 8 12; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #385BAE; -fx-cursor: hand;" text="Economics" />
-                        <CheckBox fx:id="management" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue; -fx-background-radius: 20; -fx-padding: 8 15 8 12; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #385BAE; -fx-cursor: hand;" text="Management" />
-                        <CheckBox fx:id="innovation" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue; -fx-background-radius: 20; -fx-padding: 8 15 8 12; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #385BAE; -fx-cursor: hand;" text="Innovation" />
-                        <CheckBox fx:id="cooking" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue; -fx-background-radius: 20; -fx-padding: 8 15 8 12; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #385BAE; -fx-cursor: hand;" text="Cooking" />
-                        <CheckBox fx:id="debate" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue; -fx-background-radius: 20; -fx-padding: 8 15 8 12; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #385BAE; -fx-cursor: hand;" text="Debate" />
-                        <CheckBox fx:id="music" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue; -fx-background-radius: 20; -fx-padding: 8 15 8 12; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #385BAE; -fx-cursor: hand;" text="Music" />
-                        <CheckBox fx:id="knitting" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue; -fx-background-radius: 20; -fx-padding: 8 15 8 12; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #385BAE; -fx-cursor: hand;" text="Knitting" />
-                        <CheckBox fx:id="fashion" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue; -fx-background-radius: 20; -fx-padding: 8 15 8 12; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #385BAE; -fx-cursor: hand;" text="Fashion" />
-                        <CheckBox fx:id="media" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue; -fx-background-radius: 20; -fx-padding: 8 15 8 12; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #385BAE; -fx-cursor: hand;" text="Media" />
-                        <CheckBox fx:id="engineering" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue; -fx-background-radius: 20; -fx-padding: 8 15 8 12; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #385BAE; -fx-cursor: hand;" text="Engineering" />
-                        <CheckBox fx:id="history" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue; -fx-background-radius: 20; -fx-padding: 8 15 8 12; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #385BAE; -fx-cursor: hand;" text="History" />
-                        <CheckBox fx:id="psychology" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue; -fx-background-radius: 20; -fx-padding: 8 15 8 12; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #385BAE; -fx-cursor: hand;" text="Psychology" />
-                        <CheckBox fx:id="genetics" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue; -fx-background-radius: 20; -fx-padding: 8 15 8 12; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #385BAE; -fx-cursor: hand;" text="Genetics" />
-                        <CheckBox fx:id="animals" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue; -fx-background-radius: 20; -fx-padding: 8 15 8 12; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #385BAE; -fx-cursor: hand;" text="Animals" />
-                        <CheckBox fx:id="law" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue; -fx-background-radius: 20; -fx-padding: 8 15 8 12; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #385BAE; -fx-cursor: hand;" text="Law" />
-                        <CheckBox fx:id="philosophy" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue; -fx-background-radius: 20; -fx-padding: 8 15 8 12; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #385BAE; -fx-cursor: hand;" text="Philosophy" />
-                        <CheckBox fx:id="physics" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue; -fx-background-radius: 20; -fx-padding: 8 15 8 12; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #385BAE; -fx-cursor: hand;" text="Physics" />
-                        <CheckBox fx:id="investment" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue; -fx-background-radius: 20; -fx-padding: 8 15 8 12; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #385BAE; -fx-cursor: hand;" text="Investment" />
-                        <CheckBox fx:id="photography" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue; -fx-background-radius: 20; -fx-padding: 8 15 8 12; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #385BAE; -fx-cursor: hand;" text="Photography" />
-                        <CheckBox fx:id="journalism" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue; -fx-background-radius: 20; -fx-padding: 8 15 8 12; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #385BAE; -fx-cursor: hand;" text="Journalism" />
-                        <CheckBox fx:id="politics" mnemonicParsing="false" style="-fx-background-color: -custom-light-blue; -fx-background-radius: 20; -fx-padding: 8 15 8 12; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #385BAE; -fx-cursor: hand;" text="Politics" />
+                        <CheckBox fx:id="archeology" mnemonicParsing="false" styleClass="interest-checkbox-pill" text="Archeology" />
+                        <CheckBox fx:id="astronomy" mnemonicParsing="false" styleClass="interest-checkbox-pill" text="Astronomy" />
+                        <CheckBox fx:id="art" mnemonicParsing="false" styleClass="interest-checkbox-pill" text="Art" />
+                        <CheckBox fx:id="coding" mnemonicParsing="false" styleClass="interest-checkbox-pill" text="Coding" />
+                        <CheckBox fx:id="scifi" mnemonicParsing="false" styleClass="interest-checkbox-pill" text="Sci-Fi" />
+                        <CheckBox fx:id="plants" mnemonicParsing="false" styleClass="interest-checkbox-pill" text="Plants" />
+                        <CheckBox fx:id="language" mnemonicParsing="false" styleClass="interest-checkbox-pill" text="Language" />
+                        <CheckBox fx:id="environment" mnemonicParsing="false" styleClass="interest-checkbox-pill" text="Environment" />
+                        <CheckBox fx:id="animation" mnemonicParsing="false" styleClass="interest-checkbox-pill" text="Animation" />
+                        <CheckBox fx:id="dance" mnemonicParsing="false" styleClass="interest-checkbox-pill" text="Dance" />
+                        <CheckBox fx:id="games" mnemonicParsing="false" styleClass="interest-checkbox-pill" text="Games" />
+                        <CheckBox fx:id="counseling" mnemonicParsing="false" styleClass="interest-checkbox-pill" text="Counseling" />
+                        <CheckBox fx:id="sports" mnemonicParsing="false" styleClass="interest-checkbox-pill" text="Sports" />
+                        <CheckBox fx:id="literature" mnemonicParsing="false" styleClass="interest-checkbox-pill" text="Literature" />
+                        <CheckBox fx:id="leadership" mnemonicParsing="false" styleClass="interest-checkbox-pill" text="Leadership" />
+                        <CheckBox fx:id="space" mnemonicParsing="false" styleClass="interest-checkbox-pill" text="Space" />
+                        <CheckBox fx:id="culture" mnemonicParsing="false" styleClass="interest-checkbox-pill" text="Culture" />
+                        <CheckBox fx:id="chemistry" mnemonicParsing="false" styleClass="interest-checkbox-pill" text="Chemistry" />
+                        <CheckBox fx:id="economics" mnemonicParsing="false" styleClass="interest-checkbox-pill" text="Economics" />
+                        <CheckBox fx:id="management" mnemonicParsing="false" styleClass="interest-checkbox-pill" text="Management" />
+                        <CheckBox fx:id="innovation" mnemonicParsing="false" styleClass="interest-checkbox-pill" text="Innovation" />
+                        <CheckBox fx:id="cooking" mnemonicParsing="false" styleClass="interest-checkbox-pill" text="Cooking" />
+                        <CheckBox fx:id="debate" mnemonicParsing="false" styleClass="interest-checkbox-pill" text="Debate" />
+                        <CheckBox fx:id="music" mnemonicParsing="false" styleClass="interest-checkbox-pill" text="Music" />
+                        <CheckBox fx:id="knitting" mnemonicParsing="false" styleClass="interest-checkbox-pill" text="Knitting" />
+                        <CheckBox fx:id="fashion" mnemonicParsing="false" styleClass="interest-checkbox-pill" text="Fashion" />
+                        <CheckBox fx:id="media" mnemonicParsing="false" styleClass="interest-checkbox-pill" text="Media" />
+                        <CheckBox fx:id="engineering" mnemonicParsing="false" styleClass="interest-checkbox-pill" text="Engineering" />
+                        <CheckBox fx:id="history" mnemonicParsing="false" styleClass="interest-checkbox-pill" text="History" />
+                        <CheckBox fx:id="psychology" mnemonicParsing="false" styleClass="interest-checkbox-pill" text="Psychology" />
+                        <CheckBox fx:id="genetics" mnemonicParsing="false" styleClass="interest-checkbox-pill" text="Genetics" />
+                        <CheckBox fx:id="animals" mnemonicParsing="false" styleClass="interest-checkbox-pill" text="Animals" />
+                        <CheckBox fx:id="law" mnemonicParsing="false" styleClass="interest-checkbox-pill" text="Law" />
+                        <CheckBox fx:id="philosophy" mnemonicParsing="false" styleClass="interest-checkbox-pill" text="Philosophy" />
+                        <CheckBox fx:id="physics" mnemonicParsing="false" styleClass="interest-checkbox-pill" text="Physics" />
+                        <CheckBox fx:id="investment" mnemonicParsing="false" styleClass="interest-checkbox-pill" text="Investment" />
+                        <CheckBox fx:id="photography" mnemonicParsing="false" styleClass="interest-checkbox-pill" text="Photography" />
+                        <CheckBox fx:id="journalism" mnemonicParsing="false" styleClass="interest-checkbox-pill" text="Journalism" />
+                        <CheckBox fx:id="politics" mnemonicParsing="false" styleClass="interest-checkbox-pill" text="Politics" />
                      </children>
                   </FlowPane>
                </content>

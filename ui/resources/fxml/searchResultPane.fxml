@@ -16,13 +16,13 @@
            <children>
                <HBox alignment="CENTER_LEFT" spacing="10.0">
                   <children>
-                     <Label fx:id="titleLabel" style="-fx-text-fill: -text-color;" text="Title" wrapText="true">
+                     <Label fx:id="titleLabel" style="-fx-text-fill: -text-color;" text="Title" textOverrun="ELLIPSIS" HBox.hgrow="ALWAYS">
                         <font>
                            <Font name="Arial Bold" size="24.0" />
                         </font>
                      </Label>
                      <Region HBox.hgrow="ALWAYS" />
-                     <Label style="-fx-text-fill: -primary-color; -fx-opacity: 0.8;" text="View Details ➔">
+                     <Label minWidth="110.0" style="-fx-text-fill: -primary-color; -fx-opacity: 0.8;" text="View Details ➔">
                         <font>
                            <Font name="Arial Bold" size="13.0" />
                         </font>

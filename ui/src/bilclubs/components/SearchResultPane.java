@@ -65,9 +65,6 @@ public class SearchResultPane extends HBox {
                     subtitleLabel.setText(data.optString("clubName", "Event"));
                     subtitleLabel.setVisible(true);
                     subtitleLabel.setManaged(true);
-                    subtitleLabel.applyCss();
-                    subtitleLabel.layout();
-                    subtitleLabel.setMinHeight(subtitleLabel.prefHeight(-1));
                 }
 
                 String imageUrl = type.equals("Club") ? data.optString("iconFilename", "")

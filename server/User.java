@@ -25,6 +25,7 @@ public class User implements Embeddable {
     @Column(unique = true)
     private String email = "";
     private String major = "";
+    private String biography = "";
 
     private String profilePicture = "static/default-profile-picture.jpg";
 
@@ -144,6 +145,14 @@ public class User implements Embeddable {
 
     public void setMajor(String major) {
         this.major = major.trim();
+    }
+
+    public String getBiography() {
+        return biography;
+    }
+
+    public void setBiography(String biography) {
+        this.biography = biography.trim();
     }
 
     public void setGE250Points(int GE250Points) {
@@ -389,8 +398,8 @@ public class User implements Embeddable {
 
         String interestsString = String.join(", ", this.interests);
 
-        query.append(String.format("suitable for a %s student who is interested in %s.",
-                this.major, interestsString));
+        query.append(String.format("suitable for a %s student who is interested in %s. Biography: %s.",
+                this.major, interestsString, this.biography));
 
         return query.toString();
     }

@@ -50,6 +50,10 @@ public class SettingsController {
     @FXML
     javafx.scene.control.Label saveStatusLabel;
 
+    private org.json.JSONArray cachedInterests = new org.json.JSONArray();
+    private String cachedBio = "";
+
+
     private boolean clubEventState = true;
 
     private boolean emailAlertsState = true;
@@ -80,6 +84,11 @@ public class SettingsController {
                         firstNameField.setText(data.optString("firstName", ""));
                         lastNameField.setText(data.optString("lastName", ""));
                         majorField.setText(data.optString("major", ""));
+
+                        cachedBio = data.optString("biography", "");
+
+                        cachedInterests = data.optJSONArray("interests");
+                        if (cachedInterests == null) cachedInterests = new org.json.JSONArray();
 
                         clubEventState = data.optBoolean("wantToRecieveClubAndEventAlerts", true);
 
@@ -220,8 +229,29 @@ public class SettingsController {
 
             InterestController intCtrl = interestLoader.getController();
             intCtrl.setPopupMode(popupStage);
+            intCtrl.setPreloadedInterests(cachedInterests);
 
-            popupStage.show();
+            popupStage.showAndWait();
+            loadUserProfile();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void changeBiography(ActionEvent e) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/interestKeywords.fxml"));
+            Stage popupStage = new Stage();
+            popupStage.initModality(Modality.APPLICATION_MODAL);
+            popupStage.setScene(new Scene(loader.load()));
+
+            InterestController intCtrl = loader.getController();
+            intCtrl.setPopupMode(popupStage);
+            intCtrl.setPreloadedBio(cachedBio);
+
+            popupStage.showAndWait();
+            loadUserProfile();
         } catch (Exception ex) {
             ex.printStackTrace();
         }

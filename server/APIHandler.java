@@ -449,6 +449,7 @@ public class APIHandler {
         data.put("interests", new JSONArray(user.getInterests()));
         data.put("clubPrivileges", new JSONObject(user.getClubPrivileges()));
         data.put("privilege", user.getPrivilege());
+        data.put("biography", user.getBiography());
 
         data.put("wantToRecieveMails", user.wantToRecieveMails());
         data.put("wantToRecieveClubAndEventAlerts", user.wantToRecieveClubAndEventAlerts());
@@ -474,6 +475,7 @@ public class APIHandler {
         data.put("major", targetUser.getMajor());
         data.put("interests", new JSONArray(targetUser.getInterests()));
         data.put("clubPrivileges", new JSONObject(targetUser.getClubPrivileges()));
+        data.put("biography", targetUser.getBiography());
         return buildResponse(200, data, null);
     }
 
@@ -581,6 +583,10 @@ public class APIHandler {
                 interestsList.add(interest.toString().trim());
             }
             user.setInterests(interestsList);
+        }
+
+        if (requestBody.has("biography")) {
+            user.setBiography(requestBody.optString("biography", ""));
         }
 
         if (requestBody.has("profilePicture")) {
@@ -741,6 +747,7 @@ public class APIHandler {
             memberJson.put("name", member.getFirstName() + " " + member.getLastName());
             memberJson.put("privilege", member.getClubPrivileges().get(club.getId()));
             memberJson.put("profilePicture", member.getProfilePicture());
+            memberJson.put("major", member.getMajor());
             members.put(memberJson);
         }
         JSONObject data = new JSONObject();

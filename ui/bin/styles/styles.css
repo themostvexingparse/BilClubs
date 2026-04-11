@@ -145,6 +145,46 @@
     -fx-padding: 3;
 }
 
+.interest-pill {
+    -fx-background-color: -custom-light-blue;
+    -fx-background-radius: 20;
+    -fx-padding: 8 15 8 12;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -primary-color;
+    -fx-alignment: center;
+}
+
+.interest-pill:hover {
+    -fx-background-color: -primary-color;
+    -fx-text-fill: white;
+    -fx-cursor: hand;
+}
+
+.interest-checkbox-pill .box, .interest-checkbox-pill .mark {
+    -fx-padding: 0;
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-background-radius: 0;
+    -fx-shape: null;
+}
+.interest-checkbox-pill {
+    -fx-background-color: -custom-light-blue;
+    -fx-background-radius: 20;
+    -fx-padding: 8 15 8 12;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -primary-color;
+    -fx-cursor: hand;
+}
+.interest-checkbox-pill:hover {
+    -fx-background-color: #d9e2fc;
+}
+.interest-checkbox-pill:selected {
+    -fx-background-color: -primary-color;
+    -fx-text-fill: white;
+}
+
 /* .box .mark {
     -fx-background-color: transparent;
     -fx-background-radius: 50%;

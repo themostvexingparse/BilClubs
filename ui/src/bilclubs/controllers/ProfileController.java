@@ -25,19 +25,26 @@ import bilclubs.utils.LoadHelper;
 import bilclubs.utils.RequestManager;
 import bilclubs.utils.Response;
 
-
 public class ProfileController {
-    @FXML private ImageView profileImage;
-    @FXML private VBox ClubsBox;
-    @FXML private Label namelbl;
-    @FXML private Label deptlbl;
-    @FXML private Label privlbl;
-    @FXML private Button adminButton;
+    @FXML
+    private ImageView profileImage;
+    @FXML
+    private VBox ClubsBox;
+    @FXML
+    private VBox ClubsBox1;
+    @FXML
+    private Label namelbl;
+    @FXML
+    private Label deptlbl;
+    @FXML
+    private Label privlbl;
+    @FXML
+    private Button manageButton;
 
     @FXML
-    public void initialize() throws IOException{
-        double imageSize = 150; 
-        Circle clipCircle = new Circle(profileImage.getFitWidth()/2, profileImage.getFitHeight()/2, imageSize/2);
+    public void initialize() throws IOException {
+        double imageSize = 150;
+        Circle clipCircle = new Circle(profileImage.getFitWidth() / 2, profileImage.getFitHeight() / 2, imageSize / 2);
         profileImage.setClip(clipCircle);
 
         JSONObject request = new JSONObject();
@@ -54,12 +61,14 @@ public class ProfileController {
         int privilege = userData.getInt("privilege");
 
         // if(privilege & 1 == 0){
-            
+
         // }
 
-        if((privilege & 15) == 15){
-            adminButton.setDisable(false);
-            adminButton.setVisible(true);
+        if ((privilege & 15) == 15) {
+            if (manageButton != null) {
+                manageButton.setDisable(false);
+                manageButton.setVisible(true);
+            }
         }
 
         image.errorProperty().addListener((obs, oldVal, isError) -> {
@@ -78,6 +87,19 @@ public class ProfileController {
         namelbl.setText(userData.getString("firstName") + " " + userData.getString("lastName"));
         deptlbl.setText("Department: " + userData.getString("major"));
 
+        if (ClubsBox1 != null) {
+            JSONArray interestsData = userData.optJSONArray("interests");
+            if (interestsData != null) {
+                for (int i = 0; i < interestsData.length(); i++) {
+                    Label interestLabel = new Label(interestsData.getString(i));
+                    interestLabel.setMaxWidth(Double.MAX_VALUE);
+                    interestLabel.setAlignment(javafx.geometry.Pos.CENTER);
+                    interestLabel.getStyleClass().add("interest-pill");
+                    ClubsBox1.getChildren().add(interestLabel);
+                }
+            }
+        }
+
         JSONObject clubRequest = new JSONObject();
         clubRequest.put("userId", Controller.userId);
         clubRequest.put("sessionToken", Controller.sessionToken);
@@ -87,9 +109,9 @@ public class ProfileController {
 
         JSONArray clubData = userClubs.getPayload().getJSONArray("clubs");
 
-        for(Object obj : clubData){
-            JSONObject club = (JSONObject)obj;
-            
+        for (Object obj : clubData) {
+            JSONObject club = (JSONObject) obj;
+
             ClubDisplay userClub = new ClubDisplay();
             userClub.setName(club.getString("name"));
             // userClub.setDesc(club.getString("description").split("\n")[0]);
@@ -100,10 +122,10 @@ public class ProfileController {
 
     }
 
-    public void uploadProfilePicture(MouseEvent e) throws IOException{
+    public void uploadProfilePicture(MouseEvent e) throws IOException {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Choose your Profile");
-        Stage stage = (Stage)profileImage.getScene().getWindow();
+        Stage stage = (Stage) profileImage.getScene().getWindow();
         File selectedFile = fileChooser.showOpenDialog(stage);
 
         JSONObject auth = new JSONObject();
@@ -140,12 +162,10 @@ public class ProfileController {
         }
     }
 
-    public void goToManage(ActionEvent e) throws IOException{
+    public void goToManage(ActionEvent e) throws IOException {
         FXMLLoader manageRoot = new FXMLLoader(getClass().getResource("/fxml/adminManagePage.fxml"));
         AnchorPane contentPane = (AnchorPane) namelbl.getScene().lookup("#rightAnchor");
         LoadHelper.safelyLoad(manageRoot, contentPane);
     }
-
-    
 
 }
