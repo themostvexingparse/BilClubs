@@ -304,7 +304,7 @@ public class APIHandler {
             return buildResponse(400, null, "Missing required fields: email or password");
         }
 
-        email = email.trim()
+        email = email.trim();
 
         Filter emailFilter = new Filter();
         emailFilter.addFilter("email", email);
