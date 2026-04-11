@@ -27,8 +27,7 @@
                </font>
             </Label>
             <Label fx:id="deptlbl" alignment="CENTER" contentDisplay="CENTER" layoutY="211.0" prefWidth="646.0" text="Department: Default" />
-            <Button fx:id="manageButton" layoutX="268.0" layoutY="236.0" mnemonicParsing="false" onAction="#manageAsAdmin" prefHeight="30.0" prefWidth="117.0" style="-fx-background-color: #1C3F69;" text="Manage As Admin" textFill="WHITE" />
-            <Label fx:id="privlbl" alignment="CENTER" layoutY="14.0" prefWidth="646.0" text="Label" />
+            <Button fx:id="manageButton" disable="true" layoutX="268.0" layoutY="236.0" mnemonicParsing="false" onAction="#goToManage" prefHeight="30.0" prefWidth="117.0" style="-fx-background-color: #1C3F69;" text="Manage As Admin" textFill="WHITE" visible="false" />
          </children>
          <effect>
             <DropShadow>

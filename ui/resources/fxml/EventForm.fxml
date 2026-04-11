@@ -29,25 +29,25 @@
             <Font name="Arial" size="14.0" />
          </font>
       </Label>
-      <TextField fx:id="startDateField" layoutX="39.0" layoutY="109.0" prefHeight="36.0" prefWidth="326.0" style="-fx-border-color: -manager-green; -fx-border-radius: 5; -fx-background-color: -bg-color;" />
+      <TextField fx:id="startDateField" layoutX="39.0" layoutY="109.0" prefHeight="36.0" prefWidth="326.0" promptText="YYYY-MM-DD" style="-fx-border-color: -manager-green; -fx-border-radius: 5; -fx-background-color: -bg-color;" />
       <Label layoutX="40.0" layoutY="89.0" prefHeight="20.0" prefWidth="76.0" text="Start Date">
          <font>
             <Font name="Arial" size="14.0" />
          </font>
       </Label>
-      <TextField fx:id="endDateField" layoutX="39.0" layoutY="171.0" prefHeight="36.0" prefWidth="326.0" style="-fx-border-color: -manager-green; -fx-border-radius: 5; -fx-background-color: -bg-color;" />
+      <TextField fx:id="endDateField" layoutX="39.0" layoutY="171.0" prefHeight="36.0" prefWidth="326.0" promptText="YYYY-MM-DD" style="-fx-border-color: -manager-green; -fx-border-radius: 5; -fx-background-color: -bg-color;" />
       <Label layoutX="40.0" layoutY="151.0" prefHeight="20.0" prefWidth="76.0" text="End Date">
          <font>
             <Font name="Arial" size="14.0" />
          </font>
       </Label>
-      <TextField fx:id="startTimeField" layoutX="39.0" layoutY="239.0" prefHeight="36.0" prefWidth="326.0" style="-fx-border-color: -manager-green; -fx-border-radius: 5; -fx-background-color: -bg-color;" />
+      <TextField fx:id="startTimeField" layoutX="39.0" layoutY="239.0" prefHeight="36.0" prefWidth="326.0" promptText="HH:MM" style="-fx-border-color: -manager-green; -fx-border-radius: 5; -fx-background-color: -bg-color;" />
       <Label layoutX="40.0" layoutY="219.0" prefHeight="20.0" prefWidth="76.0" text="Start Time">
          <font>
             <Font name="Arial" size="14.0" />
          </font>
       </Label>
-      <TextField fx:id="endTimeField" layoutX="41.0" layoutY="303.0" prefHeight="36.0" prefWidth="326.0" style="-fx-border-color: -manager-green; -fx-border-radius: 5; -fx-background-color: -bg-color;" />
+      <TextField fx:id="endTimeField" layoutX="41.0" layoutY="303.0" prefHeight="36.0" prefWidth="326.0" promptText="HH:MM" style="-fx-border-color: -manager-green; -fx-border-radius: 5; -fx-background-color: -bg-color;" />
       <Label layoutX="40.0" layoutY="283.0" prefHeight="20.0" prefWidth="76.0" text="End Time">
          <font>
             <Font name="Arial" size="14.0" />

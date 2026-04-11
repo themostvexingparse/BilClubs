@@ -25,11 +25,15 @@ public class MenuController {
     @FXML Button settings;
     @FXML private AnchorPane rightAnchor;
     @FXML private Button signOutButton;
+    @FXML private Button clubCreate;
 
 
     @FXML
     public void initialize() throws IOException {
         LoadHelper.safelyLoad(new FXMLLoader(getClass().getResource("/fxml/Home.fxml")), rightAnchor);
+        Integer userPrivilege = Controller.userData.getInt("privilege");
+        boolean isAdmin = (userPrivilege & 15) == 15;
+        clubCreate.setVisible(isAdmin);
     }
 
 

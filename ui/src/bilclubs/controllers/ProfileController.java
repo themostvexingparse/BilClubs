@@ -3,21 +3,16 @@ package bilclubs.controllers;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.shape.Circle;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import javafx.scene.control.Button;
-import javafx.scene.effect.DropShadow;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
-import javafx.scene.shape.Circle;
-import javafx.scene.text.Font;
-import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,6 +21,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import bilclubs.components.ClubDisplay;
+import bilclubs.utils.LoadHelper;
 import bilclubs.utils.RequestManager;
 import bilclubs.utils.Response;
 
@@ -33,11 +29,10 @@ import bilclubs.utils.Response;
 public class ProfileController {
     @FXML private ImageView profileImage;
     @FXML private VBox ClubsBox;
-    @FXML private VBox ClubsBox1;
     @FXML private Label namelbl;
     @FXML private Label deptlbl;
     @FXML private Label privlbl;
-    @FXML private Button manageButton;
+    @FXML private Button adminButton;
 
     @FXML
     public void initialize() throws IOException{
@@ -53,14 +48,20 @@ public class ProfileController {
 
         JSONObject userData = userProfile.getPayload();
 
-        Integer privilege = userData.optIntegerObject("privilege", 1);
-
-        boolean isAdmin = (privilege & 15) == 15;
-
-        manageButton.setVisible(isAdmin);
-
         Image image = new Image(RequestManager.defaultAddress + userData.getString("profilePicture"), true);
         System.out.println(RequestManager.defaultAddress + userData.getString("profilePicture"));
+
+        int privilege = userData.getInt("privilege");
+
+        // if(privilege & 1 == 0){
+            
+        // }
+
+        if((privilege & 15) == 15){
+            adminButton.setDisable(false);
+            adminButton.setVisible(true);
+        }
+
         image.errorProperty().addListener((obs, oldVal, isError) -> {
             if (isError) {
                 System.out.println("Image failed to load: " + image.getException().getMessage());
@@ -91,50 +92,10 @@ public class ProfileController {
             
             ClubDisplay userClub = new ClubDisplay();
             userClub.setName(club.getString("name"));
-            userClub.setIcon(club.optString("iconFilename", ""));
+            // userClub.setDesc(club.getString("description").split("\n")[0]);
 
             ClubsBox.getChildren().add(userClub);
 
-        }
-
-        // Populate interests
-        JSONArray interests = userData.optJSONArray("interests");
-        if (interests != null) {
-            for (int i = 0; i < interests.length(); i++) {
-                String interest = interests.optString(i, "").trim();
-                if (interest.isEmpty() || interest.toLowerCase().startsWith("biography:")) {
-                    continue;
-                }
-
-                Pane card = new Pane();
-                card.setPrefSize(250, 50);
-                card.setMaxSize(250, 50);
-                card.setMinSize(250, 50);
-                card.setStyle("-fx-background-radius: 12; -fx-background-color: -menu-blue;");
-                card.getStyleClass().add("club-card");
-
-                HBox content = new HBox();
-                content.setAlignment(Pos.CENTER_LEFT);
-                content.setSpacing(10);
-                content.setPrefSize(250, 50);
-                content.setPadding(new Insets(5, 12, 5, 12));
-
-                Label interestLabel = new Label(interest);
-                interestLabel.setFont(Font.font("Arial", 12));
-                interestLabel.setWrapText(true);
-                interestLabel.setMaxWidth(220);
-
-                content.getChildren().add(interestLabel);
-                card.getChildren().add(content);
-
-                DropShadow shadow = new DropShadow();
-                shadow.setHeight(10);
-                shadow.setRadius(4.5);
-                shadow.setWidth(10);
-                card.setEffect(shadow);
-
-                ClubsBox1.getChildren().add(card);
-            }
         }
 
     }
@@ -179,11 +140,12 @@ public class ProfileController {
         }
     }
 
-    public void manageAsAdmin(ActionEvent event) throws IOException {
-        javafx.scene.layout.AnchorPane contentPane = (javafx.scene.layout.AnchorPane) profileImage.getScene().lookup("#rightAnchor");
-        if (contentPane != null) {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/adminManagePage.fxml"));
-            bilclubs.utils.LoadHelper.safelyLoad(loader, contentPane);
-        }
+    public void goToManage(ActionEvent e) throws IOException{
+        FXMLLoader manageRoot = new FXMLLoader(getClass().getResource("/fxml/adminManagePage.fxml"));
+        AnchorPane contentPane = (AnchorPane) namelbl.getScene().lookup("#rightAnchor");
+        LoadHelper.safelyLoad(manageRoot, contentPane);
     }
+
+    
+
 }
