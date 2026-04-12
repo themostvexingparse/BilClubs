@@ -154,7 +154,7 @@ public class CalendarController implements Initializable {
             String name = eventData.getString("name");
             String rawDate = eventData.getString("startDate");
             String time = LocalDateTime.parse(rawDate.replace(" ", "T")).toLocalTime().toString().substring(0, 5);
-            String displayName = name.length() > 10 ? name.substring(0, 10) + "…" : name;
+            String displayName = name.length() > 10 ? name.substring(0, 10) + "..." : name;
 
             Label textInfo = new Label(displayName + " " + time);
             textInfo.getStyleClass().add("cal-event-chip");
@@ -201,7 +201,7 @@ public class CalendarController implements Initializable {
                 calendarActivityMap.computeIfAbsent(dayOfMonth, k -> new ArrayList<>()).add(activity);
 
             } catch (Exception e) {
-                System.out.println("HATA VAR → " + activity);
+                System.out.println("ERROR: " + activity);
                 e.printStackTrace();
             }
         }

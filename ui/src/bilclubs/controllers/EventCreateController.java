@@ -30,26 +30,38 @@ public class EventCreateController {
     private String description;
     private String bannerName;
 
-    @FXML TextField nameField;
-    @FXML TextField startDateField;
-    @FXML TextField endDateField;
-    @FXML TextField startTimeField;
-    @FXML TextField endTimeField;
-    @FXML TextField placeField;
-    @FXML TextField quotaField;
-    @FXML TextArea descArea;
+    @FXML
+    TextField nameField;
+    @FXML
+    TextField startDateField;
+    @FXML
+    TextField endDateField;
+    @FXML
+    TextField startTimeField;
+    @FXML
+    TextField endTimeField;
+    @FXML
+    TextField placeField;
+    @FXML
+    TextField quotaField;
+    @FXML
+    TextArea descArea;
 
-    @FXML Button uploadBannerButton;
-    @FXML Button createButton;
-    //instances
+    @FXML
+    Button uploadBannerButton;
+    @FXML
+    Button createButton;
+    // instances
     private JSONObject clubJSON;
 
     @FXML
     public void createClubEvent(ActionEvent e) throws IOException {
         handleSubmit(e);
 
-        if (name == null || name.isEmpty() || description == null || description.isEmpty()) return;
-        if (bannerName == null) return; // banner not uploaded yet
+        if (name == null || name.isEmpty() || description == null || description.isEmpty())
+            return;
+        if (bannerName == null)
+            return; // banner not uploaded yet
 
         LocalDateTime start = convert(startDate, startTime);
         LocalDateTime end = convert(endDate, endTime);
@@ -62,7 +74,7 @@ public class EventCreateController {
         clubJSON.put("name", name);
         clubJSON.put("description", description);
         clubJSON.put("location", place);
-        clubJSON.put("posterFilename","static/" + bannerName);
+        clubJSON.put("posterFilename", "static/" + bannerName);
         clubJSON.put("quota", quota);
         clubJSON.put("startEpoch", start.toEpochSecond(java.time.ZoneOffset.UTC));
         clubJSON.put("endEpoch", end.toEpochSecond(java.time.ZoneOffset.UTC));
@@ -73,81 +85,82 @@ public class EventCreateController {
             System.out.println(createEvent.toString());
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Event could not be created.");
-            alert.setHeaderText(null); 
+            alert.setHeaderText(null);
             alert.setContentText(createEvent.toString());
             alert.showAndWait();
         }
 
-        ((Stage) nameField.getScene().getWindow()).close(); // ← stays here since there's no success/fail label
+        ((Stage) nameField.getScene().getWindow()).close(); // stays here since there's no success/fail label
     }
 
     public void handleSubmit(ActionEvent e) {
         String name = nameField.getText().trim();
-        this.name=name;
+        this.name = name;
 
-        if (name.isEmpty()) { 
-            nameField.requestFocus(); 
-            return; 
+        if (name.isEmpty()) {
+            nameField.requestFocus();
+            return;
         }
         String startDate = startDateField.getText().trim();
-        this.startDate=startDate;
+        this.startDate = startDate;
 
-        if (startDate.isEmpty()) { 
-            startDateField.requestFocus(); 
-            return; 
+        if (startDate.isEmpty()) {
+            startDateField.requestFocus();
+            return;
         }
         String endDate = endDateField.getText().trim();
-        this.endDate=endDate;
+        this.endDate = endDate;
 
-        if (endDate.isEmpty()) { 
-            endDateField.requestFocus(); 
-            return; 
+        if (endDate.isEmpty()) {
+            endDateField.requestFocus();
+            return;
         }
         String startTime = startTimeField.getText().trim();
-        this.startTime=startTime;
+        this.startTime = startTime;
 
-        if (startTime.isEmpty()) { 
-            startTimeField.requestFocus(); 
-            return; 
+        if (startTime.isEmpty()) {
+            startTimeField.requestFocus();
+            return;
         }
         String endTime = endTimeField.getText().trim();
-        this.endTime=endTime;
+        this.endTime = endTime;
 
-        if (endTime.isEmpty()) { 
-            endTimeField.requestFocus(); 
-            return; 
+        if (endTime.isEmpty()) {
+            endTimeField.requestFocus();
+            return;
         }
         String place = placeField.getText().trim();
-        this.place=place;
+        this.place = place;
 
-        if (place.isEmpty()) { 
-            placeField.requestFocus(); 
-            return; 
+        if (place.isEmpty()) {
+            placeField.requestFocus();
+            return;
         }
-        String quota= quotaField.getText().trim();
-        this.quota=quota;
+        String quota = quotaField.getText().trim();
+        this.quota = quota;
 
-        if (quota.isEmpty()) { 
-            quotaField.requestFocus(); 
-            return; 
+        if (quota.isEmpty()) {
+            quotaField.requestFocus();
+            return;
         }
 
         String description = descArea.getText();
-        this.description=description;
-        if(description.isEmpty()){
+        this.description = description;
+        if (description.isEmpty()) {
             descArea.requestFocus();
             return;
         }
-    
+
     }
 
     @FXML
     public void uploadBanner(ActionEvent e) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Choose Event Banner");
-        Stage stage = (Stage) nameField.getScene().getWindow(); // ← fixed cast
+        Stage stage = (Stage) nameField.getScene().getWindow(); // fixed cast
         File selectedFile = fileChooser.showOpenDialog(stage);
-        if (selectedFile == null) return; // ← null check
+        if (selectedFile == null)
+            return; // null check
 
         JSONObject auth = new JSONObject();
         auth.put("action", "upload");
@@ -160,8 +173,8 @@ public class EventCreateController {
         uploadBannerButton.setText("Re-upload");
     }
 
-    public LocalDateTime convert(String date,String time){
-        String dateTime=date+" "+time;
+    public LocalDateTime convert(String date, String time) {
+        String dateTime = date + " " + time;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         LocalDateTime dateandTime = LocalDateTime.parse(dateTime, formatter);
         return dateandTime;

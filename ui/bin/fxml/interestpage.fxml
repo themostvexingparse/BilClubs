@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.text.Font?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: -bg-color;" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bilclubs.controllers.InterestController">
+   <children>
+      <VBox alignment="CENTER" layoutX="340.0" layoutY="60.0" prefHeight="600.0" prefWidth="600.0" spacing="20.0" style="-fx-background-color: white; -fx-background-radius: 20; -fx-padding: 40; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 20, 0, 0, 10);">
+         <children>
+            <ImageView fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../assets/bilclubs%20logo%201.png" />
+               </image>
+            </ImageView>
+            <Label text="Bil'Clubs">
+               <font>
+                  <Font name="Arial Bold" size="20.0" />
+               </font>
+            </Label>
+            <Label text="Pick your Interests!" textFill="#385bae">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+            <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="320.0" style="-fx-background-color: transparent; -fx-background: transparent; -fx-border-width: 0;">
+               <content>
+                  <FlowPane fx:id="interestAnchor" alignment="CENTER" hgap="10.0" vgap="12.0" style="-fx-background-color: white; -fx-padding: 10;">
+                     <children>
+                        <CheckBox fx:id="archeology" mnemonicParsing="false" styleClass="interest-checkbox-pill" text="Archeology" />
+                        <CheckBox fx:id="astronomy" mnemonicParsing="false" styleClass="interest-checkbox-pill" text="Astronomy" />
+                        <CheckBox fx:id="art" mnemonicParsing="false" styleClass="interest-checkbox-pill" text="Art" />
+                        <CheckBox fx:id="coding" mnemonicParsing="false" styleClass="interest-checkbox-pill" text="Coding" />
+                        <CheckBox fx:id="scifi" mnemonicParsing="false" styleClass="interest-checkbox-pill" text="Sci-Fi" />
+                        <CheckBox fx:id="plants" mnemonicParsing="false" styleClass="interest-checkbox-pill" text="Plants" />
+                        <CheckBox fx:id="language" mnemonicParsing="false" styleClass="interest-checkbox-pill" text="Language" />
+                        <CheckBox fx:id="environment" mnemonicParsing="false" styleClass="interest-checkbox-pill" text="Environment" />
+                        <CheckBox fx:id="animation" mnemonicParsing="false" styleClass="interest-checkbox-pill" text="Animation" />
+                        <CheckBox fx:id="dance" mnemonicParsing="false" styleClass="interest-checkbox-pill" text="Dance" />
+                        <CheckBox fx:id="games" mnemonicParsing="false" styleClass="interest-checkbox-pill" text="Games" />
+                        <CheckBox fx:id="counseling" mnemonicParsing="false" styleClass="interest-checkbox-pill" text="Counseling" />
+                        <CheckBox fx:id="sports" mnemonicParsing="false" styleClass="interest-checkbox-pill" text="Sports" />
+                        <CheckBox fx:id="literature" mnemonicParsing="false" styleClass="interest-checkbox-pill" text="Literature" />
+                        <CheckBox fx:id="leadership" mnemonicParsing="false" styleClass="interest-checkbox-pill" text="Leadership" />
+                        <CheckBox fx:id="space" mnemonicParsing="false" styleClass="interest-checkbox-pill" text="Space" />
+                        <CheckBox fx:id="culture" mnemonicParsing="false" styleClass="interest-checkbox-pill" text="Culture" />
+                        <CheckBox fx:id="chemistry" mnemonicParsing="false" styleClass="interest-checkbox-pill" text="Chemistry" />
+                        <CheckBox fx:id="economics" mnemonicParsing="false" styleClass="interest-checkbox-pill" text="Economics" />
+                        <CheckBox fx:id="management" mnemonicParsing="false" styleClass="interest-checkbox-pill" text="Management" />
+                        <CheckBox fx:id="innovation" mnemonicParsing="false" styleClass="interest-checkbox-pill" text="Innovation" />
+                        <CheckBox fx:id="cooking" mnemonicParsing="false" styleClass="interest-checkbox-pill" text="Cooking" />
+                        <CheckBox fx:id="debate" mnemonicParsing="false" styleClass="interest-checkbox-pill" text="Debate" />
+                        <CheckBox fx:id="music" mnemonicParsing="false" styleClass="interest-checkbox-pill" text="Music" />
+                        <CheckBox fx:id="knitting" mnemonicParsing="false" styleClass="interest-checkbox-pill" text="Knitting" />
+                        <CheckBox fx:id="fashion" mnemonicParsing="false" styleClass="interest-checkbox-pill" text="Fashion" />
+                        <CheckBox fx:id="media" mnemonicParsing="false" styleClass="interest-checkbox-pill" text="Media" />
+                        <CheckBox fx:id="engineering" mnemonicParsing="false" styleClass="interest-checkbox-pill" text="Engineering" />
+                        <CheckBox fx:id="history" mnemonicParsing="false" styleClass="interest-checkbox-pill" text="History" />
+                        <CheckBox fx:id="psychology" mnemonicParsing="false" styleClass="interest-checkbox-pill" text="Psychology" />
+                        <CheckBox fx:id="genetics" mnemonicParsing="false" styleClass="interest-checkbox-pill" text="Genetics" />
+                        <CheckBox fx:id="animals" mnemonicParsing="false" styleClass="interest-checkbox-pill" text="Animals" />
+                        <CheckBox fx:id="law" mnemonicParsing="false" styleClass="interest-checkbox-pill" text="Law" />
+                        <CheckBox fx:id="philosophy" mnemonicParsing="false" styleClass="interest-checkbox-pill" text="Philosophy" />
+                        <CheckBox fx:id="physics" mnemonicParsing="false" styleClass="interest-checkbox-pill" text="Physics" />
+                        <CheckBox fx:id="investment" mnemonicParsing="false" styleClass="interest-checkbox-pill" text="Investment" />
+                        <CheckBox fx:id="photography" mnemonicParsing="false" styleClass="interest-checkbox-pill" text="Photography" />
+                        <CheckBox fx:id="journalism" mnemonicParsing="false" styleClass="interest-checkbox-pill" text="Journalism" />
+                        <CheckBox fx:id="politics" mnemonicParsing="false" styleClass="interest-checkbox-pill" text="Politics" />
+                     </children>
+                  </FlowPane>
+               </content>
+            </ScrollPane>
+            <Button mnemonicParsing="false" onAction="#getInterests" prefHeight="45.0" prefWidth="520.0" style="-fx-background-radius: 10; -fx-background-color: #385BAE; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16px; -fx-cursor: hand;" styleClass="button-settings" text="Submit!">
+               <effect>
+                  <DropShadow>
+                     <color>
+                        <Color opacity="0.30" />
+                     </color>
+                  </DropShadow>
+               </effect>
+            </Button>
+         </children>
+      </VBox>
+   </children>
+</Pane>
+

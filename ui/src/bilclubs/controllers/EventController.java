@@ -63,7 +63,7 @@ public class EventController {
         int registreeCount = currentEvent.optInt("registreeCount", 0);
         Object quotaRaw = currentEvent.opt("quota");
         if (quotaRaw == null || quotaRaw == JSONObject.NULL) {
-            detailslbl.setText(registreeCount + " registered  ·  Unlimited capacity");
+            detailslbl.setText(registreeCount + " registered  |  Unlimited capacity");
         } else {
             int quota = currentEvent.getInt("quota");
             detailslbl.setText(registreeCount + " / " + quota + " registered");

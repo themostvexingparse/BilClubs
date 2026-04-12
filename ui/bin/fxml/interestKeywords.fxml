@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.text.Font?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: -bg-color;" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bilclubs.controllers.InterestController">
+   <children>
+      <VBox alignment="CENTER" layoutX="340.0" layoutY="80.0" prefHeight="560.0" prefWidth="600.0" spacing="16.0" style="-fx-background-color: white; -fx-background-radius: 20; -fx-padding: 40; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 20, 0, 0, 10);">
+         <children>
+            <ImageView fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../assets/bilclubs%20logo%201.png" />
+               </image>
+            </ImageView>
+            <Label text="Bil'Clubs">
+               <font>
+                  <Font name="Arial Bold" size="20.0" />
+               </font>
+            </Label>
+            <Label text="Tell us about yourself!" textFill="#385bae">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" style="-fx-text-fill: #888888; -fx-font-size: 13px; -fx-padding: 0 20 0 20;" text="Share a short biography: your hobbies, passions, anything that makes you, you." wrapText="true" />
+            <TextArea fx:id="bioArea" prefHeight="220.0" prefWidth="520.0" promptText="e.g. I love stargazing, baking, and building robots in my free time..." style="-fx-background-color: #F0F5FF; -fx-background-radius: 12; -fx-border-radius: 12; -fx-border-color: #D0DAFB; -fx-border-width: 1.5; -fx-font-size: 14px; -fx-padding: 12;" wrapText="true" />
+            <Button fx:id="submitButton" mnemonicParsing="false" onAction="#goToHomePage" prefHeight="45.0" prefWidth="520.0" style="-fx-background-radius: 10; -fx-background-color: #385BAE; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16px; -fx-cursor: hand;" styleClass="button-settings" text="Continue">
+               <effect>
+                  <DropShadow>
+                     <color>
+                        <Color opacity="0.30" />
+                     </color>
+                  </DropShadow>
+               </effect>
+            </Button>
+            <Label style="-fx-text-fill: #AAAAAA; -fx-font-size: 11px;" text="You can always update this later in Settings." />
+         </children>
+      </VBox>
+   </children>
+</Pane>

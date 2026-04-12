@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1050.0" style="-fx-background-color: -bg-color;" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bilclubs.controllers.HomePageController">
+   <children>
+      <Label layoutX="49.0" layoutY="42.0" style="-fx-text-fill: -text-color;" text="Your Clubs">
+         <font>
+            <Font name="Arial Bold" size="30.0" />
+         </font>
+      </Label>
+      <Label layoutX="49.0" layoutY="372.0" style="-fx-text-fill: -text-color;" text="Your Clubs' Events">
+         <font>
+            <Font name="Arial Bold" size="30.0" />
+         </font>
+      </Label>
+      <StackPane layoutX="60.0" layoutY="83.0" style="-fx-background-color: -transparent;">
+         <children>
+            <Pane fx:id="borderPane" prefWidth="771.0" style="-fx-background-color: transparent; -fx-border-radius: 20;" stylesheets="@../styles/styles.css">
+               <children>
+                  <ScrollPane layoutX="-1.0" prefHeight="245.0" prefWidth="771.0" styleClass="faded-pane" stylesheets="@../styles/styles.css">
+                     <content>
+                        <HBox fx:id="yourClubsHBox" style="-fx-spacing: 15; -fx-padding: 10 10 20 10;" />
+                     </content>
+                  </ScrollPane>
+                  <ImageView fx:id="sleepingIcon" fitHeight="219.0" fitWidth="274.0" pickOnBounds="true" preserveRatio="true" style="-fx-translate-x: 250;" visible="false">
+                     <image>
+                        <Image url="@../assets/noclub.png" />
+                     </image>
+                  </ImageView>
+                  <Label fx:id="noClubText" layoutX="276.0" layoutY="178.0" style="-fx-text-fill: -primary-color;" text="You haven't joined any clubs yet!" visible="false">
+                     <font>
+                        <Font name="Arial" size="16.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+         </children>
+      </StackPane>
+      <StackPane layoutX="48.0" layoutY="412.0" prefHeight="283.0" prefWidth="798.0">
+         <children>
+            <Pane fx:id="borderPane1" style="-fx-background-color: transparent; -fx-border-radius: 20;" stylesheets="@../styles/styles.css">
+               <children>
+                  <ScrollPane prefHeight="283.0" prefWidth="786.0" style="-fx-background-color: -bg-color;" styleClass="faded-pane" stylesheets="@../styles/styles.css">
+                     <content>
+                        <VBox fx:id="happeningSoonVBox" prefWidth="780.0" style="-fx-spacing: 15; -fx-padding: 25 25 30 25;" />
+                     </content>
+                  </ScrollPane>
+                  <ImageView fx:id="sleepingIcon1" fitHeight="219.0" fitWidth="274.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" style="-fx-translate-x: 250;" visible="false">
+                     <image>
+                        <Image url="@../assets/noclub.png" />
+                     </image>
+                  </ImageView>
+                  <Label fx:id="noClubText1" layoutX="276.0" layoutY="120.0" style="-fx-text-fill: -primary-color; -fx-translate-y: 85;" text="You haven't joined any clubs yet!" visible="false">
+                     <font>
+                        <Font name="Arial" size="16.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+         </children>
+      </StackPane>
+   </children>
+</Pane>

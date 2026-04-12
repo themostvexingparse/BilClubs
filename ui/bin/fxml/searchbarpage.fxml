@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox prefHeight="720.0" prefWidth="1050.0" spacing="30.0" style="-fx-background-color: -bg-color; -fx-padding: 30 40 30 40;" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bilclubs.controllers.SearchController">
+   <children>
+      <Label style="-fx-text-fill: -text-color; -fx-font-size: 36px; -fx-font-family: 'Arial'; -fx-font-weight: bold;" text="Discover" />
+      
+      <HBox alignment="CENTER_LEFT" prefHeight="55.0" spacing="0" styleClass="search-bar">
+         <children>
+            <!-- Clickable search icon button -->
+            <HBox fx:id="searchButton" alignment="CENTER" onMouseClicked="#searchClicked" prefHeight="55.0" prefWidth="50.0" styleClass="search-icon-btn">
+               <children>
+                  <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../assets/search.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </HBox>
+            
+            <!-- Search text field -->
+            <TextField fx:id="searchField" onAction="#search" promptText="Search for clubs and events..." styleClass="search-field" HBox.hgrow="ALWAYS" />
+            
+            <!-- Separator line -->
+            <Region prefHeight="30.0" prefWidth="1" style="-fx-background-color: -primary-color; -fx-opacity: 0.2;" />
+            
+            <!-- Filter picker -->
+            <ChoiceBox fx:id="searchPicker" styleClass="search-picker" />
+         </children>
+         <effect>
+            <DropShadow height="10.0" radius="4.5" width="10.0" />
+         </effect>
+      </HBox>
+      
+      <ScrollPane fitToWidth="true" style="-fx-background-color: transparent;" VBox.vgrow="ALWAYS">
+         <content>
+            <VBox fx:id="resultsContainer" spacing="20.0" style="-fx-background-color: transparent; -fx-padding: 10 10 30 10;" />
+         </content>
+      </ScrollPane>
+   </children>
+</VBox>

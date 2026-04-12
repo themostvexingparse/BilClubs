@@ -9,22 +9,10 @@ import java.util.Set;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-/**
- * SyntheticDatabaseTest — headless script that populates the database with
- * clubs from clubs_english.json and synthetic events.
- *
- * Usage:
- * java -cp ".;..\server\lib\*" SyntheticDatabaseTest [email] [password]
- *
- * If email/password are not passed as CLI args, the script prompts for them.
- * The script is idempotent: it checks existing clubs/events before creating.
- */
 public class SyntheticDatabaseTest {
 
     private static int userId;
     private static String sessionToken;
-
-    // ── helpers ──────────────────────────────────────────────────────────────
 
     private static JSONObject authBody(String action) {
         JSONObject body = new JSONObject();
@@ -43,12 +31,8 @@ public class SyntheticDatabaseTest {
         System.exit(1);
     }
 
-    // ── main ─────────────────────────────────────────────────────────────────
-
     public static void main(String[] args) throws Exception {
         RequestManager.setDefaultAddress("http://127.0.0.1:5000");
-
-        // ── 1. Collect credentials ──────────────────────────────────────────
         String email, password;
         if (args.length >= 2) {
             email = args[0];
@@ -68,7 +52,6 @@ public class SyntheticDatabaseTest {
         log("  BilClubs Synthetic Database Populator");
         log("═".repeat(64));
 
-        // ── 2. Login ────────────────────────────────────────────────────────
         log("\n[1/5] Logging in as " + email + "...");
         {
             JSONObject loginBody = new JSONObject();
@@ -84,7 +67,6 @@ public class SyntheticDatabaseTest {
             log("  ✓ Logged in as userId=" + userId);
         }
 
-        // ── 3. Read existing clubs to avoid duplicates ──────────────────────
         log("\n[2/5] Fetching existing clubs...");
         Set<String> existingClubNames = new HashSet<>();
         Map<String, Integer> clubNameToId = new java.util.HashMap<>();
@@ -103,7 +85,6 @@ public class SyntheticDatabaseTest {
             log("  Found " + existingClubNames.size() + " existing club(s).");
         }
 
-        // ── 4. Read clubs_english.json and create missing clubs ─────────────
         log("\n[3/5] Reading clubs_english.json and creating clubs...");
         JSONObject clubsJson;
         {
@@ -152,16 +133,8 @@ public class SyntheticDatabaseTest {
         log(String.format("  Summary: %d created, %d skipped (no description), %d skipped (already exists)",
                 created, skippedEmpty, skippedExists));
 
-        // ── 5. Join all clubs created by this admin ─────────────────────────
-        // The createClub endpoint already adds the creator as an ADMIN member,
-        // so we only join clubs that existed before but we might not be in.
-        // Skipping explicit join for newly created clubs since we're already a member.
-
-        // ── 6. Create synthetic events ──────────────────────────────────────
         log("\n[4/5] Creating synthetic events...");
 
-        // We need some clubs to attach events to. Pick from what we have.
-        // Map a few well-known clubs to events. Fall back to first available clubs.
         String[][] syntheticEvents = {
                 // { clubNameSubstring, eventName, description, location, daysFromNow,
                 // durationHours, quota }
@@ -206,13 +179,6 @@ public class SyntheticDatabaseTest {
                         "FA Building - Main Hall", "15", "2", "100" },
         };
 
-        // First, gather existing event names to avoid duplicates
-        // We'll use getForeignProfileUpcomingEvents on our own user with epoch=0 to get
-        // all
-        // But that only returns events from clubs we joined. Since we're admin of all
-        // clubs we created,
-        // let's just try to create and handle duplicates gracefully.
-
         int eventsCreated = 0, eventsSkipped = 0;
         for (String[] ev : syntheticEvents) {
             String clubSubstring = ev[0];
@@ -223,7 +189,6 @@ public class SyntheticDatabaseTest {
             int durationHours = Integer.parseInt(ev[5]);
             int quota = Integer.parseInt(ev[6]);
 
-            // Find a matching club
             Integer clubId = null;
             String matchedClubName = null;
             for (Map.Entry<String, Integer> entry : clubNameToId.entrySet()) {
@@ -240,9 +205,8 @@ public class SyntheticDatabaseTest {
                 continue;
             }
 
-            // Compute start/end epoch (UTC)
             long nowEpoch = System.currentTimeMillis() / 1000;
-            long startEpoch = nowEpoch + (long) daysFromNow * 86400 + 36000; // +10 hours into the day
+            long startEpoch = nowEpoch + (long) daysFromNow * 86400 + 36000;
             long endEpoch = startEpoch + (long) durationHours * 3600;
 
             JSONObject body = authBody("create");
@@ -271,7 +235,6 @@ public class SyntheticDatabaseTest {
         }
         log(String.format("  Summary: %d events created, %d skipped", eventsCreated, eventsSkipped));
 
-        // ── 7. Done ─────────────────────────────────────────────────────────
         log("\n[5/5] Logging out...");
         {
             JSONObject body = authBody("logout");
