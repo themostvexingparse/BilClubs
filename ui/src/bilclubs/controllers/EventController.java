@@ -46,7 +46,7 @@ public class EventController {
     private int currentEventId;
 
     @FXML
-    public void initialize() throws IOException{
+    public void initialize() throws IOException {
         currentEvent = Controller.currentEventObject;
         currentEventId = currentEvent.getInt("eventId");
 
@@ -68,7 +68,7 @@ public class EventController {
             int quota = currentEvent.getInt("quota");
             detailslbl.setText(registreeCount + " / " + quota + " registered");
         }
-        
+
         String baseURL = bilclubs.utils.RequestManager.defaultAddress;
         String posterImage = currentEvent.optString("posterImage", "");
         if (!posterImage.isEmpty() && !posterImage.contains("default")) {
@@ -76,57 +76,62 @@ public class EventController {
             eventBanner.setImage(icon);
         }
 
+        javafx.scene.shape.Rectangle bannerClip = new javafx.scene.shape.Rectangle(
+                eventBanner.getFitWidth(), eventBanner.getFitHeight());
+        bannerClip.setArcWidth(20);
+        bannerClip.setArcHeight(20);
+        eventBanner.setClip(bannerClip);
+
         checkRegistrationState();
     }
 
-    private void checkRegistrationState() throws IOException{
+    private void checkRegistrationState() throws IOException {
         JSONObject req = new JSONObject();
         req.put("action", "getUpcomingEvents");
         req.put("userId", Controller.userId);
         req.put("sessionToken", Controller.sessionToken);
         req.put("userSpecific", true);
 
-    // public void registerEvent(ActionEvent e) throws IOException {
-    //     JSONObject registerReq = new JSONObject();
-    //     registerReq.put("action", "register");
-    //     registerReq.put("eventId", currentEvent.getInt("eventId"));
-    //     registerReq.put("userId", Controller.userId);
-    //     registerReq.put("sessionToken", Controller.sessionToken);
+        // public void registerEvent(ActionEvent e) throws IOException {
+        // JSONObject registerReq = new JSONObject();
+        // registerReq.put("action", "register");
+        // registerReq.put("eventId", currentEvent.getInt("eventId"));
+        // registerReq.put("userId", Controller.userId);
+        // registerReq.put("sessionToken", Controller.sessionToken);
 
-    //     Response response = RequestManager.sendPostRequest("api/event", registerReq);
-        
-    //     if (response.isSuccess()) {
-    //         registerButton.setDisable(true);
-    //         registerButton.setVisible(false);
+        // Response response = RequestManager.sendPostRequest("api/event", registerReq);
 
-    //         leaveButton.setVisible(true);
-    //         leaveButton.setDisable(false);
-    //     }
-    // }
+        // if (response.isSuccess()) {
+        // registerButton.setDisable(true);
+        // registerButton.setVisible(false);
 
-    // public void leaveEvent(ActionEvent e) throws IOException{
-    //     JSONObject leaveReq = new JSONObject();
-    //     leaveReq.put("action", "leave");
-    //     leaveReq.put("eventId", currentEvent.getInt("eventId"));
-    //     leaveReq.put("userId", Controller.userId);
-    //     leaveReq.put("sessionToken", Controller.sessionToken);
+        // leaveButton.setVisible(true);
+        // leaveButton.setDisable(false);
+        // }
+        // }
 
-    //     Response leaveResponse = RequestManager.sendPostRequest("api/event", leaveReq);
+        // public void leaveEvent(ActionEvent e) throws IOException{
+        // JSONObject leaveReq = new JSONObject();
+        // leaveReq.put("action", "leave");
+        // leaveReq.put("eventId", currentEvent.getInt("eventId"));
+        // leaveReq.put("userId", Controller.userId);
+        // leaveReq.put("sessionToken", Controller.sessionToken);
 
-    //     if(leaveResponse.isSuccess()){
-    //         leaveButton.setDisable(true);
-    //         leaveButton.setVisible(false);
+        // Response leaveResponse = RequestManager.sendPostRequest("api/event",
+        // leaveReq);
 
-    //         registerButton.setDisable(false);
-    //         registerButton.setVisible(true);
-    //     }
-    // }
+        // if(leaveResponse.isSuccess()){
+        // leaveButton.setDisable(true);
+        // leaveButton.setVisible(false);
 
+        // registerButton.setDisable(false);
+        // registerButton.setVisible(true);
+        // }
+        // }
 
         Response response = RequestManager.sendPostRequest("api/user", req);
         if (!response.isSuccess())
             return;
-
 
         JSONArray events = response.getPayload().optJSONArray("events");
         if (events == null)
@@ -158,7 +163,7 @@ public class EventController {
         }
     }
 
-    public void registerEvent(ActionEvent e) throws IOException{
+    public void registerEvent(ActionEvent e) throws IOException {
         JSONObject req = new JSONObject();
         req.put("action", "register");
         req.put("eventId", currentEventId);
@@ -169,14 +174,15 @@ public class EventController {
         System.out.println("registerEvent: " + response);
 
         if (response.isSuccess()) {
-            NotificationCard eventCard = new NotificationCard(NotificationCard.joinEventMessage, "Check your webmail for further details.");
+            NotificationCard eventCard = new NotificationCard(NotificationCard.joinEventMessage,
+                    "Check your webmail for further details.");
             AlertsController.allNotifs.add(eventCard);
             setRegisteredState(true);
         }
     }
 
     /** Handles the Leave button click. Sends action:"leave" to /api/event. */
-    public void leaveEvent(ActionEvent e) throws IOException{
+    public void leaveEvent(ActionEvent e) throws IOException {
         JSONObject req = new JSONObject();
         req.put("action", "leave");
         req.put("eventId", currentEventId);
@@ -187,7 +193,8 @@ public class EventController {
         System.out.println("leaveEvent: " + response);
 
         if (response.isSuccess()) {
-            NotificationCard leaveCard = new NotificationCard(NotificationCard.leaveEventMessage, "Check your webmail for further details.");
+            NotificationCard leaveCard = new NotificationCard(NotificationCard.leaveEventMessage,
+                    "Check your webmail for further details.");
             AlertsController.allNotifs.add(leaveCard);
             setRegisteredState(false);
         }

@@ -1291,8 +1291,14 @@ public class APIHandler {
             item.put("description", event.getDescription());
             item.put("location", event.getLocation());
             item.put("startDate", event.getStart().toString());
+            item.put("endDate", event.getEnd().toString());
+            item.put("duration", DurationFormatter.format(event.getStart(), event.getEnd()));
             item.put("clubId", event.getClubId());
             item.put("clubName", owningClub != null ? owningClub.getClubName() : "");
+            item.put("GE250", event.getGE250());
+            item.put("quota", event.getQuota());
+            item.put("registreeCount", event.getRegistreeCount());
+            item.put("posterImage", event.getPoster());
             results.put(item);
         }
 
@@ -1336,8 +1342,14 @@ public class APIHandler {
             item.put("description", event.getDescription());
             item.put("location", event.getLocation());
             item.put("startDate", event.getStart().toString());
+            item.put("endDate", event.getEnd().toString());
+            item.put("duration", DurationFormatter.format(event.getStart(), event.getEnd()));
             item.put("clubId", event.getClubId());
             item.put("clubName", owningClub != null ? owningClub.getClubName() : "");
+            item.put("GE250", event.getGE250());
+            item.put("quota", event.getQuota());
+            item.put("registreeCount", event.getRegistreeCount());
+            item.put("posterImage", event.getPoster());
             item.put("similarity", scored.get(i).getValue());
             results.put(item);
         }

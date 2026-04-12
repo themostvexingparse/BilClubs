@@ -73,7 +73,7 @@ public class ClubController {
 
                 int clubPrivilege = club.optInt("clubPrivilege", -1);
                 boolean isMember = clubPrivilege != -1 && clubPrivilege != 0; // 0 = not a member or banned
-                boolean isManager = clubPrivilege > 1 && isMember;  //manager / admin
+                boolean isManager = clubPrivilege > 1 && isMember; // manager / admin
 
                 if (isMember) {
                     joinButton.setVisible(false);
@@ -86,7 +86,6 @@ public class ClubController {
                     leaveButton.setDisable(true);
                     joinButton.setVisible(true);
                     joinButton.setDisable(false);
-                    
 
                 }
                 if (isManager) {
@@ -109,6 +108,18 @@ public class ClubController {
                     clubBanner.setImage(cover);
                     clubBanner.setPreserveRatio(false); // stretch to fill banner area
                 }
+
+                javafx.scene.shape.Rectangle bannerClip = new javafx.scene.shape.Rectangle(
+                        clubBanner.getFitWidth(), clubBanner.getFitHeight());
+                bannerClip.setArcWidth(20);
+                bannerClip.setArcHeight(20);
+                clubBanner.setClip(bannerClip);
+
+                javafx.scene.shape.Rectangle profileClip = new javafx.scene.shape.Rectangle(
+                        clubProfileImage.getFitWidth(), clubProfileImage.getFitHeight());
+                profileClip.setArcWidth(10);
+                profileClip.setArcHeight(10);
+                clubProfileImage.setClip(profileClip);
 
                 break;
             }
@@ -153,7 +164,8 @@ public class ClubController {
             leaveButton.setVisible(true);
             leaveButton.setDisable(false);
 
-            NotificationCard joinNotification = new NotificationCard(NotificationCard.joinMessage, "Check your webmail for further details.");
+            NotificationCard joinNotification = new NotificationCard(NotificationCard.joinMessage,
+                    "Check your webmail for further details.");
             AlertsController.allNotifs.add(joinNotification);
         }
     }
@@ -178,7 +190,8 @@ public class ClubController {
             manageButton.setVisible(false);
             manageButton.setDisable(true);
 
-            NotificationCard leaveNotification = new NotificationCard(NotificationCard.leaveMessage, "Check your webmail for details.");
+            NotificationCard leaveNotification = new NotificationCard(NotificationCard.leaveMessage,
+                    "Check your webmail for details.");
             AlertsController.allNotifs.add(leaveNotification);
 
         }
@@ -187,13 +200,12 @@ public class ClubController {
     public void goToManagement(ActionEvent e) throws IOException {
         FXMLLoader root = new FXMLLoader(getClass().getResource("/fxml/ClubManagementPage.fxml"));
         AnchorPane rightAnchor = (AnchorPane) manageButton.getScene().lookup("#rightAnchor");
-        LoadHelper.safelyLoad(root, rightAnchor);  
+        LoadHelper.safelyLoad(root, rightAnchor);
     }
 
     // public void setParentAnchor(AnchorPane anchor) {
-    //     this.parentAnchor = anchor;
+    // this.parentAnchor = anchor;
     // }
-
 
     public void manageClub(ActionEvent e) throws IOException {
         // FXMLLoader manageClubPage = new FXMLLoader()

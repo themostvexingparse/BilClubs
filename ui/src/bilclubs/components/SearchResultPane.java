@@ -75,17 +75,17 @@ public class SearchResultPane extends HBox {
                 String defaultPath = type.equals("Club") ? "/assets/default-club-icon.png"
                         : "/assets/default-event-poster.jpg";
                 Image defaultImg = new Image(getClass().getResourceAsStream(defaultPath));
-                imageRect.setFill(new ImagePattern(defaultImg));
+                imageRect.setFill(new ImagePattern(type.equals("Event") ? cropToSquare(defaultImg) : defaultImg));
 
                 if (!imageUrl.isEmpty() && !imageUrl.contains("default")) {
                     Image img = new Image(RequestManager.defaultAddress + imageUrl, true);
                     if (img.getProgress() >= 1.0) {
                         if (!img.isError())
-                            imageRect.setFill(new ImagePattern(img));
+                            imageRect.setFill(new ImagePattern(type.equals("Event") ? cropToSquare(img) : img));
                     } else {
                         img.progressProperty().addListener((obs, oldVal, newVal) -> {
                             if (newVal.doubleValue() >= 1.0 && !img.isError()) {
-                                imageRect.setFill(new ImagePattern(img));
+                                imageRect.setFill(new ImagePattern(type.equals("Event") ? cropToSquare(img) : img));
                             }
                         });
                     }
@@ -113,6 +113,23 @@ public class SearchResultPane extends HBox {
             }
         } catch (IOException ex) {
             ex.printStackTrace();
+        }
+    }
+
+    private Image cropToSquare(Image img) {
+        double width = img.getWidth();
+        double height = img.getHeight();
+        if (width == height || width <= 0 || height <= 0)
+            return img;
+
+        double size = Math.min(width, height);
+        double x = (width - size) / 2.0;
+        double y = (height - size) / 2.0;
+
+        try {
+            return new javafx.scene.image.WritableImage(img.getPixelReader(), (int) x, (int) y, (int) size, (int) size);
+        } catch (Exception e) {
+            return img;
         }
     }
 }
