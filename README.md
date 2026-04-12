@@ -92,7 +92,7 @@ All required JARs are bundled in `server/lib/` and `ui/lib/`. No build tool (Mav
 
 ## Prerequisites
 
-1. **JDK 11 or later**
+1. **JDK 11 or later (Preferably JDK 25 for stability)**
 Download from Adoptium or Oracle. Verify with:
    ```
    java -version
@@ -104,7 +104,7 @@ The build script auto-detects the SDK by searching common locations. If detectio
    ```bat
    setx JAVAFX_HOME "C:\path\to\javafx-sdk-XX"
    ```
-   Detection order: `JAVAFX_HOME` env var → entries on `PATH` → common filesystem paths (`Desktop`, `Downloads`, `Program Files`, etc.) → Scoop/Chocolatey trees → top-level folders on `C:\` and `D:\`.
+   Detection order: `JAVAFX_HOME` env var -> entries on `PATH` -> common filesystem paths (`Desktop`, `Downloads`, `Program Files`, etc.) -> Scoop/Chocolatey trees -> top-level folders on `C:\` and `D:\`.
 
 3. **Google Gemini API key**
 Required for AI-powered semantic search. Obtain one from [Google AI Studio](https://aistudio.google.com/).
