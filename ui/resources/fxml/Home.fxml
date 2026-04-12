@@ -59,7 +59,7 @@
                         <Image url="@../assets/noclub.png" />
                      </image>
                   </ImageView>
-                  <Label fx:id="noClubText1" layoutX="276.0" layoutY="120.0" style="-fx-text-fill: -primary-color; -fx-translate-y: 85;" text="You haven't joined any clubs yet!" visible="false">
+                  <Label fx:id="noClubText1" layoutX="276.0" layoutY="120.0" prefHeight="20.0" prefWidth="218.0" style="-fx-text-fill: -primary-color; -fx-translate-y: 85;" text="No events to showcase yet!" textAlignment="CENTER" visible="false">
                      <font>
                         <Font name="Arial" size="16.0" />
                      </font>
