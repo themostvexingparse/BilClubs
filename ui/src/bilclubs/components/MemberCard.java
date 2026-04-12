@@ -50,6 +50,11 @@ public class MemberCard extends Pane {
         Image profileImage = new Image(RequestManager.defaultAddress + profilePicture, true);
         pfp.setImage(profileImage);
 
+        javafx.scene.shape.Rectangle clip = new javafx.scene.shape.Rectangle(pfp.getFitWidth(), pfp.getFitHeight());
+        clip.setArcWidth(10);
+        clip.setArcHeight(10);
+        pfp.setClip(clip);
+
         banBtn.setOnAction(e -> {
             banBtn.setDisable(true);
             new Thread(() -> {

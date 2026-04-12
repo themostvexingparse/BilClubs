@@ -45,7 +45,7 @@
             </Pane>
          </children>
       </StackPane>
-      <StackPane layoutX="60.0" layoutY="412.0" prefHeight="283.0" prefWidth="786.0">
+      <StackPane layoutX="48.0" layoutY="412.0" prefHeight="283.0" prefWidth="798.0">
          <children>
             <Pane fx:id="borderPane1" style="-fx-background-color: transparent; -fx-border-radius: 20;" stylesheets="@../styles/styles.css">
                <children>

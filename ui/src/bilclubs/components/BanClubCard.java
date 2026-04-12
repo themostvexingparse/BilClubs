@@ -16,21 +16,23 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import bilclubs.controllers.Controller;
 
-public class BanClubCard extends Pane{
-    @FXML Label clublbl;
-    @FXML ImageView pfp;
-    @FXML Button banBtn;
+public class BanClubCard extends Pane {
+    @FXML
+    Label clublbl;
+    @FXML
+    ImageView pfp;
+    @FXML
+    Button banBtn;
 
-
-    @FXML 
-    public void initialise() throws IOException{
+    @FXML
+    public void initialise() throws IOException {
         FXMLLoader backbone = new FXMLLoader(getClass().getResource("/fxml/banclubcard.fxml"));
         backbone.setRoot(this);
         backbone.setController(this);
         backbone.load();
     }
 
-    public BanClubCard(JSONObject eventObject) throws IOException{
+    public BanClubCard(JSONObject eventObject) throws IOException {
         initialise();
 
         String name = eventObject.getString("clubName");
@@ -39,7 +41,12 @@ public class BanClubCard extends Pane{
         String profilePicture = eventObject.optString("iconFilename", "");
         Image profileImage = new Image(RequestManager.defaultAddress + profilePicture, true);
         pfp.setImage(profileImage);
-        
+
+        javafx.scene.shape.Rectangle clip = new javafx.scene.shape.Rectangle(pfp.getFitWidth(), pfp.getFitHeight());
+        clip.setArcWidth(10);
+        clip.setArcHeight(10);
+        pfp.setClip(clip);
+
         banBtn.setOnAction(e -> {
             banBtn.setDisable(true);
             new Thread(() -> {
@@ -49,7 +56,7 @@ public class BanClubCard extends Pane{
                     request.put("userId", Controller.userId);
                     request.put("sessionToken", Controller.sessionToken);
                     request.put("clubId", eventObject.getInt("id"));
-                    
+
                     Response res = RequestManager.sendPostRequest("api/user", request);
                     if (res.getCode() == 200) {
                         Platform.runLater(() -> {

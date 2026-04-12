@@ -42,10 +42,14 @@ public class ClubPane extends Pane {
         backbone.setController(this);
         backbone.load();
 
+        if (clubname != null) {
+            clubname = clubname.replaceAll("[\\r\\n]+", " ").trim();
+        }
         nameLabel.setText(clubname);
 
         String truncatedDesc = clubDesc;
         if (truncatedDesc != null && !truncatedDesc.isEmpty()) {
+            truncatedDesc = truncatedDesc.replaceAll("[\\r\\n]+", " ").trim();
             String[] words = truncatedDesc.split("\\s+");
             if (words.length > 8) {
                 StringBuilder sb = new StringBuilder();

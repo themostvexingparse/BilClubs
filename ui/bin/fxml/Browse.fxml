@@ -24,7 +24,7 @@
             </ScrollPane>
          </children>
       </StackPane>
-      <StackPane layoutX="70.0" layoutY="448.0" style="-fx-background-color: -transparent;">
+      <StackPane layoutX="56.0" layoutY="448.0" prefHeight="257.0" prefWidth="800.0" style="-fx-background-color: -transparent;">
          <children>
             <ScrollPane prefHeight="257.0" prefWidth="786.0" styleClass="faded-pane" stylesheets="@../styles/styles.css">
                <content>

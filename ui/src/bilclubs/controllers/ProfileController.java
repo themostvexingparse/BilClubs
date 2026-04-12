@@ -114,7 +114,7 @@ public class ProfileController {
 
             ClubDisplay userClub = new ClubDisplay();
             userClub.setName(club.getString("name"));
-            // userClub.setDesc(club.getString("description").split("\n")[0]);
+            userClub.setIcon(club.optString("iconFilename", ""));
 
             ClubsBox.getChildren().add(userClub);
 
