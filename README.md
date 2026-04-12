@@ -88,6 +88,8 @@ All required JARs are bundled in `server/lib/` and `ui/lib/`. No build tool (Mav
 | javax.transaction-api | 1.3 | JPA transaction support |
 | JavaFX SDK | 17+ (external) | Desktop GUI framework: **must be installed separately** |
 
+**Note**: The project has been only rigorously tested on JDK 25 and JavaFX SDK 25. Some features such as animations, transitions etc. might be missing or the app might be broken on other versions. Please use the recommended versions if possible. 
+
 ---
 
 ## Prerequisites
@@ -99,7 +101,7 @@ Download from Adoptium or Oracle. Verify with:
    javac -version
    ```
 
-2. **JavaFX SDK 17 or later** 
+2. **JavaFX SDK 17 or later (Preferably JavaFX SDK 25 for stability)** 
 The build script auto-detects the SDK by searching common locations. If detection fails, set the environment variable:
    ```bat
    setx JAVAFX_HOME "C:\path\to\javafx-sdk-XX"
