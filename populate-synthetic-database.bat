@@ -4,12 +4,10 @@ echo   BilClubs — Synthetic Database Populator
 echo ═══════════════════════════════════════════════════════════════
 echo.
 
-REM ── Collect admin credentials ────────────────────────────────
 set /p ADMIN_EMAIL="Admin email: "
 set /p ADMIN_PASS="Admin password: "
 echo.
 
-REM ── Make sure the server is compiled and running ─────────────
 echo [*] Compiling server...
 pushd server
 javac -cp ".;lib/*" *.java -encoding UTF-8
@@ -27,7 +25,6 @@ popd
 echo [*] Waiting for server to initialize...
 ping 127.0.0.1 -n 4 > nul
 
-REM ── Compile and run the populator ────────────────────────────
 echo [*] Compiling SyntheticDatabaseTest...
 pushd tests
 javac -cp ".;..\server\lib\*" SyntheticDatabaseTest.java RequestManager.java Response.java StreamReader.java ServerConfig.java -encoding UTF-8
