@@ -17,7 +17,7 @@ This document covers all HTTP API endpoints exposed by the BilClubs server.
 
 ## Response envelope
 
-Every response — success or failure — is wrapped in the same envelope:
+Every response, success or failure, is wrapped in the same envelope:
 
 ```json
 {
@@ -34,7 +34,7 @@ Every response — success or failure — is wrapped in the same envelope:
 | :--- | :--- | :--- |
 | `responseCode` | `int` | Standard HTTP status code |
 | `success` | `boolean` | `true` when `responseCode` is in the 2xx range |
-| `data` | `object` | Present on success. Shape varies per endpoint — see below |
+| `data` | `object` | Present on success. Shape varies per endpoint, see below |
 | `error` | `object` | Present on failure. Contains a `message` string |
 
 ---
@@ -43,9 +43,9 @@ Every response — success or failure — is wrapped in the same envelope:
 
 | Code | Meaning |
 | :--- | :--- |
-| `400` | Bad request — missing or invalid fields |
-| `401` | Unauthenticated — credentials not provided or insufficient privilege |
-| `403` | Forbidden — credentials provided but invalid, expired, or account banned |
+| `400` | Bad request, missing or invalid fields |
+| `401` | Unauthenticated, credentials not provided or insufficient privilege |
+| `403` | Forbidden, credentials provided but invalid, expired or account banned |
 | `404` | Resource not found |
 | `413` | Payload too large |
 | `500` | Internal server error |
@@ -61,7 +61,9 @@ All user actions share the same URL. The `action` field selects the operation.
 
 ### action: `signup`
 
-Creates a new user account. The provided credentials are verified against Bilkent WebMail before the account is created. On success, a welcome email is dispatched asynchronously and a session token is returned immediately.
+Creates a new user account. The provided credentials are verified against Bilkent WebMail before the account is created. On success, a welcome email is sent asynchronously and a session token is returned immediately.
+
+**Note**: WebMail credentials are never stored in our server.
 
 #### Request body
 
@@ -80,10 +82,10 @@ Creates a new user account. The provided credentials are verified against Bilken
 | :--- | :--- | :---: | :--- |
 | `action` | `string` | ✅ | `"signup"` |
 | `email` | `string` | ✅ | Must end in `bilkent.edu.tr` or `.bilkent.edu.tr` |
-| `password` | `string` | ✅ | Bilkent WebMail password — never stored |
+| `password` | `string` | ✅ | Bilkent WebMail password, never stored |
 | `firstName` | `string` | ✅ | Min 3 chars. Letters only (Latin + Turkish: `a-z A-Z ç ğ ı ö ş ü` and space) |
 | `lastName` | `string` | ✅ | Same constraints as `firstName` |
-| `major` | `string` | — | Optional. Department or programme name |
+| `major` | `string` | - | Optional. Department or programme name |
 
 #### Success response `200`
 
@@ -125,7 +127,7 @@ Creates a new user account. The provided credentials are verified against Bilken
 
 ### action: `login`
 
-Verifies credentials against Bilkent WebMail, generates a new session token, persists it, and returns it alongside the user ID. Every login invalidates the previous token — the token returned here is the only valid one until the next login.
+Verifies credentials against Bilkent WebMail, generates a new session token, persists it, and returns it alongside the user ID. Every login invalidates the previous token, the token returned here is the only valid one until the next login.
 
 #### Request body
 
@@ -176,7 +178,7 @@ Verifies credentials against Bilkent WebMail, generates a new session token, per
 
 ### action: `logout` 🔒
 
-Invalidates the caller's current session token server-side. After this call the token can no longer be used.
+Invalidates the user's current session token server side. After this call, the token can no longer be used and the user is practically logged out.
 
 #### Request body
 
@@ -242,7 +244,7 @@ Returns the full profile of the authenticated user, including private fields suc
 | `biography` | `string` | User-written bio |
 | `profilePicture` | `string` | Server-relative path to the profile image |
 | `interests` | `string[]` | List of interest keywords |
-| `clubPrivileges` | `object` | Map of `clubId → privilegeFlag` for every club the user belongs to |
+| `clubPrivileges` | `object` | Map of `clubId -> privilegeFlag` for every club the user belongs to |
 | `privilege` | `int` | General system privilege bitflag (see Privilege flags) |
 | `wantToRecieveMails` | `boolean` | Whether transactional emails are enabled |
 | `wantToRecieveClubAndEventAlerts` | `boolean` | Whether club/event alert emails and in-app notifications are enabled |
@@ -252,7 +254,7 @@ Returns the full profile of the authenticated user, including private fields suc
 
 ### action: `getForeignProfile` 🔒
 
-Returns the public-facing profile of another user. Email is intentionally omitted.
+Returns the public facing profile of another user. Email is intentionally omitted.
 
 #### Request body
 
@@ -291,7 +293,7 @@ Returns the public-facing profile of another user. Email is intentionally omitte
 | `major` | `string` | Department or programme |
 | `biography` | `string` | User-written bio |
 | `interests` | `string[]` | Interest keywords |
-| `clubPrivileges` | `object` | Map of `clubId → privilegeFlag` |
+| `clubPrivileges` | `object` | Map of `clubId -> privilegeFlag` |
 
 #### Error responses
 
@@ -373,15 +375,15 @@ Partially updates the authenticated user's profile. Only fields present in the r
 
 | Field | Type | Required | Constraints |
 | :--- | :--- | :---: | :--- |
-| `firstName` | `string` | — | Min 3 chars, letters only |
-| `lastName` | `string` | — | Min 3 chars, letters only |
-| `major` | `string` | — | Cannot be empty if provided |
-| `biography` | `string` | — | No length constraint |
-| `profilePicture` | `string` | — | Stored filename returned by `upload`. Cannot be empty if provided. The server prepends `"static/"` automatically |
-| `interests` | `string[]` | — | Replaces the entire interests list |
-| `wantToRecieveMails` | `boolean` | — | |
-| `wantToRecieveClubAndEventAlerts` | `boolean` | — | |
-| `wantToRecieveGeneralNotifications` | `boolean` | — | |
+| `firstName` | `string` | - | Min 3 chars, letters only |
+| `lastName` | `string` | - | Min 3 chars, letters only |
+| `major` | `string` | - | Cannot be empty if provided |
+| `biography` | `string` | - | No length constraint |
+| `profilePicture` | `string` | - | Stored filename returned by `upload`. Cannot be empty if provided. The server prepends `"static/"` automatically |
+| `interests` | `string[]` | - | Replaces the entire interests list |
+| `wantToRecieveMails` | `boolean` | - | |
+| `wantToRecieveClubAndEventAlerts` | `boolean` | - | |
+| `wantToRecieveGeneralNotifications` | `boolean` | - | |
 
 #### Success response `200`
 
@@ -462,10 +464,10 @@ Returns a filtered list of upcoming events. Multiple filters can be combined.
 
 | Field | Type | Required | Description |
 | :--- | :--- | :---: | :--- |
-| `upToEpoch` | `long` | — | Unix epoch seconds. Only events starting before this time are returned. Defaults to `Long.MAX_VALUE` (no upper bound) |
-| `userSpecific` | `boolean` | — | When `true`, only events the caller is registered for are returned. Default `false` |
-| `getAll` | `boolean` | — | When `true`, bypasses the `clubIds` filter and returns all upcoming events. Default `false` |
-| `clubIds` | `int[]` | — | When provided and `getAll` is `false`, only events belonging to one of these club IDs are returned |
+| `upToEpoch` | `long` | - | Unix epoch seconds. Only events starting before this time are returned. Defaults to `Long.MAX_VALUE` (no upper bound) |
+| `userSpecific` | `boolean` | - | When `true`, only events the caller is registered for are returned. Default `false` |
+| `getAll` | `boolean` | - | When `true`, bypasses the `clubIds` filter and returns all upcoming events. Default `false` |
+| `clubIds` | `int[]` | - | When provided and `getAll` is `false`, only events belonging to one of these club IDs are returned |
 
 #### Success response `200`
 
@@ -666,7 +668,7 @@ No `data` field.
 
 ### action: `banUser` 🔒 (admin only)
 
-Permanently removes a user account. Cleans up all club memberships, event registrations, and authored comments. Requires `ADMIN` general privilege.
+Permanently removes a user account. Cleans up all club memberships, event registrations and authored comments. Requires `ADMIN` general privilege.
 
 #### Request body
 
@@ -772,7 +774,7 @@ All club actions require authentication.
 
 ### action: `create` 🔒 (manager / admin)
 
-Creates a new club. Requires `MANAGER` or `ADMIN` general privilege. The creator is automatically added as the club's first admin member. An embedding is generated asynchronously after creation.
+Creates a new club. Requires  `ADMIN` general privilege. The creator is automatically added as the club's first admin member. An embedding is generated asynchronously after creation.
 
 #### Request body
 
@@ -792,8 +794,8 @@ Creates a new club. Requires `MANAGER` or `ADMIN` general privilege. The creator
 | :--- | :--- | :---: | :--- |
 | `clubName` | `string` | ✅ | Min 3 characters |
 | `clubDescription` | `string` | ✅ | Min 20 characters |
-| `iconFilename` | `string` | — | Stored filename returned by `upload`. The server prepends `"static/"` automatically |
-| `coverFilename` | `string` | — | Same as `iconFilename` |
+| `iconFilename` | `string` | - | Stored filename returned by `upload`. The server prepends `"static/"` automatically |
+| `coverFilename` | `string` | - | Same as `iconFilename` |
 
 #### Success response `200`
 
@@ -935,7 +937,7 @@ Returns the top N clubs most similar to the caller's interest embedding. Require
 
 | Field | Type | Required | Description |
 | :--- | :--- | :---: | :--- |
-| `number` | `int` | — | Maximum number of results to return. Default `5` |
+| `number` | `int` | - | Maximum number of results to return. Default `5` |
 
 #### Success response `200`
 
@@ -1006,9 +1008,9 @@ Creates a new event under a club. Only the `ADMIN`-privileged member of that spe
 | `location` | `string` | ✅ | Min 3 characters |
 | `startEpoch` | `long` | ✅ | Unix epoch **seconds** (UTC) |
 | `endEpoch` | `long` | ✅ | Unix epoch **seconds** (UTC). Must be after `startEpoch` |
-| `quota` | `int` | — | Maximum attendees. Omit or set to `null` for unlimited |
-| `GE250` | `int` | — | Activity points awarded. Must be ≥ 0. Default `0` |
-| `posterFilename` | `string` | — | Stored filename returned by `upload` |
+| `quota` | `int` | - | Maximum attendees. Omit or set to `null` for unlimited |
+| `GE250` | `int` | - | Activity points awarded. Must be ≥ 0. Default `0` |
+| `posterFilename` | `string` | - | Stored filename returned by `upload` |
 
 #### Success response `200`
 
@@ -1193,7 +1195,7 @@ Returns the top N upcoming events most similar to the caller's interest embeddin
 
 | Field | Type | Required | Description |
 | :--- | :--- | :---: | :--- |
-| `number` | `int` | — | Maximum number of results to return. Default `5` |
+| `number` | `int` | - | Maximum number of results to return. Default `5` |
 
 #### Success response `200`
 
@@ -1294,11 +1296,9 @@ Privileges are stored as integer bitflags. General privileges apply system-wide;
 | :--- | :--- | :--- |
 | `BANNED_USER` | `0` (`0b0000`) | Account is banned. Cannot log in or perform any actions |
 | `NORMAL_USER` | `1` (`0b0001`) | Standard member |
-| `MODERATOR` | `2` (`0b0010`) | Club moderator |
-| `MANAGER` | `4` (`0b0100`) | Can create clubs and manage club membership |
 | `ADMIN` | `8` (`0b1000`) | Full system access including banning users, clubs, and events |
 
-Flags are bitwise-combined. For example, a user who is both a manager and a normal user has privilege `5` (`0b0101`).
+Flags are bitwise-combined. For example, a user who is both an admin and a normal user has privilege `9` (`0b1001`).
 
 ---
 
